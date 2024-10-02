@@ -1,7 +1,5 @@
 # Denon Reverse Engineering
 
-TODO: Use [Writerside](https://www.jetbrains.com/writerside/) for this
-
 This contains a bunch of information
 about [Engine OS](https://enginedj.com/software/enginedj-os), [Engine Desktop](https://enginedj.com/software/enginedj-desktop),
 and [SoundSwitch](https://enginedj.com/enginelighting). with a primary focus on
