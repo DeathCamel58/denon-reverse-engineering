@@ -3,7 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="firmware"
-                 name="Firmware"
+                 name="Denon Reverse Engineering"
                  start-page="starter-topic.md">
 
     <toc-element topic="starter-topic.md"/>
