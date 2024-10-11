@@ -21,3 +21,7 @@ exist in other firmwares.
 | Reporter                                   | `/usr/Engine/Reporter`          | TODO                                                           | [](Reporter.md)             |
 | [SoundSwitch](https://www.soundswitch.com) | `/usr/SoundSwitch/SoundSwitch`  | The software that provides the lighting control functionality. | [](SoundSwitch.md)          |
 | [HARDWARE_ID] Test App                     | `/bin/[HARDWARE_ID]TestApp`     | Debug software for testing switches, LEDs, etc.                | [](HARDWARE-ID-Test-App.md) |
+
+## Hardware ID
+
+The hardware ID can be found by running `cat /sys/firmware/devicetree/base/inmusic,product-code` on the target device.
