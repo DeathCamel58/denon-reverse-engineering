@@ -10,4 +10,13 @@
     <toc-element topic="How-to-modify-and-flash-firmware.md"/>
     <toc-element topic="Firmware-Layout.md"/>
     <toc-element topic="Engine-Library.md"/>
+    <toc-element topic="Software.md">
+        <toc-element topic="Engine.md"/>
+        <toc-element topic="Firmware-Updater.md"/>
+        <toc-element topic="MIDI-Device-Scanner.md"/>
+        <toc-element topic="Offline-Analyzer.md"/>
+        <toc-element topic="Reporter.md"/>
+        <toc-element topic="SoundSwitch.md"/>
+        <toc-element topic="HARDWARE-ID-Test-App.md"/>
+    </toc-element>
 </instance-profile>
