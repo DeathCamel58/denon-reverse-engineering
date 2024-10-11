@@ -5,6 +5,12 @@ about [Engine OS](https://enginedj.com/software/enginedj-os), [Engine Desktop](h
 and [SoundSwitch](https://enginedj.com/enginelighting). with a primary focus on
 the [Denon Prime Go](https://www.denondj.com/prime-go).
 
+If you want any additional information about a particular thing, file an issue request at
+the [Github Repository](https://github.com/DeathCamel58/denon-reverse-engineering/issues). I'll try my best to help out.
+
+If you know additional information that you'd like documented, feel free to file a pull request on the repository, or
+file an issue.
+
 ## Other Noteworthy Repositories
 
 * [`ghuntley/denon-prime4`](https://github.com/ghuntley/denon-prime4) - Firmware research
