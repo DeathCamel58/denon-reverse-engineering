@@ -97,3 +97,5 @@ NOTE: Only tested on the Prime Go (likely the same for all Engine OS)
   devices using fastboot. May want to do some more research to find the other unit's button combinations.
 * Additional fastboot button combinations can be found on
   the [Akai MPC Forums](https://www.mpc-forums.com/viewtopic.php?t=213466)
+* [Denon Prime Go Console Access](http://dnttalo.cluster029.hosting.ovh.net/doku.php?id=denon_prime_console) -
+  Information to unpack the firmware, add in remote access, and re-pack the firmware.
