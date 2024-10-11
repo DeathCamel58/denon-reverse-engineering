@@ -4,6 +4,9 @@ This is an application for testing the buttons and switches of the unit.
 
 - Prime Go (`JP11TestApp`): This shows an image of the Prime Go, and highlights items as they're tested.
 
+This application uses the folder at `/usr/share/test-app/[HARDWARE_ID]` to get the device images and configuration for
+the current device.
+
 ## Application Data
 
 Path: `/usr/bin/[HARDWARE_ID]TestApp`
