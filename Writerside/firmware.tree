@@ -19,6 +19,7 @@
         <toc-element topic="Reporter.md"/>
         <toc-element topic="SoundSwitch.md"/>
         <toc-element topic="HARDWARE-ID-Test-App.md"/>
+        <toc-element topic="Buildroot.md"/>
     </toc-element>
     <toc-element topic="Linux-DTSs.md">
         <toc-element topic="rk3288-az05-nh08-dts.md"/>

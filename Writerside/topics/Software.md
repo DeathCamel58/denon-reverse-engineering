@@ -2,8 +2,8 @@
 
 ## Engine OS
 
-[Engine OS](https://enginedj.com/software/enginedj-os) is InMusic's DJ operating system. This is mainly just a buildroot
-OS, with some additional custom software.
+[Engine OS](https://enginedj.com/software/enginedj-os) is InMusic's DJ operating system. This is mainly just
+a [buildroot](Buildroot.md) OS, with some additional custom software.
 
 ## Custom Applications
 
