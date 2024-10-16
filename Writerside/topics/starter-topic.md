@@ -25,3 +25,6 @@ file an issue.
   recompile firmware (working on my own, more modular system for this)
 * [Unbricking inMusic Products](https://github.com/RedHate/Unbricking-inMusic-Products) - Useful information to unbrick
   devices
+* [MPC Live Internals](https://niklasnisbeth.gitlab.io/mpc-internals/) detailed information about the Akai MPC live
+* [Tadeáš Miňha's research](https://brmlab.cz/user/trimen/mpclive) into the Akai MPC live. This includes board images,
+  boot logs, etc.

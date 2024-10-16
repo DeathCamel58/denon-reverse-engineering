@@ -7,6 +7,7 @@
                  start-page="starter-topic.md">
 
     <toc-element topic="starter-topic.md"/>
+    <toc-element topic="UART.md"/>
     <toc-element topic="How-to-modify-and-flash-firmware.md"/>
     <toc-element topic="Firmware-Layout.md"/>
     <toc-element topic="Engine-Library.md"/>
