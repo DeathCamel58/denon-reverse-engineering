@@ -32,6 +32,26 @@ UART Speed: 115200 Baud
 
 ### U-Boot
 
+To get into recovery mode, run `fastboot 0` at the U-Boot command line. This will allow you to use the desktop updater
+app to recover.
+
+#### Fastboot OEM Commands {collapsible="true"}
+
+Fastboot's OEM commands are specific to a device manufacturer. Here are the commands that I've found:
+
+```
+oem set-flag:%s
+oem format
+oem resetenv
+oem update-bootloader
+oem set-panel-map:%s
+oem flash-bootloader
+oem inmusic-unlock-magic-7de5fbc22b8c524e
+oem fetch-pubkey:%s
+```
+
+These were found by dumping `/dev/mmcblk0p6`, then running `strings mmcblk0p6 | grep oem`.
+
 #### U-Boot Boot Log {collapsible="true"}
 
 ```
@@ -717,4 +737,5 @@ primego login:
 
 ## MPC Live
 
-Refer to Tadeáš Miňha's work on the [brmlab wiki](https://brmlab.cz/user/trimen/mpclive) or Niklas Nisbeth's work on [their site](https://niklasnisbeth.gitlab.io/mpc-internals/).
+Refer to Tadeáš Miňha's work on the [brmlab wiki](https://brmlab.cz/user/trimen/mpclive) or Niklas Nisbeth's work
+on [their site](https://niklasnisbeth.gitlab.io/mpc-internals/).
