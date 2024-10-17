@@ -63,7 +63,7 @@ U-Boot 2016.05-inmusic-20230621 (Nov 14 2023 - 10:30:29 +0000), Build: jenkins-P
 
 Model: Denon DJ Prime GO
 DRAM:  2 GiB
-TSADC last_tshut_cru=1 (auto_con=0x03000000)
+TSADC last_tshut_cru=0 (auto_con=0x01000000)
 MMC:   dwmmc@ff0f0000: 0
 In:    gpio-keys
 Out:   serial
@@ -74,14 +74,16 @@ switch to partitions #0, OK
 mmc0(part 0) is current device
 Scanning mmc 0:6...
 Found U-Boot script /boot/boot.scr.uimg
-489 bytes read in 7 ms (67.4 KiB/s)
+489 bytes read in 6 ms (79.1 KiB/s)
 ## Executing script at 00000000
-5583032 bytes read in 262 ms (20.3 MiB/s)
-49752 bytes read in 10 ms (4.7 MiB/s)
-Kernel image @ 0x2000000 [ 0x000000 - 0x5530b8 ]
+5588344 bytes read in 262 ms (20.3 MiB/s)
+49752 bytes read in 11 ms (4.3 MiB/s)
+Kernel image @ 0x2000000 [ 0x000000 - 0x554578 ]
 ## Flattened Device Tree blob at 01f00000
    Booting using the fdt blob at 0x1f00000
    Loading Device Tree to 1fff0000, end 1ffff257 ... OK
+
+Starting kernel ...
 ```
 
 #### Environment Variables {collapsible="true"}
@@ -204,7 +206,7 @@ GNU ld (GNU Binutils) 2.38
 
 ```
 Booting Linux on physical CPU 0x500
-Linux version 6.1.78-inmusic-2024-02-16-p2-rt24 (jenkins@673a7630a96e) (arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2023.02.9-5-gc80b63ff32) 12.3.0, GNU ld (GNU Binutils) 2.38) #1 SMP PREEMPT_RT Wed Sep 11 02:54:27 UTC 2024
+Linux version 6.1.92-inmusic-2024-05-28-rt32 (jenkins@d73a305bf18b) (arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2023.02.11-5-gfbf213aa23) 12.3.0, GNU ld (GNU Binutils) 2.38) #1 SMP PREEMPT_RT Fri Sep 20 07:36:09 UTC 2024
 CPU: ARMv7 Processor [410fc0d1] revision 1 (ARMv7), cr=10c5387d
 CPU: div instructions available: patching division code
 CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
@@ -224,7 +226,7 @@ Kernel command line: root=PARTUUID=24d1deac-3434-1a4e-98d1-68ee2945a5f1 rootwait
 Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
 Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
 mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-Memory: 2053884K/2097152K available (8192K kernel code, 815K rwdata, 2556K rodata, 1024K init, 279K bss, 30980K reserved, 12288K cma-reserved, 1298432K highmem)
+Memory: 2053884K/2097152K available (8192K kernel code, 815K rwdata, 2556K rodata, 1024K init, 278K bss, 30980K reserved, 12288K cma-reserved, 1298432K highmem)
 SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
 rcu: Preemptible hierarchical RCU implementation.
 rcu: 	RCU event tracing is enabled.
@@ -272,8 +274,9 @@ cpuidle: using governor menu
 No ATAGs?
 hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
 hw-breakpoint: maximum watchpoint size is 4 bytes.
-platform ff960000.mipi: Fixed dependency cycle(s) with /mipi@ff960000/panel@0/ports/port@0/endpoint
-platform ff960000.mipi: Fixed dependency cycle(s) with /vop@ff940000/port/endpoint@2
+platform ff940000.vop: Fixed dependency cycle(s) with /mipi@ff960000
+platform ff960000.mipi: Fixed dependency cycle(s) with /mipi@ff960000/panel@0
+platform ff960000.mipi: Fixed dependency cycle(s) with /vop@ff940000
 platform pinctrl: Fixed dependency cycle(s) with /pinctrl/az01/az01-pcb-rev
 rockchip-gpio ff750000.gpio: probed /pinctrl/gpio@ff750000
 rockchip-gpio ff780000.gpio: probed /pinctrl/gpio@ff780000
@@ -351,7 +354,7 @@ mali ffa30000.gpu: IPA initialization failed
 ------------[ cut here ]------------
 WARNING: CPU: 0 PID: 1 at drivers/opp/core.c:1516 _opp_table_kref_release+0x88/0x104
 Modules linked in:
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.78-inmusic-2024-02-16-p2-rt24 #1
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.92-inmusic-2024-05-28-rt32 #1
 Hardware name: Rockchip (Device Tree)
  unwind_backtrace from show_stack+0x10/0x14
  show_stack from dump_stack_lvl+0x40/0x4c
@@ -379,7 +382,8 @@ Exception stack(0xf0831fb0 to 0xf0831ff8)
 ---[ end trace 0000000000000000 ]---
 rockchip-vop ff930000.vop: Adding to iommu group 0
 rockchip-vop ff940000.vop: Adding to iommu group 1
-mipi-dsi ff960000.mipi.0: Fixed dependency cycle(s) with /mipi@ff960000/ports/port@1/endpoint
+dw-mipi-dsi-rockchip ff960000.mipi: Fixed dependency cycle(s) with /mipi@ff960000/panel@0
+mipi-dsi ff960000.mipi.0: Fixed dependency cycle(s) with /mipi@ff960000
 rockchip_framebuffer_rmem_device_init: initializing with base address 0x7f400000 size=0x00c00000
 rockchip-drm display-subsystem: assigned reserved memory node framebuffer
 rockchip-drm display-subsystem: bound ff930000.vop (ops 0xc0964c38)
@@ -419,7 +423,7 @@ dwc2 ff540000.usb: new USB bus registered, assigned bus number 1
 usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
 usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
 usb usb1: Product: DWC OTG Controller
-usb usb1: Manufacturer: Linux 6.1.78-inmusic-2024-02-16-p2-rt24 dwc2_hsotg
+usb usb1: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 dwc2_hsotg
 usb usb1: SerialNumber: ff540000.usb
 hub 1-0:1.0: USB hub found
 hub 1-0:1.0: 1 port detected
@@ -434,7 +438,7 @@ dwc2 ff580000.usb: new USB bus registered, assigned bus number 2
 usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
 usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
 usb usb2: Product: DWC OTG Controller
-usb usb2: Manufacturer: Linux 6.1.78-inmusic-2024-02-16-p2-rt24 dwc2_hsotg
+usb usb2: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 dwc2_hsotg
 usb usb2: SerialNumber: ff580000.usb
 hub 2-0:1.0: USB hub found
 hub 2-0:1.0: 1 port detected
@@ -463,37 +467,37 @@ usbserial: USB Serial support registered for libtransistor
 usbserial: USB Serial support registered for moto_modem
 usbserial: USB Serial support registered for motorola_tetra
 usbserial: USB Serial support registered for nokia
+
 usbserial: USB Serial support registered for novatel_gps
+Welcome to Buildroot 2023.02.11!
+
 usbserial: USB Serial support registered for siemens_mpi
-
 usbserial: USB Serial support registered for suunto
-Welcome to Buildroot 2023.02.9!
-
 usbserial: USB Serial support registered for vivopay
 usbserial: USB Serial support registered for zio
 ehci-platform ff500000.usb: irq 66, io mem 0xff500000
 ohci-platform ff520000.usb: irq 67, io mem 0xff520000
 rtc-hym8563 0-0051: registered as rtc0
-rtc-hym8563 0-0051: setting system clock to 2024-10-16T18:02:19 UTC (1729101739)
+rtc-hym8563 0-0051: setting system clock to 2024-10-17T11:44:31 UTC (1729165471)
 dw-apb-uart ff180000.serial: Failed to create device link (0x180) with 0-0051
+usb usb4: New USB device found, idVendor=1d6b, idProduct=0001, bcdDevice= 6.01
+usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb4: Product: Generic Platform OHCI controller
+usb usb4: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 ohci_hcd
+usb usb4: SerialNumber: ff520000.usb
+hub 4-0:1.0: USB hub found
+hub 4-0:1.0: 1 port detected
 dw_wdt ff800000.watchdog: No valid TOPs array specified
 device-mapper: uevent: version 1.0.3
 device-mapper: ioctl: 4.47.0-ioctl (2022-07-28) initialised: dm-devel@redhat.com
 Synopsys Designware Multimedia Card Interface Driver
-hid: raw HID events driver (C) Jiri Kosina
-usbcore: registered new interface driver usbhid
-usbhid: USB HID core driver
-usb usb4: New USB device found, idVendor=1d6b, idProduct=0001, bcdDevice= 6.01
-usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-usb usb4: Product: Generic Platform OHCI controller
-usb usb4: Manufacturer: Linux 6.1.78-inmusic-2024-02-16-p2-rt24 ohci_hcd
-usb usb4: SerialNumber: ff520000.usb
-hub 4-0:1.0: USB hub found
-hub 4-0:1.0: 1 port detected
 dwmmc_rockchip ff0d0000.dwmmc: IDMAC supports 32-bit address mode.
 dwmmc_rockchip ff0d0000.dwmmc: Using internal DMA controller.
 dwmmc_rockchip ff0d0000.dwmmc: Version ID is 270a
-dwmmc_rockchip ff0d0000.dwmmc: DW MMC controller at irq 73,32 bit host data width,256 deep fifo
+hid: raw HID events driver (C) Jiri Kosina
+usbcore: registered new interface driver usbhid
+usbhid: USB HID core driver
+dwmmc_rockchip ff0d0000.dwmmc: DW MMC controller at irq 72,32 bit host data width,256 deep fifo
 dwmmc_rockchip ff0d0000.dwmmc: allocated mmc-pwrseq
 mmc_host mmc2: card is non-removable.
 usbcore: registered new interface driver snd-usb-audio
@@ -512,7 +516,7 @@ ehci-platform ff500000.usb: USB 2.0 started, EHCI 1.00
 usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
 usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
 usb usb3: Product: EHCI Host Controller
-usb usb3: Manufacturer: Linux 6.1.78-inmusic-2024-02-16-p2-rt24 ehci_hcd
+usb usb3: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 ehci_hcd
 usb usb3: SerialNumber: ff500000.usb
 hub 3-0:1.0: USB hub found
 hub 3-0:1.0: 1 port detected
@@ -528,114 +532,108 @@ dwmmc_rockchip ff0f0000.dwmmc: Version ID is 270a
 dwmmc_rockchip ff0c0000.dwmmc: IDMAC supports 32-bit address mode.
 dwmmc_rockchip ff0c0000.dwmmc: Using internal DMA controller.
 dwmmc_rockchip ff0c0000.dwmmc: Version ID is 270a
-dwmmc_rockchip ff0f0000.dwmmc: DW MMC controller at irq 74,32 bit host data width,256 deep fifo
 dwmmc_rockchip ff0c0000.dwmmc: DW MMC controller at irq 76,32 bit host data width,256 deep fifo
+dwmmc_rockchip ff0f0000.dwmmc: DW MMC controller at irq 74,32 bit host data width,256 deep fifo
 input: gpio-keys as /devices/platform/gpio-keys/input/input1
-dwmmc_rockchip ff0f0000.dwmmc: allocated mmc-pwrseq
-mmc_host mmc0: card is non-removable.
-ALSA device list:
-  No soundcards found.
 dwmmc_rockchip ff0c0000.dwmmc: Got CD GPIO
 dwmmc_rockchip ff0c0000.dwmmc: Got WP GPIO
-sbs-battery 3-000b: I2C adapter does not support I2C_FUNC_SMBUS_READ_BLOCK_DATA.
-Fallback method does not support PEC.
-dw-apb-uart ff690000.serial: forbid DMA for kernel console
-usb 1-1: New USB device found, idVendor=15e4, idProduct=800c, bcdDevice= 0.59
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 1-1: Product: PRIME GO Control Surface
-[  OK  ] Created slice Slice /system/gettsb 1-1: Manufacturer: Denon DJ
-0m.
-mmc_host mmc1: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+dwmmc_rockchip ff0f0000.dwmmc: allocated mmc-pwrseq
+mmc_host mmc0: card is non-removable.
+clk: Disabling unused clocks
+ALSA device list:
+  No soundcards found.
+sbs-battery 3-000b: I2C adapter does not sb 1-1: Product: PRIME GO Control Surface
+0m.lback method does not support PEC.
+usb 1-1: Manufacturer: Denon DJrbid DMA for kernel console
 [  OK  ] Created slice Slice /system/modprobmmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
-e.
-Waiting for root device PARTUUID=24d1deac-3434-1a4e-98d1-68ee2945a5f1...
-[  OK  ] Created slice Slice /system/serial-mmc_host mmc2: Bus speed (slot 0) = 25000000Hz (slot req 25000000Hz, actual 25000000HZ div = 0)
+e.b 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+mmc_host mmc1: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+[  OK  ] Created slice Slice /system/serial-Waiting for root device PARTUUID=24d1deac-3434-1a4e-98d1-68ee2945a5f1...
 getty.
-mmc2: new ultra high speed SDR12 SDIO card at address 0001
-[  OK  ] Started Dispatch Password b&ts to mmc_host mmc0: Bus speed (slot 0) = 50000000Hz (slot req 52000000Hz, actual 50000000HZ div = 0)
+mmc_host mmc0: Bus speed (slot 0) = 50000000Hz (slot req 52000000Hz, actual 50000000HZ div = 0)
+[  OK  ] Started Dispatch Password b&ts to mmc0: new high speed MMC card at address 0001
 Console Directory Watch.
-mmc0: new high speed MMC card at address 0001
-[  OK  ] Started Forward Password Rb&uests mmcblk0: mmc0:0001 8GTF4R 7.28 GiB 
+mmcblk0: mmc0:0001 8GTF4R 7.28 GiB 
+[  OK  ] Started Forward Password Rb&uests mmc_host mmc2: Bus speed (slot 0) = 25000000Hz (slot req 25000000Hz, actual 25000000HZ div = 0)
 to Wall Directory Watch.
  mmcblk0: p1 p2 p3 p4 p5 p6 p7
-[  OK  ] Reached target Path Units.mmcblk0boot0: mmc0:0001 8GTF4R 4.00 MiB 
+[  OK  ] Reached target Path Units.mmc2: new ultra high speed SDR12 SDIO card at address 0001
 
-mmcblk0boot1: mmc0:0001 8GTF4R 4.00 MiB 
-[  OK  ] Reached target Remote File Systemsmcblk0rpmb: mmc0:0001 8GTF4R 512 KiB, chardev (245:0)
+usb 3-1: new high-speed USB device number 2 using ehci-platform
+[  OK  ] Reached target Remote File Systemsmcblk0boot0: mmc0:0001 8GTF4R 4.00 MiB 
 [0m.
+mmcblk0boot1: mmc0:0001 8GTF4R 4.00 MiB 
+[  OK  ] Reached target Slice Units.mmcblk0rpmb: mmc0:0001 8GTF4R 512 KiB, chardev (245:0)
+
 EXT4-fs (mmcblk0p6): mounted filesystem without journal. Quota mode: disabled.
-[  OK  ] Reached target Slice Units.VFS: Mounted root (ext4 filesystem) readonly on device 179:6.
+[  OK  ] Reached target Swaps.VFS: Mounted root (ext4 filesystem) readonly on device 179:6.
 
 devtmpfs: mounted
 Freeing unused kernel image (initmem) memory: 1024K
-[  OK  ] Reached target Swaps.Run /sbin/init as init process
+Run /sbin/init as init process
+usb 3-1: New USB device found, idVendor=090c, idProduct=1000, bcdDevice=11.00
+usb 3-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  OK  ] Listening on Journal Socket (/dev/lusb 3-1: Product: Type-C
+og).
+usb 3-1: Manufacturer: Samsung
+[  OK  ] Listening on Journal Socket.usb 3-1: SerialNumber: 0374822020007227
 
+usb-storage 3-1:1.0: USB Mass Storage device detected
+[  OK  ] Listening on udev Control Socketcsi host0: usb-storage 3-1:1.0
+m.
 mmc_host mmc1: Bus speed (slot 0) = 25000000Hz (slot req 25000000Hz, actual 25000000HZ div = 0)
-mmc1: new SDXC card at address aaaa
+[  OK  ] Listening on udev Kernel Socketmmc1: new SDXC card at address aaaa
+.
 mmcblk1: mmc1:aaaa SN256 238 GiB 
  mmcblk1: p1
 systemd[1]: systemd 252 running in system mode (-PAM -AUDIT -SELINUX -APPARMOR -IMA -SMACK -SECCOMP -GCRYPT -GNUTLS +OPENSSL -ACL +BLKID +CURL +ELFUTILS -FIDO2 -IDN2 -IDN +IPTC +KMOD -LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY -P11KIT -QRENCODE -TPM2 +BZIP2 -LZ4 +XZ +ZLIB +ZSTD -BPF_FRAMEWORK +XKBCOMMON -UTMP -SYSVINIT default-hierarchy=unified)
-[  OK  ] Listening on Journal Socket (/dev/lsystemd[1]: Detected architecture arm.
-og).
+systemd[1]: Detected architecture arm.
 systemd[1]: Hostname set to <buildroot>.
-[  OK  ] Listening on Journal Socket.systemd[1]: Initializing machine ID from random generator.
+systemd[1]: Initializing machine ID from random generator.
+         Mounting Mount /media...systemd[1]: Installed transient /etc/machine-id file.
 
-systemd[1]: Installed transient /etc/machine-id file.
+systemd[1]: /etc/systemd/system/connman.service.d/disable_onlinecheck.conf:1: Unknown section 'General'. Ignoring.
 systemd[1]: Queued start job for default target Multi-User System.
-[  OK  ] Listening on udev Control Socketystemd[1]: Created slice Slice /system/getty.
-m.
+         Mounting Mount /secure-media...systemd[1]: Created slice Slice /system/getty.
+
 systemd[1]: Created slice Slice /system/modprobe.
-[  OK  ] Listening on udev Kernel Socketsystemd[1]: Created slice Slice /system/serial-getty.
-.
-systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+         Mounting Kernel Debug File System...systemd[1]: Created slice Slice /system/serial-getty.
+
+         Mounting Temporary Directory /tmp...systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+
 systemd[1]: Started Forward Password Requests to Wall Directory Watch.
-systemd[1]: Reached target Path Units.
+         Starting Mali GPU driver setup for AZ01...systemd[1]: Reached target Path Units.
+
 systemd[1]: Reached target Remote File Systems.
-systemd[1]: Reached target Slice Units.
-systemd[1]: Reached target Swaps.
-systemd[1]: Journal Audit Socket was skipped because of an unmet condition check (ConditionSecurity=audit).
-         Mounting Mount /media...systemd[1]: Listening on Journal Socket (/dev/log).
-
-systemd[1]: Listening on Journal Socket.
-systemd[1]: Listening on udev Control Socket.
-         Mounting Mount /secure-media...systemd[1]: Listening on udev Kernel Socket.
-
-systemd[1]: Huge Pages File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/mm/hugepages).
-         Mounting Kernel Debug File System...systemd[1]: POSIX Message Queue File System was skipped because of an unmet condition check (ConditionPathExists=/proc/sys/fs/mqueue).
-
-systemd[1]: Mounting Mount /media...
-systemd[1]: Mounting Mount /secure-media...
-         Mounting Temporary Directory /tmp...systemd[1]: Mounting Kernel Debug File System...
-
-systemd[1]: Kernel Trace File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/tracing).
-         Starting Mali GPU driver setup for AZ01...systemd[1]: Mounting Temporary Directory /tmp...
-
-systemd[1]: Starting Mali GPU driver setup for AZ01...
-[  OK  ] Started Entropy Daemon based on thesystemd[1]: Started Entropy Daemon based on the HAVEGE algorithm.
+[  OK  ] Started Entropy Daemon based on thesystemd[1]: Reached target Slice Units.
  HAVEGE algorithm.
-         Starting Load Kernel Module configfs...systemd[1]: Create List of Static Device Nodes was skipped because of an unmet condition check (ConditionFileNotEmpty=/lib/modules/6.1.78-inmusic-2024-02-16-p2-rt24/modules.devname).
+systemd[1]: Reached target Swaps.
+         Starting Load Kernel Module configfs...systemd[1]: Journal Audit Socket was skipped because of an unmet condition check (ConditionSecurity=audit).
 
-         Starting Load Kernel Module efi_pstore...systemd[1]: Starting Load Kernel Module configfs...
+systemd[1]: Listening on Journal Socket (/dev/log).
+         Starting Load Kernel Module efi_pstore...systemd[1]: Listening on Journal Socket.
 
-systemd[1]: Starting Load Kernel Module efi_pstore...
-         Starting Load Kernel Module fuse...systemd[1]: Starting Load Kernel Module fuse...
+systemd[1]: Listening on udev Control Socket.
+systemd[1]: Listening on udev Kernel Socket.
+         Starting Load Kernel Module fuse...systemd[1]: Huge Pages File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/mm/hugepages).
 
-         Starting File System Check on Root Device.systemd[1]: Starting File System Check on Root Device...
+         Starting File System Check on Root Device.systemd[1]: POSIX Message Queue File System was skipped because of an unmet condition check (ConditionPathExists=/proc/sys/fs/mqueue).
 ..
-         Starting Journal Service...systemd[1]: systemd-journald.service: unit configures an IP firewall, but the local system does not support BPF/cgroup firewalling.
+systemd[1]: Mounting Mount /media...
+         Starting Journal Service...systemd[1]: Mounting Mount /secure-media...
 
-systemd[1]: (This warning is only shown for the first unit using IP firewalling.)
-systemd[1]: Starting Journal Service...
-systemd[1]: Load Kernel Modules was skipped because no trigger condition checks were met.
+systemd[1]: Mounting Kernel Debug File System...
+systemd[1]: Kernel Trace File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/tracing).
          Starting Generate network b&ts from Kernel command line...
-         Starting Apply Kernel Variables...
-         Starting Create Static Device Nodsystemd[1]: Starting Generate network units from Kernel command line...
+         Starting Apply Kernel Variasystemd[1]: Mounting Temporary Directory /tmp...
+bles...
+         Starting Create Static Device Nodsystemd[1]: Starting Mali GPU driver setup for AZ01...
 es in /dev...
-         Starting Coldplug All udev Devices...
+         Starting Coldplug All udev systemd[1]: Started Entropy Daemon based on the HAVEGE algorithm.
+Devices...
 [  OK  ] Mounted Mount /media.
-systemd[1]: Starting Apply Kernel Variables...
-systemd[1]: Starting Create Static Device Nodes in /dev...
-[  OK  ] Mounted Mount /secure-media.systemd[1]: Starting Coldplug All udev Devices...
+systemd[1]: Create List of Static Device Nodes was skipped because of an unmet condition check (ConditionFileNotEmpty=/lib/modules/6.1.92-inmusic-2024-05-28-rt32/modules.devname).
+[  OK  ] Mounted Mount /secure-media.systemd[1]: Starting Load Kernel Module configfs...
 
 [  OK  ] Mounted Kernel Debug File System.
 [  OK  ] Mounted Temporary Directory /tmp.
@@ -708,20 +706,22 @@ systemd[1]: Starting Create Static Device Nodes in /dev...
          Starting Network Connectivity...
 [  OK  ] Started Serial Getty on ttyS2.
 [  OK  ] Reached target Login Prompts.
-         Starting Engine...
+         Starting Firmware update for Ilitek touchscreens...
          Starting WPA supplicant...
 [  OK  ] Finished AZ0x system info logging.
-[  OK  ] Started Avahi mDNS/DNS-SD Stack.
+[  OK  ] Finished Firmware update for Ilitek touchscreens.
+         Starting Engine...
          Starting Hostname Service...
 [  OK  ] Started WPA supplicant.
+[  OK  ] Started Avahi mDNS/DNS-SD Stack.
 [  OK  ] Finished Network Connectivity.
 [  OK  ] Started Bluetooth service.
 [  OK  ] Reached target Bluetooth Support.
-[  OK  ] Started Engine.
 [  OK  ] Started Hostname Service.
 [  OK  ] Finished Hostname setup for AZ01.
 [  OK  ] Reached target Preparation for Network.
          Starting Connection service...
+[  OK  ] Started Engine.
 [  OK  ] Started Connection service.
 [  OK  ] Reached target Network.
          Starting Flush IP Tables...
