@@ -20,6 +20,7 @@ Path: `/usr/SoundSwitch/SoundSwitch`
 | [Prime 4](https://www.denondj.com/prime-4-prime4xus)                 | :white_check_mark:                                   |
 | [Prime 4 Plus](https://www.denondj.com/prime-4-plus.html)            | :grey_question: (Don't know how to extract firmware) |
 | [Prime Go](https://www.denondj.com/prime-go.html)                    | :white_check_mark:                                   |
+| [Prime Go Plus](https://www.denondj.com/prime-go-plus.html)          | :grey_question: (Don't know how to extract firmware) |
 | [SC5000](https://www.denondj.com/sc5000%20prime-sc5000primexus)      | :white_check_mark:                                   |
 | SC5000M (No Product Page)                                            | :white_check_mark:                                   |
 | [SC6000](https://www.denondj.com/sc6000-prime.html)                  | :white_check_mark:                                   |
