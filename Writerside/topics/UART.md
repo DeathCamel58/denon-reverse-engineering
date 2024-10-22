@@ -207,43 +207,48 @@ GNU ld (GNU Binutils) 2.38
 
 ```
 Booting Linux on physical CPU 0x500
-Linux version 6.11.0primego-dirty (deathcamel57@deathcamel57) (arm-linux-gnueabi-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #45 SMP Tue Oct 22 11:18:05 EDT 2024
+Linux version 6.1.92-inmusic-2024-05-28-rt32 (jenkins@d73a305bf18b) (arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2023.02.11-5-gfbf213aa23) 12.3.0, GNU ld (GNU Binutils) 2.38) #1 SMP PREEMPT_RT Fri Sep 20 07:36:09 UTC 2024
 CPU: ARMv7 Processor [410fc0d1] revision 1 (ARMv7), cr=10c5387d
 CPU: div instructions available: patching division code
 CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
 OF: fdt: Machine model: Denon DJ Prime GO
 Memory policy: Data cache writealloc
-OF: reserved mem: Reserved memory: unsupported node format, ignoring
+OF: reserved mem: initialized node framebuffer, compatible id rockchip,framebuffer-memory
 Zone ranges:
-Normal   [mem 0x0000000000000000-0x000000002fffffff]
-HighMem  [mem 0x0000000030000000-0x000000007fffffff]
+  Normal   [mem 0x0000000000000000-0x000000002fffffff]
+  HighMem  [mem 0x0000000030000000-0x000000007fffffff]
 Movable zone start for each node
 Early memory node ranges
-node   0: [mem 0x0000000000000000-0x000000007fffffff]
+  node   0: [mem 0x0000000000000000-0x000000007fffffff]
 Initmem setup node 0 [mem 0x0000000000000000-0x000000007fffffff]
-percpu: Embedded 13 pages/cpu s22092 r8192 d22964 u53248
-pcpu-alloc: s22092 r8192 d22964 u53248 alloc=13*4096
-pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3
+percpu: Embedded 12 pages/cpu s17632 r8192 d23328 u49152
+pcpu-alloc: s17632 r8192 d23328 u49152 alloc=12*4096
+pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
+Built 1 zonelists, mobility grouping on.  Total pages: 522752
 Kernel command line: root=PARTUUID=24d1deac-3434-1a4e-98d1-68ee2945a5f1 rootwait rw rfkill.default_state=0 isolcpus=1-3
 Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
 Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-Built 1 zonelists, mobility grouping on.  Total pages: 524288
-mem auto-init: stack:off, heap alloc:off, heap free:off
+mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+Memory: 2053884K/2097152K available (8192K kernel code, 815K rwdata, 2556K rodata, 1024K init, 278K bss, 30980K reserved, 12288K cma-reserved, 1298432K highmem)
 SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
-rcu: Hierarchical RCU implementation.
+rcu: Preemptible hierarchical RCU implementation.
 rcu: 	RCU event tracing is enabled.
+rcu: 	RCU priority boosting: priority 1 delay 500 ms.
+rcu: 	RCU_SOFTIRQ processing moved to rcuc kthreads.
+	No expedited grace period (rcu_normal_after_boot).
 rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
 NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
 rcu: srcu_init: Setting srcu_struct sizes based on contention.
+rockchip: reset MMC AHB arbitor
 arch_timer: cp15 timer(s) running at 24.00MHz (phys).
 clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
 sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
 Switching to timer-based delay loop, resolution 41ns
 Console: colour dummy device 80x30
-printk: legacy console [tty0] enabled
+printk: console [tty0] enabled
 Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=24000)
 CPU: Testing write buffer coherency: ok
-CPU0: Spectre v2: using BPIALL workaround
+Spectre V2: workarounds disabled by configuration
 pid_max: default: 32768 minimum: 301
 Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
 Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
@@ -251,18 +256,14 @@ CPU0: thread -1, cpu 0, socket 5, mpidr 80000500
 Setting up static identity map for 0x100000 - 0x100060
 rcu: Hierarchical SRCU implementation.
 rcu: 	Max phase no-delay instances is 400.
-Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+printk: console [tty0] printing thread started
 smp: Bringing up secondary CPUs ...
 CPU1: thread -1, cpu 1, socket 5, mpidr 80000501
-CPU1: Spectre v2: using BPIALL workaround
 CPU2: thread -1, cpu 2, socket 5, mpidr 80000502
-CPU2: Spectre v2: using BPIALL workaround
 CPU3: thread -1, cpu 3, socket 5, mpidr 80000503
-CPU3: Spectre v2: using BPIALL workaround
 smp: Brought up 1 node, 4 CPUs
 SMP: Total of 4 processors activated (192.00 BogoMIPS).
 CPU: All CPU(s) started in SVC mode.
-Memory: 2062340K/2097152K available (8192K kernel code, 812K rwdata, 2808K rodata, 1024K init, 271K bss, 32016K reserved, 0K cma-reserved, 1310720K highmem)
 devtmpfs: initialized
 VFP support v0.3: implementor 41 architecture 3 part 30 variant d rev 0
 clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
@@ -281,31 +282,22 @@ platform ff940000.vop: Fixed dependency cycle(s) with /mipi@ff960000
 platform ff960000.mipi: Fixed dependency cycle(s) with /mipi@ff960000/panel@0
 platform ff960000.mipi: Fixed dependency cycle(s) with /vop@ff940000
 platform pinctrl: Fixed dependency cycle(s) with /pinctrl/az01/az01-pcb-rev
-gpio gpiochip0: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff750000.gpio: probed /pinctrl/gpio@ff750000
-gpio gpiochip1: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff780000.gpio: probed /pinctrl/gpio@ff780000
-gpio gpiochip2: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff790000.gpio: probed /pinctrl/gpio@ff790000
-gpio gpiochip3: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7a0000.gpio: probed /pinctrl/gpio@ff7a0000
-gpio gpiochip4: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7b0000.gpio: probed /pinctrl/gpio@ff7b0000
-gpio gpiochip5: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7c0000.gpio: probed /pinctrl/gpio@ff7c0000
-gpio gpiochip6: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7d0000.gpio: probed /pinctrl/gpio@ff7d0000
-gpio gpiochip7: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7e0000.gpio: probed /pinctrl/gpio@ff7e0000
-gpio gpiochip8: Static allocation of GPIO base is deprecated, use dynamic allocation.
 rockchip-gpio ff7f0000.gpio: probed /pinctrl/gpio@ff7f0000
-iommu: Default domain type: Translated
-iommu: DMA domain TLB invalidation policy: strict mode
 vcc_sys: 5000 mV, enabled
 reg-fixed-voltage vsys-regulator: vcc_sys supplying 5000000uV
 reg-fixed-voltage vcc-mipi: Looking up vin-supply from device tree
 vcc_mipi: supplied by vcc_sys
 vcc_sys: could not add device link regulator.2: -ENOENT
+vcc_mipi: 3300 mV, enabled
+reg-fixed-voltage vcc-mipi: vcc_mipi supplying 3300000uV
 reg-fixed-voltage vcc-sata: Looking up vin-supply from device tree
 vcc_sata: supplied by vcc_sys
 vcc_sys: could not add device link regulator.3: -ENOENT
@@ -315,12 +307,12 @@ vcc_host: no parameters, enabled
 reg-fixed-voltage vcc-host-regulator: vcc_host supplying 0uV
 vcc_otg_5v: 5000 mV, enabled
 reg-fixed-voltage usb-otg-regulator: vcc_otg_5v supplying 5000000uV
+iommu: Default domain type: Translated 
+iommu: DMA domain TLB invalidation policy: strict mode 
 SCSI subsystem initialized
 usbcore: registered new interface driver usbfs
 usbcore: registered new interface driver hub
 usbcore: registered new device driver usb
-mc: Linux media interface: v0.10
-videodev: Linux video capture interface: v2.00
 pps_core: LinuxPPS API ver. 1 registered
 pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
 PTP clock support registered
@@ -334,29 +326,29 @@ Bluetooth: SCO socket layer initialized
 clocksource: Switched to clocksource arch_sys_counter
 NET: Registered PF_INET protocol family
 IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
-tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes, linear)
+tcp_listen_portaddr_hash hash table entries: 512 (order: 1, 10240 bytes, linear)
 Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
 TCP established hash table entries: 8192 (order: 3, 32768 bytes, linear)
-TCP bind hash table entries: 8192 (order: 5, 131072 bytes, linear)
+TCP bind hash table entries: 8192 (order: 6, 327680 bytes, linear)
 TCP: Hash tables configured (established 8192 bind 8192)
-UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
-UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
+UDP hash table entries: 512 (order: 2, 24576 bytes, linear)
+UDP-Lite hash table entries: 512 (order: 2, 24576 bytes, linear)
 NET: Registered PF_UNIX/PF_LOCAL protocol family
+hw perfevents: enabled with armv7_cortex_a12 PMU driver, 7 counters available
 Initialise system trusted keyrings
 workingset: timestamp_bits=30 max_order=19 bucket_order=0
 squashfs: version 4.0 (2009/01/31) Phillip Lougher
-fuse: init (API version 7.40)
+fuse: init (API version 7.37)
 NET: Registered PF_ALG protocol family
 Key type asymmetric registered
 Asymmetric key parser 'x509' registered
 Asymmetric key parser 'pkcs8' registered
+alg: self-tests for CTR-KDF (hmac(sha256)) passed
 bounce: pool size: 64 pages
-Block layer SCSI generic (bsg) driver version 0.4 loaded (major 247)
+Block layer SCSI generic (bsg) driver version 0.4 loaded (major 248)
 io scheduler mq-deadline registered
 io scheduler kyber registered
 io scheduler bfq registered
-vcc_mipi: 3300 mV, enabled
-reg-fixed-voltage vcc-mipi: vcc_mipi supplying 3300000uV
 phy phy-ff770000.syscon:usbphy.0: Looking up phy-supply from device tree
 phy phy-ff770000.syscon:usbphy.0: Looking up phy-supply property in node /syscon@ff770000/usbphy/usb-phy@320 failed
 phy phy-ff770000.syscon:usbphy.0: Looking up vbus-supply from device tree
@@ -377,21 +369,128 @@ dma-pl330 ffb20000.dma-controller: WARN: Device release is not defined so it is 
 dma-pl330 ffb20000.dma-controller: Loaded driver for PL330 DMAC-241330
 dma-pl330 ffb20000.dma-controller: 	DBUFF-64x8bytes Num_Chans-5 Num_Peri-6 Num_Events-10
 Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-ff180000.serial: ttyS0 at MMIO 0xff180000 (irq = 43, base_baud = 1500000) is a 16550A
+ff180000.serial: ttyS0 at MMIO 0xff180000 (irq = 47, base_baud = 1500000) is a 16550A
 serial serial0: tty port ttyS0 registered
-ff690000.serial: ttyS2 at MMIO 0xff690000 (irq = 44, base_baud = 1500000) is a 16550A
-printk: legacy console [ttyS2] enabled
-ff1b0000.serial: ttyS3 at MMIO 0xff1b0000 (irq = 45, base_baud = 1500000) is a 16550A
+ff690000.serial: ttyS2 at MMIO 0xff690000 (irq = 48, base_baud = 1500000) is a 16550A
+printk: console [ttyS2] enabled
+ff1b0000.serial: ttyS3 at MMIO 0xff1b0000 (irq = 49, base_baud = 1500000) is a 16550A
+printk: console [ttyS2] printing thread started
+i2c_dev: i2c /dev entries driver
+i2c 0-005a: Fixed dependency cycle(s) with /i2c@ff650000/act8846@5a/regulators/REG4
+i2c 0-005a: Fixed dependency cycle(s) with /i2c@ff650000/act8846@5a/regulators/REG2
+act8865 0-005a: Looking up vp1-supply from device tree
+VCC_DDR: supplied by vcc_sys
+vcc_sys: could not add device link regulator.6: -ENOENT
+VCC_DDR: 1200 <--> 1500 mV at 1500 mV, enabled
+act8865 0-005a: Looking up vp2-supply from device tree
+VCC_IO: supplied by vcc_sys
+vcc_sys: could not add device link regulator.7: -ENOENT
+VCC_IO: 3300 mV, enabled
+act8865 0-005a: Looking up vp3-supply from device tree
+VDD_LOG: supplied by vcc_sys
+vcc_sys: could not add device link regulator.8: -ENOENT
+VDD_LOG: 950 <--> 1400 mV at 1200 mV, enabled
+act8865 0-005a: Looking up vp4-supply from device tree
+VCC_20: supplied by vcc_sys
+vcc_sys: could not add device link regulator.9: -ENOENT
+VCC_20: 2000 mV, enabled
+act8865 0-005a: Looking up inl1-supply from device tree
+VCCIO_SD: supplied by VCC_IO
+VCC_IO: could not add device link regulator.10: -ENOENT
+VCCIO_SD: 1800 <--> 3300 mV at 3300 mV, enabled
+act8865 0-005a: Looking up inl1-supply from device tree
+VDD10_LCD: supplied by VCC_IO
+VCC_IO: could not add device link regulator.11: -ENOENT
+VDD10_LCD: 1000 mV, enabled
+act8865 0-005a: Looking up inl1-supply from device tree
+VCCA_CODEC: supplied by VCC_IO
+VCC_IO: could not add device link regulator.12: -ENOENT
+VCCA_CODEC: 3300 mV, enabled
+act8865 0-005a: Looking up inl2-supply from device tree
+VCCA_TP: supplied by vcc_sys
+vcc_sys: could not add device link regulator.13: -ENOENT
+VCCA_TP: 3300 mV, enabled
+act8865 0-005a: Looking up inl2-supply from device tree
+VCCIO_PMU: supplied by vcc_sys
+vcc_sys: could not add device link regulator.14: -ENOENT
+VCCIO_PMU: 3300 mV, enabled
+act8865 0-005a: Looking up inl3-supply from device tree
+VDD_10: supplied by VCC_20
+VCC_20: could not add device link regulator.15: -ENOENT
+VDD_10: 1000 mV, enabled
+act8865 0-005a: Looking up inl3-supply from device tree
+VCC_18: supplied by VCC_20
+VCC_20: could not add device link regulator.16: -ENOENT
+VCC_18: 1800 mV, enabled
+act8865 0-005a: Looking up inl3-supply from device tree
+VCC18_LCD: supplied by VCC_20
+VCC_20: could not add device link regulator.17: -ENOENT
+VCC18_LCD: 1800 mV, enabled
+fan53555-regulator 0-0040: FAN53555 Option[8] Rev[1] Detected!
+fan53555-regulator 0-0040: Looking up vin-supply from device tree
+vdd_cpu: supplied by vcc_sys
+vcc_sys: could not add device link regulator.18: -ENOENT
+vdd_cpu: 850 <--> 1500 mV at 1350 mV, enabled
+fan53555-regulator 0-0041: FAN53555 Option[8] Rev[1] Detected!
+fan53555-regulator 0-0041: Looking up vin-supply from device tree
+vdd_gpu: supplied by vcc_sys
+vcc_sys: could not add device link regulator.19: -ENOENT
+vdd_gpu: 850 <--> 1350 mV at 1250 mV, enabled
+dw-apb-uart ff180000.serial: Failed to create device link (0x180) with 0-0051
+mali ffa30000.gpu: Looking up mali-supply from device tree
+mali ffa30000.gpu: GPU identified as 0x0750 r1p0 status 0
+mali ffa30000.gpu: Protected mode not available
+Error -19 getting thermal zone 'gpu-thermal', not yet ready?
+mali ffa30000.gpu: recalculation of power model mali-simple-power-model returned error -517
+mali ffa30000.gpu: IPA initialization failed
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1 at drivers/opp/core.c:1516 _opp_table_kref_release+0x88/0x104
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.92-inmusic-2024-05-28-rt32 #1
+Hardware name: Rockchip (Device Tree)
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x40/0x4c
+ dump_stack_lvl from __warn+0x70/0xd4
+ __warn from warn_slowpath_fmt+0xc4/0x158
+ warn_slowpath_fmt from _opp_table_kref_release+0x88/0x104
+ _opp_table_kref_release from kbase_platform_device_remove+0x2cc/0x3ac
+ kbase_platform_device_remove from kbase_platform_device_probe+0x5e0/0xb20
+ kbase_platform_device_probe from platform_probe+0x58/0xac
+ platform_probe from really_probe+0x1ac/0x3c8
+ really_probe from __driver_probe_device+0x1ac/0x1e0
+ __driver_probe_device from driver_probe_device+0x3c/0xbc
+ driver_probe_device from __driver_attach+0x148/0x16c
+ __driver_attach from bus_for_each_dev+0x6c/0xac
+ bus_for_each_dev from bus_add_driver+0xd4/0x1ec
+ bus_add_driver from driver_register+0xac/0xf4
+ driver_register from do_one_initcall+0x74/0x1fc
+ do_one_initcall from kernel_init_freeable+0x198/0x1dc
+ kernel_init_freeable from kernel_init+0x14/0x12c
+ kernel_init from ret_from_fork+0x14/0x28
+Exception stack(0xf0831fb0 to 0xf0831ff8)
+1fa0:                                     00000000 00000000 00000000 00000000
+1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+---[ end trace 0000000000000000 ]---
 rockchip-vop ff930000.vop: Adding to iommu group 0
 rockchip-vop ff940000.vop: Adding to iommu group 1
 phy phy-ff960000.mipi.3: Looking up phy-supply from device tree
 phy phy-ff960000.mipi.3: Looking up phy-supply property in node /mipi@ff960000 failed
 dw-mipi-dsi-rockchip ff960000.mipi: Fixed dependency cycle(s) with /mipi@ff960000/panel@0
 mipi-dsi ff960000.mipi.0: Fixed dependency cycle(s) with /mipi@ff960000
+panel-urt-umoh-9522md-t ff960000.mipi.0: Looking up power-supply from device tree
+rockchip_framebuffer_rmem_device_init: initializing with base address 0x7f400000 size=0x00c00000
+rockchip-drm display-subsystem: assigned reserved memory node framebuffer
+rockchip-drm display-subsystem: bound ff930000.vop (ops 0xc0964c38)
+rockchip-vop ff940000.vop: enabled by bootloader
+rockchip-drm display-subsystem: bound ff940000.vop (ops 0xc0964c38)
+rockchip-drm display-subsystem: bound ff960000.mipi (ops 0xc0968a80)
+[drm] Initialized rockchip 1.0.0 20140818 for display-subsystem on minor 0
+rockchip-drm display-subsystem: framebugger sg_size=12582912 size=12288000
+rockchip-drm display-subsystem: [drm] fb0: rockchipdrmfb frame buffer device
 brd: module loaded
 loop: module loaded
 rk_gmac-dwmac ff290000.ethernet: IRQ eth_lpi not found
-rk_gmac-dwmac ff290000.ethernet: IRQ sfty not found
 rk_gmac-dwmac ff290000.ethernet: PTP uses main clock
 rk_gmac-dwmac ff290000.ethernet: Looking up phy-supply from device tree
 rk_gmac-dwmac ff290000.ethernet: clock input or output? (input).
@@ -418,22 +517,43 @@ dwc2 ff540000.usb: Looking up vusb_a-supply property in node /usb@ff540000 faile
 dwc2 ff540000.usb: supply vusb_a not found, using dummy regulator
 dwc2 ff540000.usb: Looking up vbus-supply from device tree
 dwc2 ff540000.usb: Looking up vbus-supply property in node /usb@ff540000 failed
+dwc2 ff540000.usb: dwc2_check_params: Invalid parameter lpm_clock_gating=1
+dwc2 ff540000.usb: dwc2_check_params: Invalid parameter besl=1
+dwc2 ff540000.usb: dwc2_check_params: Invalid parameter hird_threshold_en=1
 dwc2 ff540000.usb: DWC OTG Controller
 dwc2 ff540000.usb: new USB bus registered, assigned bus number 1
-dwc2 ff540000.usb: irq 49, io mem 0xff540000
-usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.11
+usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
 usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
 usb usb1: Product: DWC OTG Controller
-usb usb1: Manufacturer: Linux 6.11.0primego-dirty dwc2_hsotg
+usb usb1: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 dwc2_hsotg
 usb usb1: SerialNumber: ff540000.usb
 hub 1-0:1.0: USB hub found
 hub 1-0:1.0: 1 port detected
+dwc2 ff580000.usb: Looking up vusb_d-supply from device tree
+dwc2 ff580000.usb: Looking up vusb_d-supply property in node /usb@ff580000 failed
+dwc2 ff580000.usb: supply vusb_d not found, using dummy regulator
+dwc2 ff580000.usb: Looking up vusb_a-supply from device tree
+dwc2 ff580000.usb: Looking up vusb_a-supply property in node /usb@ff580000 failed
+dwc2 ff580000.usb: supply vusb_a not found, using dummy regulator
+dwc2 ff580000.usb: Looking up vbus-supply from device tree
+dwc2 ff580000.usb: Looking up vbus-supply property in node /usb@ff580000 failed
+dwc2 ff580000.usb: dwc2_check_params: Invalid parameter lpm_clock_gating=1
+dwc2 ff580000.usb: dwc2_check_params: Invalid parameter besl=1
+dwc2 ff580000.usb: dwc2_check_params: Invalid parameter hird_threshold_en=1
+dwc2 ff580000.usb: EPs: 10, dedicated fifos, 972 entries in SPRAM
+dwc2 ff580000.usb: DWC OTG Controller
+dwc2 ff580000.usb: new USB bus registered, assigned bus number 2
+usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
+usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb2: Product: DWC OTG Controller
+usb usb2: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 dwc2_hsotg
+usb usb2: SerialNumber: ff580000.usb
+hub 2-0:1.0: USB hub found
+hub 2-0:1.0: 1 port detected
 ehci-platform ff500000.usb: EHCI Host Controller
+ehci-platform ff500000.usb: new USB bus registered, assigned bus number 3
 ohci-platform ff520000.usb: Generic Platform OHCI controller
-ohci-platform ff520000.usb: new USB bus registered, assigned bus number 3
-ohci-platform ff520000.usb: irq 51, io mem 0xff520000
-ehci-platform ff500000.usb: new USB bus registered, assigned bus number 2
-ehci-platform ff500000.usb: irq 50, io mem 0xff500000
+ohci-platform ff520000.usb: new USB bus registered, assigned bus number 4
 usbcore: registered new interface driver uas
 usbcore: registered new interface driver usb-storage
 usbcore: registered new interface driver usbserial_generic
@@ -460,136 +580,62 @@ usbserial: USB Serial support registered for siemens_mpi
 usbserial: USB Serial support registered for suunto
 usbserial: USB Serial support registered for vivopay
 usbserial: USB Serial support registered for zio
-ehci-platform ff500000.usb: USB 2.0 started, EHCI 1.00
-usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.11
-usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-usb usb2: Product: EHCI Host Controller
-usb usb2: Manufacturer: Linux 6.11.0primego-dirty ehci_hcd
-usb usb2: SerialNumber: ff500000.usb
-hub 2-0:1.0: USB hub found
-i2c_dev: i2c /dev entries driver
-hub 2-0:1.0: 1 port detected
-usb usb3: New USB device found, idVendor=1d6b, idProduct=0001, bcdDevice= 6.11
-usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-usb usb3: Product: Generic Platform OHCI controller
-usb usb3: Manufacturer: Linux 6.11.0primego-dirty ohci_hcd
-usb usb3: SerialNumber: ff520000.usb
-hub 3-0:1.0: USB hub found
-hub 3-0:1.0: 1 port detected
-usb 1-1: new full-speed USB device number 2 using dwc2
-input: ILI210x Touchscreen as /devices/platform/ff160000.i2c/i2c-4/4-0026/input/input0
-i2c 0-005a: Fixed dependency cycle(s) with /i2c@ff650000/act8846@5a/regulators/REG4
-i2c 0-005a: Fixed dependency cycle(s) with /i2c@ff650000/act8846@5a/regulators/REG2
-act8865 0-005a: Looking up vp1-supply from device tree
-VCC_DDR: supplied by vcc_sys
-vcc_sys: could not add device link regulator.6: -ENOENT
-syr827: mapping for mode 1 not defined
-syr828: mapping for mode 1 not defined
-usb 1-1: New USB device found, idVendor=15e4, idProduct=800c, bcdDevice= 0.62
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 1-1: Product: PRIME GO Control Surface
-usb 1-1: Manufacturer: Denon DJ
-fan53555-regulator 0-0040: FAN53555 Option[8] Rev[1] Detected!
-fan53555-regulator 0-0040: Looking up vin-supply from device tree
-vdd_cpu: supplied by vcc_sys
-vcc_sys: could not add device link regulator.7: -ENOENT
-fan53555-regulator 0-0041: FAN53555 Option[8] Rev[1] Detected!
-fan53555-regulator 0-0041: Looking up vin-supply from device tree
-vdd_gpu: supplied by vcc_sys
-vcc_sys: could not add device link regulator.8: -ENOENT
-VCC_DDR: 1200 <--> 1500 mV at 1500 mV, enabled
-act8865 0-005a: Looking up vp2-supply from device tree
-VCC_IO: supplied by vcc_sys
-vcc_sys: could not add device link regulator.9: -ENOENT
-vdd_cpu: 850 <--> 1500 mV at 1350 mV, enabled
-vdd_gpu: 850 <--> 1350 mV at 1250 mV, enabled
-VCC_IO: 3300 mV, enabled
-act8865 0-005a: Looking up vp3-supply from device tree
-VDD_LOG: supplied by vcc_sys
-vcc_sys: could not add device link regulator.10: -ENOENT
+ehci-platform ff500000.usb: irq 66, io mem 0xff500000
+ohci-platform ff520000.usb: irq 67, io mem 0xff520000
 rtc-hym8563 0-0051: registered as rtc0
-rtc-hym8563 0-0051: setting system clock to 2024-10-22T15:18:57 UTC (1729610337)
-VDD_LOG: 950 <--> 1400 mV at 1200 mV, enabled
+rtc-hym8563 0-0051: setting system clock to 2024-10-22T19:29:50 UTC (1729625390)
+dw-apb-uart ff180000.serial: Failed to create device link (0x180) with 0-0051
 dw_wdt ff800000.watchdog: No valid TOPs array specified
-act8865 0-005a: Looking up vp4-supply from device tree
-VCC_20: supplied by vcc_sys
-vcc_sys: could not add device link regulator.11: -ENOENT
 device-mapper: uevent: version 1.0.3
-device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: dm-devel@lists.linux.dev
+device-mapper: ioctl: 4.47.0-ioctl (2022-07-28) initialised: dm-devel@redhat.com
 cpu cpu0: Looking up cpu0-supply from device tree
-VCC_20: 2000 mV, enabled
 Synopsys Designware Multimedia Card Interface Driver
-act8865 0-005a: Looking up inl1-supply from device tree
-VCCIO_SD: supplied by VCC_IO
-VCC_IO: could not add device link regulator.12: -ENOENT
 hid: raw HID events driver (C) Jiri Kosina
 usbcore: registered new interface driver usbhid
 usbhid: USB HID core driver
-hw perfevents: enabled with armv7_cortex_a12 PMU driver, 7 counters available
-VCCIO_SD: 1800 <--> 3300 mV at 3300 mV, enabled
+usb usb4: New USB device found, idVendor=1d6b, idProduct=0001, bcdDevice= 6.01
+usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb4: Product: Generic Platform OHCI controller
+usb usb4: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 ohci_hcd
+usb usb4: SerialNumber: ff520000.usb
+hub 4-0:1.0: USB hub found
+hub 4-0:1.0: 1 port detected
+dwmmc_rockchip ff0d0000.dwmmc: IDMAC supports 32-bit address mode.
+dwmmc_rockchip ff0d0000.dwmmc: Using internal DMA controller.
+dwmmc_rockchip ff0d0000.dwmmc: Version ID is 270a
+dwmmc_rockchip ff0d0000.dwmmc: DW MMC controller at irq 73,32 bit host data width,256 deep fifo
+dwmmc_rockchip ff0d0000.dwmmc: Looking up vmmc-supply from device tree
+rockchip-saradc ff100000.saradc: Looking up vref-supply from device tree
+dwmmc_rockchip ff0d0000.dwmmc: Looking up vqmmc-supply from device tree
+dwmmc_rockchip ff0d0000.dwmmc: allocated mmc-pwrseq
+mmc_host mmc2: card is non-removable.
 usbcore: registered new interface driver snd-usb-audio
 NET: Registered PF_PACKET protocol family
 Bluetooth: HIDP (Human Interface Emulation) ver 1.2
 Bluetooth: HIDP socket layer initialized
 Registering SWP/SWPB emulation handler
-act8865 0-005a: Looking up inl1-supply from device tree
-VDD10_LCD: supplied by VCC_IO
-VCC_IO: could not add device link regulator.13: -ENOENT
 Loading compiled-in X.509 certificates
 Key type .fscrypt registered
 Key type fscrypt-provisioning registered
-panfrost ffa30000.gpu: clock rate = 400000000
-panfrost ffa30000.gpu: Looking up mali-supply from device tree
-VDD10_LCD: 1000 mV, enabled
-act8865 0-005a: Looking up inl1-supply from device tree
-VCCA_CODEC: supplied by VCC_IO
-VCC_IO: could not add device link regulator.14: -ENOENT
-panfrost ffa30000.gpu: mali-t760 id 0x750 major 0x1 minor 0x0 status 0x0
-panfrost ffa30000.gpu: features: 00000000,00000407, issues: 00000000,24040400
-panfrost ffa30000.gpu: Features: L2:0x07120206 Shader:0x00000000 Tiler:0x00000809 Mem:0x1 MMU:0x00002830 AS:0xff JS:0x7
-panfrost ffa30000.gpu: shader_present=0xf l2_present=0x1
-[drm] Initialized panfrost 1.2.0 for ffa30000.gpu on minor 0
-VCCA_CODEC: 3300 mV, enabled
-input: gpio-keys as /devices/platform/gpio-keys/input/input1
-act8865 0-005a: Looking up inl2-supply from device tree
-VCCA_TP: supplied by vcc_sys
-vcc_sys: could not add device link regulator.15: -ENOENT
-clk: Disabling unused clocks
-PM: genpd: Disabling unused power domains
-ALSA device list:
-#0: Denon DJ PRIME GO Control Surface at usb-ff540000.usb-1, full speed
-dw-apb-uart ff690000.serial: forbid DMA for kernel console
-VCCA_TP: 3300 mV, enabled
-act8865 0-005a: Looking up inl2-supply from device tree
-VCCIO_PMU: supplied by vcc_sys
-vcc_sys: could not add device link regulator.16: -ENOENT
-VCCIO_PMU: 3300 mV, enabled
-act8865 0-005a: Looking up inl3-supply from device tree
-VDD_10: supplied by VCC_20
-VCC_20: could not add device link regulator.17: -ENOENT
-VDD_10: 1000 mV, enabled
-act8865 0-005a: Looking up inl3-supply from device tree
-VCC_18: supplied by VCC_20
-VCC_20: could not add device link regulator.18: -ENOENT
-VCC_18: 1800 mV, enabled
-act8865 0-005a: Looking up inl3-supply from device tree
-VCC18_LCD: supplied by VCC_20
-VCC_20: could not add device link regulator.19: -ENOENT
-VCC18_LCD: 1800 mV, enabled
-rockchip-saradc ff100000.saradc: Looking up vref-supply from device tree
-dwmmc_rockchip ff0d0000.dwmmc: IDMAC supports 32-bit address mode.
-dwmmc_rockchip ff0d0000.dwmmc: Using internal DMA controller.
-dwmmc_rockchip ff0d0000.dwmmc: Version ID is 270a
-dwmmc_rockchip ff0d0000.dwmmc: DW MMC controller at irq 72,32 bit host data width,256 deep fifo
-dwmmc_rockchip ff0d0000.dwmmc: Looking up vmmc-supply from device tree
+ili2117 4-0026: ILI2117 vendor 0x00 firmware version 5.0
+input: ILI2117 Touchscreen as /devices/platform/ff160000.i2c/i2c-4/4-0026/input/input0
+ili2117 4-0026: bad packet ID (expected 0x5a): 0x00
+usb 1-1: new full-speed USB device number 2 using dwc2
+ehci-platform ff500000.usb: USB 2.0 started, EHCI 1.00
+usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.01
+usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+usb usb3: Product: EHCI Host Controller
+usb usb3: Manufacturer: Linux 6.1.92-inmusic-2024-05-28-rt32 ehci_hcd
+usb usb3: SerialNumber: ff500000.usb
+hub 3-0:1.0: USB hub found
+hub 3-0:1.0: 1 port detected
 vcc_flash: will resolve supply early: vin
 reg-fixed-voltage flash-regulator: Looking up vin-supply from device tree
-vcc_sd: 3300 mV, disabled
-reg-fixed-voltage sdmmc-regulator: Looking up vin-supply from device tree
-dwmmc_rockchip ff0d0000.dwmmc: Looking up vqmmc-supply from device tree
 vcc_flash: supplied by VCC_IO
 VCC_IO: could not add device link regulator.20: -ENOENT
 vcc_flash: 1800 mV, enabled
+reg-fixed-voltage flash-regulator: vcc_flash supplying 1800000uV
+vcc_sd: 3300 mV, disabled
 reg-fixed-voltage sdmmc-regulator: Looking up vin-supply from device tree
 vcc_sd: supplied by VCC_IO
 reg-fixed-voltage sdmmc-regulator: vcc_sd supplying 3300000uV
@@ -600,39 +646,52 @@ rockchip-iodomain ff770000.syscon:io-domains: Looking up flash1-supply from devi
 rockchip-iodomain ff770000.syscon:io-domains: Looking up wifi-supply from device tree
 rockchip-iodomain ff770000.syscon:io-domains: Looking up bb-supply from device tree
 rockchip-iodomain ff770000.syscon:io-domains: Looking up audio-supply from device tree
+mmc_host mmc2: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
 rockchip-iodomain ff770000.syscon:io-domains: Looking up sdcard-supply from device tree
 rockchip-iodomain ff770000.syscon:io-domains: Looking up gpio30-supply from device tree
 rockchip-iodomain ff770000.syscon:io-domains: Looking up gpio1830-supply from device tree
+mali ffa30000.gpu: Looking up mali-supply from device tree
+mali ffa30000.gpu: GPU identified as 0x0750 r1p0 status 0
+mali ffa30000.gpu: Protected mode not available
+mali ffa30000.gpu: Using configured power model mali-simple-power-model, and fallback mali-simple-power-model
+mali ffa30000.gpu: Probed as mali0
+sbs-battery 3-000b: bq40z50: battery gas gauge device registered
 dwmmc_rockchip ff0f0000.dwmmc: IDMAC supports 32-bit address mode.
 dwmmc_rockchip ff0f0000.dwmmc: Using internal DMA controller.
 dwmmc_rockchip ff0f0000.dwmmc: Version ID is 270a
 dwmmc_rockchip ff0c0000.dwmmc: IDMAC supports 32-bit address mode.
 dwmmc_rockchip ff0c0000.dwmmc: Using internal DMA controller.
 dwmmc_rockchip ff0c0000.dwmmc: Version ID is 270a
-dwmmc_rockchip ff0f0000.dwmmc: DW MMC controller at irq 74,32 bit host data width,256 deep fifo
-dwmmc_rockchip ff0f0000.dwmmc: Looking up vmmc-supply from device tree
-dwmmc_rockchip ff0c0000.dwmmc: DW MMC controller at irq 73,32 bit host data width,256 deep fifo
+dwmmc_rockchip ff0c0000.dwmmc: DW MMC controller at irq 76,32 bit host data width,256 deep fifo
 dwmmc_rockchip ff0c0000.dwmmc: Looking up vmmc-supply from device tree
 dwmmc_rockchip ff0c0000.dwmmc: Looking up vqmmc-supply from device tree
-reg-fixed-voltage flash-regulator: vcc_flash supplying 1800000uV
-dwmmc_rockchip ff0f0000.dwmmc: Looking up vqmmc-supply from device tree
-mmc_host mmc1: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
-dwmmc_rockchip ff0f0000.dwmmc: allocated mmc-pwrseq
-mmc_host mmc0: card is non-removable.
+dwmmc_rockchip ff0f0000.dwmmc: DW MMC controller at irq 74,32 bit host data width,256 deep fifo
+dwmmc_rockchip ff0f0000.dwmmc: Looking up vmmc-supply from device tree
+input: gpio-keys as /devices/platform/gpio-keys/input/input1
 dwmmc_rockchip ff0c0000.dwmmc: Got CD GPIO
 dwmmc_rockchip ff0c0000.dwmmc: Got WP GPIO
-dwmmc_rockchip ff0d0000.dwmmc: allocated mmc-pwrseq
-mmc_host mmc2: card is non-removable.
+dwmmc_rockchip ff0f0000.dwmmc: Looking up vqmmc-supply from device tree
+dwmmc_rockchip ff0f0000.dwmmc: allocated mmc-pwrseq
+mmc_host mmc0: card is non-removable.
+clk: Disabling unused clocks
+ALSA device list:
+  No soundcards found.
+dw-apb-uart ff690000.serial: forbid DMA for kernel console
 mmc_host mmc0: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
+sbs-battery 3-000b: I2C adapter does not support I2C_FUNC_SMBUS_READ_BLOCK_DATA.
+Fallback method does not support PEC.
+usb 1-1: New USB device found, idVendor=15e4, idProduct=800c, bcdDevice= 0.62
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 1-1: Product: PRIME GO Control Surface
+usb 1-1: Manufacturer: Denon DJ
 mmc_host mmc0: Bus speed (slot 0) = 50000000Hz (slot req 52000000Hz, actual 50000000HZ div = 0)
-mmc_host mmc2: Bus speed (slot 0) = 400000Hz (slot req 400000Hz, actual 400000HZ div = 0)
 mmc0: new high speed MMC card at address 0001
 mmcblk0: mmc0:0001 8GTF4R 7.28 GiB 
  mmcblk0: p1 p2 p3 p4 p5 p6 p7
 mmcblk0boot0: mmc0:0001 8GTF4R 4.00 MiB 
 mmcblk0boot1: mmc0:0001 8GTF4R 4.00 MiB 
-mmcblk0rpmb: mmc0:0001 8GTF4R 512 KiB, chardev (244:0)
-EXT4-fs (mmcblk0p6): mounted filesystem 17098313-c7af-4f42-aa38-a84ae32336ca r/w without journal. Quota mode: disabled.
+mmcblk0rpmb: mmc0:0001 8GTF4R 512 KiB, chardev (245:0)
+EXT4-fs (mmcblk0p6): mounted filesystem without journal. Quota mode: disabled.
 VFS: Mounted root (ext4 filesystem) on device 179:6.
 devtmpfs: mounted
 Freeing unused kernel image (initmem) memory: 1024K
@@ -672,7 +731,7 @@ systemd[1]: Kernel Trace File System was skipped because of an unmet condition c
 systemd[1]: Mounting Temporary Directory /tmp...
 systemd[1]: Starting Mali GPU driver setup for AZ01...
 systemd[1]: Started Entropy Daemon based on the HAVEGE algorithm.
-systemd[1]: Create List of Static Device Nodes was skipped because of an unmet condition check (ConditionFileNotEmpty=/lib/modules/6.11.0primego-dirty/modules.devname).
+systemd[1]: Create List of Static Device Nodes was skipped because of an unmet condition check (ConditionFileNotEmpty=/lib/modules/6.1.92-inmusic-2024-05-28-rt32/modules.devname).
 systemd[1]: Starting Load Kernel Module configfs...
 systemd[1]: Starting Load Kernel Module efi_pstore...
 systemd[1]: Starting Load Kernel Module fuse...
@@ -684,21 +743,72 @@ systemd[1]: Load Kernel Modules was skipped because no trigger condition checks 
 systemd[1]: Starting Generate network units from Kernel command line...
 systemd[1]: Starting Remount Root and Kernel File Systems...
 systemd[1]: Starting Apply Kernel Variables...
-EXT4-fs (mmcblk0p6): re-mounted 17098313-c7af-4f42-aa38-a84ae32336ca ro. Quota mode: disabled.
 systemd[1]: Starting Create Static Device Nodes in /dev...
+EXT4-fs (mmcblk0p6): re-mounted. Quota mode: disabled.
 systemd[1]: Starting Coldplug All udev Devices...
+systemd[1]: Mounted Mount /media.
+systemd[1]: Mounted Mount /secure-media.
+systemd[1]: Mounted Kernel Debug File System.
+systemd[1]: Mounted Temporary Directory /tmp.
+systemd[1]: Finished Mali GPU driver setup for AZ01.
+systemd[1]: modprobe@configfs.service: Deactivated successfully.
+systemd[1]: Finished Load Kernel Module configfs.
+systemd[1]: modprobe@efi_pstore.service: Deactivated successfully.
+systemd[1]: Finished Load Kernel Module efi_pstore.
+systemd[1]: modprobe@fuse.service: Deactivated successfully.
+systemd[1]: Finished Load Kernel Module fuse.
+systemd[1]: Finished Generate network units from Kernel command line.
+systemd[1]: Finished Remount Root and Kernel File Systems.
+systemd[1]: Finished Apply Kernel Variables.
+systemd[1]: Mounting FUSE Control File System...
+systemd[1]: Mounting Kernel Configuration File System...
+systemd[1]: Mounted FUSE Control File System.
+systemd[1]: Finished Create Static Device Nodes in /dev.
+systemd[1]: Mounted Kernel Configuration File System.
+systemd[1]: Reached target Preparation for Local File Systems.
+systemd[1]: Starting Rule-based Manager for Device Events and Files...
 systemd[1]: Started Journal Service.
 random: crng init done
-EXT4-fs (mmcblk0p7): mounted filesystem 5cd36b33-1522-4ad6-adbe-ff7993e0407f r/w with ordered data mode. Quota mode: disabled.
-systemd-journald[89]: Received client request to flush runtime journal.
+Bluetooth: HCI UART driver ver 2.3
+Bluetooth: HCI UART protocol H4 registered
+Bluetooth: HCI UART protocol Broadcom registered
+hci_uart_bcm serial0-0: Looking up vbat-supply from device tree
+hci_uart_bcm serial0-0: Looking up vbat-supply property in node /serial@ff180000/bluetooth failed
+hci_uart_bcm serial0-0: supply vbat not found, using dummy regulator
+hci_uart_bcm serial0-0: Looking up vddio-supply from device tree
+hci_uart_bcm serial0-0: Looking up vddio-supply property in node /serial@ff180000/bluetooth failed
+hci_uart_bcm serial0-0: supply vddio not found, using dummy regulator
+cfg80211: Loading compiled-in X.509 certificates for regulatory database
+dw-apb-uart ff180000.serial: failed to request DMA
+cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+cfg80211: Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43456-sdio for chip BCM4345/9
+brcmfmac mmc2:0001:1: Direct firmware load for brcm/brcmfmac43456-sdio.inmusic,jp11.bin failed with error -2
+brcmfmac mmc2:0001:1: Direct firmware load for brcm/brcmfmac43456-sdio.clm_blob failed with error -2
+Bluetooth: hci0: BCM: chip id 130
+Bluetooth: hci0: BCM: features 0x0f
+Bluetooth: hci0: BCM4345C5
+Bluetooth: hci0: BCM4345C5 (003.006.006) build 0000
+Bluetooth: hci0: BCM4345C5 'brcm/BCM4345C5.hcd' Patch
+jp07-audio sound: jp07_get_dai_fmt: gpio_val=-1, fmt=0x00001001
+jp07-codec sound-codec: jp07_codec_set_bias_level: 0 -> 1; mute=1
+brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-2), device may have limited channels available
+brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/9 wl0: Aug 25 2022 12:38:28 version 7.45.96.150 (g31bd2ca8) FWID 01-af0bb8b0 es7.c5.n4.a3
+EXT4-fs (mmcblk0p7): mounted filesystem with ordered data mode. Quota mode: disabled.
+systemd-journald[168]: Received client request to flush runtime journal.
+Bluetooth: hci0: BCM: features 0x0f
+Bluetooth: hci0: BCM4345C5 Ampak_CL1 UART 37.4 MHz BT 5.2 [Version: 1021.1043]
+Bluetooth: hci0: BCM4345C5 (003.006.006) build 1043
+Bluetooth: MGMT ver 1.22
 rk_gmac-dwmac ff290000.ethernet eth0: Register MEM_TYPE_PAGE_POOL RxQ-0
-rk_gmac-dwmac ff290000.ethernet eth0: PHY [stmmac-0:01] driver [RTL8211E Gigabit Ethernet] (irq=70)
+rk_gmac-dwmac ff290000.ethernet eth0: PHY [stmmac-0:01] driver [RTL8211E Gigabit Ethernet] (irq=63)
 rk_gmac-dwmac ff290000.ethernet eth0: No Safety Features support found
 rk_gmac-dwmac ff290000.ethernet eth0: PTP not supported by HW
 rk_gmac-dwmac ff290000.ethernet eth0: configuring for phy/rgmii link mode
 process '/usr/Engine/Engine' started with executable stack
-fscrypt: AES-256-CBC-CTS using implementation "cts(cbc(ecb(aes-generic)))"
-i2c 3-000b: deferred probe pending: sbs-battery: Failed to register power supply
+fscrypt: AES-256-CTS-CBC using implementation "cts(cbc(aes-generic))"
+jp07-codec sound-codec: jp07_codec_set_bias_level: 1 -> 2; mute=1
+jp07-codec sound-codec: jp07_codec_set_bias_level: 2 -> 3; mute=0
 ```
 
 #### journalctl {collapsible="true"}
