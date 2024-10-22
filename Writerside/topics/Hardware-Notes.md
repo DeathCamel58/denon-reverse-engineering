@@ -4,7 +4,7 @@
 
 In the firmwares I've analyzed, the display panel (found in the device tree as `panel@0`) is either a [
 `UMO-P076MD-T`](https://simplespec.microtipsusa.com/uploads/spec/datasheetFile/1906/MT_UMO-P076MD-T_V0_R2_20160526P.PDF)
-or a `UMO-P080MD-T`. Both of these panels are made by [Microtips Technology](https://microtipsusa.com).
+or a `UMO-P080MD-T` (can't find the datasheet). Both of these panels are made by [Microtips Technology](https://microtipsusa.com).
 
 Mainline Linux **does not** have a driver for these specific panels, but some other Microtips Technology panels are
 supported. Since the mainline supported ones are in the simple panel driver, we can likely build a data field and mad
