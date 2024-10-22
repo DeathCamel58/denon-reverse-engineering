@@ -92,6 +92,13 @@ recompress it
 6. When the left deck Play button is lit solid green the update is complete.
 7. Turn the MCX8000 off, count to 4, then turn it back on again.
 
+### Other Devices
+
+> I'd love some help with additional data here! If you have a device that I don't have a firmware update mode data for,
+> please file a PR with your device's firmware update mode
+> instructions [here](https://github.com/DeathCamel58/denon-reverse-engineering/issues) if you know it!
+> {style="note"}
+
 ## Additional References
 
 * [Unbricking inMusic Products](https://github.com/RedHate/Unbricking-inMusic-Products) - Useful information to unbrick
