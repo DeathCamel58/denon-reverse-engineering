@@ -33,3 +33,5 @@ BR2_PACKAGE_HOST_KMOD=y
 BR2_PACKAGE_HOST_MTOOLS=y
 BR2_PACKAGE_HOST_UBOOT_TOOLS=y
 ```
+
+Linux kernel configs can be found on the [Linux Config](LinuxConfigs.md) page.

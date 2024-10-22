@@ -26,3 +26,5 @@ This is additional custom software that I've noticed in the firmware, along with
 ## Hardware ID
 
 The hardware ID can be found by running `cat /sys/firmware/devicetree/base/inmusic,product-code` on the target device.
+
+[//]: # (TODO: Make a table with the hardware IDs for devices)
