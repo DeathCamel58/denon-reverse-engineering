@@ -1,19 +1,104 @@
-# [HARDWARE_ID] Test App
+# Test App
+
+There are two different versions, depending on what firmware the device is running.
+
+| Firmware Version | App Type             |
+|------------------|----------------------|
+| >= `4.1.0`       | [New](#new-test-app) |
+| < `4.1.0`        | [Old](#old-test-app) |
+
+> I haven't figured out how to take screenshots of this. While the app is running, `cat /dev/fb0 > /frame` then running
+`convert -size 800x1280 -rotate 90 -depth 8 bgra:frame frame.png` **does not** include an image of this app, even though
+> that works on other apps that render to `fb0`. I'd love to figure this out and include screenshots.
+> {style="note"}
+
+## New Test App
+
+This is a program that lists other test apps that are located on attached storage, and
+allows the user to launch them from a UI.
+
+This will scan any flash drive that's plugged in for test apps. The binary looks for `manifest.yaml`, but I'm not sure
+if this file should exist inside a zip file or not.
+
+### Application Data {id="application-data_new"}
+
+Path: `/bin/test-app-launcher`
+
+### Runtime Console Output {collapsible="true" id="runtime-console-output_new"}
+
+`JP11TestApp`
+
+```
+[2024-10-22 13:32:45.285][600][dbus][info] DBus client thread starting
+[2024-10-22 13:32:45.311][599][][info] Setting UI size: 1280x800
+[2024-10-22 13:32:45.311][599][][info] Scanning devices for test apps...
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p7 ...
+[2024-10-22 13:32:45.311][599][][info]   mounted at "/data"
+[2024-10-22 13:32:45.311][599][][info] Initializing catalog for /data
+[2024-10-22 13:32:45.311][599][][info] Scanning for the test apps with V1 packaging
+[2024-10-22 13:32:45.311][599][][info] Scanning for the test apps with V2 packaging
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop0 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop2 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop3 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop1 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop6 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop5 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p1 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0boot1 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p2 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0boot0 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p3 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p5 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p4 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/mmcblk0p6 ...
+[2024-10-22 13:32:45.311][599][][info]   mounted at "/"
+[2024-10-22 13:32:45.311][599][][info]   skipping drive
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/loop7 ...
+[2024-10-22 13:32:45.311][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.311][599][][info] Checking device /dev/sda ...
+[2024-10-22 13:32:45.311][599][][info]   mounted at "/media/1942-FA32"
+[2024-10-22 13:32:45.311][599][][info] Initializing catalog for /media/1942-FA32
+[2024-10-22 13:32:45.311][599][][info] Scanning for the test apps with V1 packaging
+[2024-10-22 13:32:45.311][599][][info] Scanning for the test apps with V2 packaging
+[2024-10-22 13:32:45.312][599][][info] Checking device /dev/ram0 ...
+[2024-10-22 13:32:45.312][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.312][599][][info] Checking device /dev/loop4 ...
+[2024-10-22 13:32:45.312][599][][info]   no filesystem, skipping
+[2024-10-22 13:32:45.312][599][][info] Searching catalog for a test app: productCode=JP11, osVersionID=2023.02.11
+[2024-10-22 13:32:45.312][599][][info] No matching test app found
+```
+
+## Old Test App
 
 This is an application for testing the buttons and switches of the unit.
+
+### Application Data {id="application-data_old"}
+
+Path: `/usr/share/test-app/[HARDWARE_ID]/[HARDWARE_ID]TestApp`
 
 - Prime Go (`JP11TestApp`): This shows an image of the Prime Go, and highlights items as they're tested.
 
 This application uses the folder at `/usr/share/test-app/[HARDWARE_ID]` to get the device images and configuration for
 the current device.
 
-## Application Data
-
-Path: `/usr/bin/[HARDWARE_ID]TestApp`
-
 [//]: # (TODO: Additional Research)
 
-## Runtime Console Output
+### Runtime Console Output {collapsible="true" id="runtime-console-output_old"}
 
 `JP11TestApp`
 
