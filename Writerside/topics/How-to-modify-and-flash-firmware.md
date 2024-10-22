@@ -8,16 +8,16 @@ then `CTRL` + `S` the page)
 way:
 `wget2 --report-speed bytes --progress bar -m -D enginedj.com,enginedj.inmusiccdn.com,cdn.inmusicbrands.com https://enginedj.com/`
 
-TODO: Fix this. Something about the Next.js site not having the links displayed until you click `Engine OS` results in
-the links not being found.
+[//]: # (TODO: Fix this. Something about the Next.js site not having the links displayed until you click `Engine OS` results in the links not being found.)
 
 ## Modifying firmware
 
 Ref: [`mpcimg`](https://github.com/TheKikGen/MPC-LiveXplore/blob/master/imgmaker/mpcimg) - Can extract the firmware and
 recompress it
 
-NOTE: I'm currently working on my own firmware modification utility that will allow easy plugin support for automated
-modifications across many of the firmware images
+> I'm currently working on my own firmware modification utility that will allow easy plugin support for automated
+> modifications across many of the firmware images
+> {style="note"}
 
 ### Updating firmware
 
@@ -30,7 +30,8 @@ modifications across many of the firmware images
 
 #### With a USB
 
-NOTE: Only tested on the Prime Go (likely the same for all Engine OS)
+> Only tested on the Prime Go (likely the same for all Engine OS)
+> {style="note"}
 
 1. Boot the device
 2. Hold `View` for 2 seconds

@@ -1,5 +1,7 @@
 # rk3288-az01-jp14.dts
 
+More DTS information on the [DTS](Linux-DTSs.md) page
+
 ```
 /dts-v1/;
 

@@ -11,8 +11,9 @@ On the Prime Go, the UART is located on an empty header that's already on the bo
 
 ![](../../assets/Prime Go Internal.jpg)
 
-NOTE: There is a `RECOVERY` button located on the other side of the board in the bottom left of this image. Hold it
-down, press the power button, and it'll go into firmware update mode.
+> There is a `RECOVERY` button located on the other side of the board in the bottom left of this image. Hold it
+> down, press the power button, and it'll go into firmware update mode.
+> {style="note"}
 
 ### UART Connection
 

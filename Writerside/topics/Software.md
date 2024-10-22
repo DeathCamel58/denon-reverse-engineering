@@ -9,8 +9,9 @@ a [buildroot](Buildroot.md) OS, with some additional custom software.
 
 This is additional custom software that I've noticed in the firmware, along with documentation pages for them.
 
-**NOTE**: My research has focused on the [Denon Prime Go](https://www.denondj.com/prime-go), so additional software may
-exist in other firmwares.
+> My research has focused on the [Denon Prime Go](https://www.denondj.com/prime-go), so additional software may exist in
+> other firmwares.
+> {style="note"}
 
 | Software name                              | Software Path                   | Description                                                    | Page                        |
 |--------------------------------------------|---------------------------------|----------------------------------------------------------------|-----------------------------|
