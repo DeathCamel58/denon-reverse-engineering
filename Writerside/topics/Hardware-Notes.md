@@ -72,6 +72,14 @@ static const struct panel_desc_dsi urt_umo_p076md = {
 };
 ```
 
+> I can verify that `urt_umo_p076md_mode` is correct, as `dmesg` reports the data in this struct during boot with
+> `debug loglevel=7 drm.debug=0x1f`
+> 
+> Our driver: `Probed mode: "800x1280": 60 73000 800 877 901 925 1280 1292 1296 1314 0x48 0x0`
+> 
+> Their driver: `Modeline "800x1280": 60 73000 800 877 901 925 1280 1292 1296 1314 0x48 0x0`
+> {style="note"}
+
 Add a reference to the new definitions by adding the following to `dsi_of_match` in the same file:
 
 ```C
