@@ -10,4 +10,7 @@
 
 The hardware ID can be found by running `cat /sys/firmware/devicetree/base/inmusic,product-code` on the target device.
 
-[//]: # (TODO: Make a table with the hardware IDs for devices)
+Hardware ID tables can be found on the corresponding [](Brands.md) pages.
+
+* [](Denon-DJ.md)
+* [](HeadRush.md)
