@@ -1,6 +1,7 @@
 # Firmware
 
-
+The firmware for most of the inMusic devices is packaged the same, so we're able
+to [extract](Extracting.md), [recompress](Recompressing.md), and [update](Updating.md) most device firmwares.
 
 ## Additional References
 
