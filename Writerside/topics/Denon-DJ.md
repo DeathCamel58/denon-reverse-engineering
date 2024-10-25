@@ -1,6 +1,6 @@
 # Denon DJ
 
-Denon DJ's devices use the [](Engine-OS.md) operating system.
+Denon DJ/Numark's devices use the [](Engine-OS.md) operating system.
 
 ## Hardware IDs
 
@@ -17,7 +17,7 @@ Denon DJ's devices use the [](Engine-OS.md) operating system.
 | Prime GO           | `Denon DJ Prime GO`      | `JP11`      | [](rk3288-az01-jp11-dts.md) <br /> [](rk3288-az01-jp11-c-dts.md)                                                                                   |
 | Prime GO Plus      |                          | UNKNOWN     |                                                                                                                                                    |
 | SC6000 Prime       | `Denon DJ SC6000 Prime`  | `JP13`      | [](rk3288-az01-jp13-dts.md) <br /> [](rk3288-az01-jp13-c-dts.md)                                                                                   |
-| SC6000M Prime      | Denon DJ SC6000M Prime`  | `JP14`      | [](rk3288-az01-jp14-dts.md) <br /> [](rk3288-az01-jp14-c-dts.md)                                                                                   |
+| SC6000M Prime      | `Denon DJ SC6000M Prime` | `JP14`      | [](rk3288-az01-jp14-dts.md) <br /> [](rk3288-az01-jp14-c-dts.md)                                                                                   |
 | SC Live 2          |                          | UNKNOWN     |                                                                                                                                                    |
 | SC Live 4          |                          | UNKNOWN     |                                                                                                                                                    |
 
