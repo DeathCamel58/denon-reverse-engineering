@@ -21,6 +21,7 @@
     <toc-element topic="UART.md"/>
     <toc-element topic="Engine-Library.md"/>
     <toc-element topic="Software.md">
+        <toc-element topic="Evil.md"/>
         <toc-element topic="Engine-OS.md">
             <toc-element topic="HARDWARE-ID-Test-App.md"/>
             <toc-element topic="SoundSwitch.md"/>
@@ -30,6 +31,8 @@
             <toc-element topic="Firmware-Updater.md"/>
             <toc-element topic="Engine.md"/>
         </toc-element>
+        <toc-element topic="Looper.md"/>
+        <toc-element topic="MPC.md"/>
         <toc-element topic="Buildroot.md"/>
     </toc-element>
     <toc-element topic="Linux.md">
