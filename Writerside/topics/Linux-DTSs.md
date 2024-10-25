@@ -16,5 +16,6 @@ the linux kernel to your device.
 
 The tables of which device uses which DTS can be found on the corresponding [](Brands.md) pages.
 
+* [](Akai.md)
 * [](Denon-DJ.md)
 * [](HeadRush.md)

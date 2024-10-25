@@ -12,5 +12,6 @@ The hardware ID can be found by running `cat /sys/firmware/devicetree/base/inmus
 
 Hardware ID tables can be found on the corresponding [](Brands.md) pages.
 
+* [](Akai.md)
 * [](Denon-DJ.md)
 * [](HeadRush.md)

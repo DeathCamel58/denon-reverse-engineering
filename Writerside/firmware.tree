@@ -8,6 +8,7 @@
 
     <toc-element topic="starter-topic.md"/>
     <toc-element topic="Brands.md">
+        <toc-element topic="Akai.md"/>
         <toc-element topic="Denon-DJ.md"/>
         <toc-element topic="HeadRush.md"/>
     </toc-element>
@@ -33,32 +34,46 @@
     </toc-element>
     <toc-element topic="Linux.md">
         <toc-element topic="Linux-DTSs.md">
-            <toc-element topic="rk3288-az01-hg02-dts.md"/>
+            <toc-element topic="rk3288-az01-acv5s-dts.md"/>
+            <toc-element topic="rk3288-az01-acva-c-dts.md"/>
+            <toc-element topic="rk3288-az01-acva-dts.md"/>
+            <toc-element topic="rk3288-az01-acvb-c-dts.md"/>
+            <toc-element topic="rk3288-az01-acvb-dts.md"/>
+            <toc-element topic="rk3288-az01-acvm-c-dts.md"/>
+            <toc-element topic="rk3288-az01-acvm-dts.md"/>
             <toc-element topic="rk3288-az01-hg02-c-dts.md"/>
             <toc-element topic="rk3288-az01-hg02-c-revf-dts.md"/>
+            <toc-element topic="rk3288-az01-hg02-dts.md"/>
             <toc-element topic="rk3288-az01-hg02-revf-dts.md"/>
-            <toc-element topic="rk3288-az01-hg03-dts.md"/>
             <toc-element topic="rk3288-az01-hg03-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jc16-dts.md"/>
-            <toc-element topic="rk3288-az01-jc16-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jc11-dts.md"/>
+            <toc-element topic="rk3288-az01-hg03-dts.md"/>
             <toc-element topic="rk3288-az01-jc11-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jp07-dts.md"/>
+            <toc-element topic="rk3288-az01-jc11-dts.md"/>
+            <toc-element topic="rk3288-az01-jc16-c-dts.md"/>
+            <toc-element topic="rk3288-az01-jc16-dts.md"/>
             <toc-element topic="rk3288-az01-jp07-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jp08-dts.md"/>
+            <toc-element topic="rk3288-az01-jp07-dts.md"/>
             <toc-element topic="rk3288-az01-jp08-c-dts.md"/>
             <toc-element topic="rk3288-az01-jp08-c-revf-dts.md"/>
+            <toc-element topic="rk3288-az01-jp08-dts.md"/>
             <toc-element topic="rk3288-az01-jp08-revf-dts.md"/>
-            <toc-element topic="rk3288-az01-jp11-dts.md"/>
             <toc-element topic="rk3288-az01-jp11-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jp13-dts.md"/>
+            <toc-element topic="rk3288-az01-jp11-dts.md"/>
             <toc-element topic="rk3288-az01-jp13-c-dts.md"/>
-            <toc-element topic="rk3288-az01-jp14-dts.md"/>
+            <toc-element topic="rk3288-az01-jp13-dts.md"/>
             <toc-element topic="rk3288-az01-jp14-c-dts.md"/>
+            <toc-element topic="rk3288-az01-jp14-dts.md"/>
             <toc-element topic="rk3288-az01-mg01-dts.md"/>
+            <toc-element topic="rk3288-az01-mpc-acv5-c-dts.md"/>
+            <toc-element topic="rk3288-az01-mpc-acv5-dts.md"/>
+            <toc-element topic="rk3288-az01-mpc-acv8-c-dts.md"/>
+            <toc-element topic="rk3288-az01-mpc-acv8-dts.md"/>
+            <toc-element topic="rk3288-az01b-dts.md"/>
+            <toc-element topic="rk3288-az05-acva2-dts.md"/>
+            <toc-element topic="rk3288-az05-acvm-dts.md"/>
+            <toc-element topic="rk3288-az05-acvr-dts.md"/>
             <toc-element topic="rk3288-az05-hg04-dts.md"/>
             <toc-element topic="rk3288-az05-nh08-dts.md"/>
-            <toc-element topic="rk3288-az01b-dts.md"/>
         </toc-element>
         <toc-element topic="LinuxConfigs.md">
             <toc-element topic="Denon-DJ-Prime-GO-Config.md"/>
