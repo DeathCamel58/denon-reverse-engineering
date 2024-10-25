@@ -7,5 +7,6 @@ Pages about other brands:
 
 | Brand    | Brand Page      |
 |----------|-----------------|
+| Akai     | [](Akai.md)     |
 | Denon DJ | [](Denon-DJ.md) |
 | HeadRush | [](HeadRush.md) |
