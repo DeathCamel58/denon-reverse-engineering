@@ -4,14 +4,14 @@
 
 ## Hardware IDs
 
-| Device Name | Hardware ID |
-|-------------|-------------|
-| Gigboard    | `HG02`      |
-| MX5         | `HG04`      |
-| Looperboard | `HG03`      |
-| Pedalboard  | `MG01`      |
-| Core        | UNKNOWN     |
-| Prime       | UNKNOWN     |
+| Device Name | Hardware ID | DTS Files                                                                                                                                          |
+|-------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Gigboard    | `HG02`      | [](rk3288-az01-hg02-dts.md) <br /> [](rk3288-az01-hg02-c-dts.md) <br /> [](rk3288-az01-hg02-revf-dts.md) <br /> [](rk3288-az01-hg02-c-revf-dts.md) |
+| MX5         | `HG04`      | [](rk3288-az05-hg04-dts.md)                                                                                                                        |
+| Looperboard | `HG03`      | [](rk3288-az01-hg03-dts.md) <br /> [](rk3288-az01-hg03-c-dts.md)                                                                                   |
+| Pedalboard  | `MG01`      | [](rk3288-az01-mg01-dts.md)                                                                                                                        |
+| Core        | UNKNOWN     |                                                                                                                                                    |
+| Prime       | UNKNOWN     |                                                                                                                                                    |
 
 > The devices with `UNKNOWN` as the hardware ID are because I haven't figured out how to extract the firmware
 > {style="note"}

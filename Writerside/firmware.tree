@@ -33,6 +33,14 @@
     </toc-element>
     <toc-element topic="Linux.md">
         <toc-element topic="Linux-DTSs.md">
+            <toc-element topic="rk3288-az05-hg04-dts.md"/>
+            <toc-element topic="rk3288-az01-mg01-dts.md"/>
+            <toc-element topic="rk3288-az01-hg03-c-dts.md"/>
+            <toc-element topic="rk3288-az01-hg03-dts.md"/>
+            <toc-element topic="rk3288-az01-hg02-revf-dts.md"/>
+            <toc-element topic="rk3288-az01-hg02-c-revf-dts.md"/>
+            <toc-element topic="rk3288-az01-hg02-dts.md"/>
+            <toc-element topic="rk3288-az01-hg02-c-dts.md"/>
             <toc-element topic="rk3288-az05-nh08-dts.md"/>
             <toc-element topic="rk3288-az01-jp14-c-dts.md"/>
             <toc-element topic="rk3288-az01-jp14-dts.md"/>
