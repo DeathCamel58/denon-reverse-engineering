@@ -10,4 +10,9 @@
         <description>Created after removal of "Denon Reverse Engineering" from Firmware</description>
         <accepts>Home.html</accepts>
     </rule>
+    <rule id="55f28085">
+        <description>Created after removal of "How to modify and flash firmware" from Denon Reverse Engineering
+        </description>
+        <accepts>How-to-modify-and-flash-firmware.html</accepts>
+    </rule>
 </rules>
