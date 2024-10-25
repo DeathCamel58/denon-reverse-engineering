@@ -5,6 +5,8 @@ about [Engine OS](https://enginedj.com/software/enginedj-os), [Engine Desktop](h
 and [SoundSwitch](https://enginedj.com/enginelighting). with a primary focus on
 the [Denon Prime Go](https://www.denondj.com/prime-go).
 
+Data for other devices can be found on [](Brands.md).
+
 If you want any additional information about a particular thing, file an issue request at
 the [Github Repository](https://github.com/DeathCamel58/denon-reverse-engineering/issues). I'll try my best to help out.
 
