@@ -29,7 +29,9 @@
             <toc-element topic="Offline-Analyzer.md"/>
             <toc-element topic="MIDI-Device-Scanner.md"/>
             <toc-element topic="Firmware-Updater.md"/>
-            <toc-element topic="Engine.md"/>
+            <toc-element topic="Engine.md">
+                <toc-element topic="Controller-Assignments.md"/>
+            </toc-element>
         </toc-element>
         <toc-element topic="Looper.md"/>
         <toc-element topic="MPC.md"/>
