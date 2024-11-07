@@ -9,7 +9,7 @@ On the Prime Go, the UART is located on an empty header that's already on the bo
 
 ### Internal Image {id="internal-image_Prime_Go"}
 
-![](../../assets/Prime Go Internal.jpg)
+![](Prime Go Internal.jpg)
 
 > There is a `RECOVERY` button located on the other side of the board in the bottom left of this image. Hold it
 > down, press the power button, and it'll go into firmware update mode.
@@ -17,7 +17,7 @@ On the Prime Go, the UART is located on an empty header that's already on the bo
 
 ### UART Connection {id="uart-connection_Prime_Go"}
 
-![](../../assets/Prime Go UART.jpg)
+![](Prime Go UART.jpg)
 
 This image is of the board on the bottom left of the internal image.
 
@@ -1874,11 +1874,11 @@ Oct 17 11:04:31 primego runengine[338]: [W] Numeric mode unsupported in the posi
 
 ### Internal Image {id="internal-image_MPC_Live"}
 
-![](../../assets/MPC Live Internal.jpg)
+![](MPC Live Internal.jpg)
 
 ### UART Connection {id="uart-connection_MPC_Live"}
 
-![](../../assets/MPC Live UART.jpg)
+![](MPC Live UART.jpg)
 
 This image is of the board on the top right of the internal image.
 
