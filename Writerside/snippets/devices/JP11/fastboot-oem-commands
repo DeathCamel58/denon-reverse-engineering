@@ -1,0 +1,8 @@
+oem set-flag:%s
+oem format
+oem resetenv
+oem update-bootloader
+oem set-panel-map:%s
+oem flash-bootloader
+oem inmusic-unlock-magic-7de5fbc22b8c524e
+oem fetch-pubkey:%s

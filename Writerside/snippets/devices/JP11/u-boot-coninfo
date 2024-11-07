@@ -1,0 +1,7 @@
+=> coninfo
+List of available devices:
+serial@ff690000 00000003 IO
+gpio-keys 00000001 I. stdin
+vidconsole 00000002 .O
+serial   00000003 IO stdout stderr
+nulldev  00000003 IO

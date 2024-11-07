@@ -31,10 +31,4 @@ Path: `/usr/Engine/MidiDeviceScanner`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:${LD_LIBRARY_PATH} /usr/Engine/MidiDeviceScanner`
 
-```
-QIconvCodec::convertToUnicode: using Latin-1 for conversion, iconv_open failed
-QIconvCodec::convertFromUnicode: using Latin-1 for conversion, iconv_open failed
-Device: "PRIME GO Control Surface" responded with: "7E 00 06 02 00 02 0B 0C 00 1A 00 00 05 09 00 00 00 00 00 41 31 32 34 30 33 32 34 35 33 31 37 37 35 31 00 02"
-Inquiry: "F0 7E 7F 06 01 F7"
-Device "Controller" 	OK
-```
+<code-block src="applications/midi-device-scanner/runtime" />

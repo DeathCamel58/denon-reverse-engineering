@@ -31,12 +31,4 @@ Path: `/usr/Engine/Reporter`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:${LD_LIBRARY_PATH} /usr/Engine/Reporter`
 
-```
-QIconvCodec::convertToUnicode: using Latin-1 for conversion, iconv_open failed
-QIconvCodec::convertFromUnicode: using Latin-1 for conversion, iconv_open failed
-QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
-Unable to set double buffer mode! (Invalid argument)
-No display option set. Either pass in `--coreDump` or `--encryptionFailed`
-No QML file
-Aborted (core dumped)
-```
+<code-block src="applications/reporter/runtime" />

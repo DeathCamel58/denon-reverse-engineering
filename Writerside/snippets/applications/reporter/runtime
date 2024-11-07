@@ -1,0 +1,7 @@
+QIconvCodec::convertToUnicode: using Latin-1 for conversion, iconv_open failed
+QIconvCodec::convertFromUnicode: using Latin-1 for conversion, iconv_open failed
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+Unable to set double buffer mode! (Invalid argument)
+No display option set. Either pass in `--coreDump` or `--encryptionFailed`
+No QML file
+Aborted (core dumped)

@@ -1,0 +1,12 @@
+=> mmc info
+Device: dwmmc@ff0f0000
+Manufacturer ID: 15
+OEM: 100
+Name: 8GTF4
+Tran Speed: 52000000
+Rd Block Len: 512
+MMC version 4.0
+High Capacity: Yes
+Capacity: 7.3 GiB
+Bus Width: 8-bit
+Erase Group Size: 512 KiB

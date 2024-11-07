@@ -1,0 +1,1634 @@
+Subject: [PATCH] Patch Mali Midgard GPU Kernel Driver Driver *should* now work on the latest version. Can't test the much though, since `fb0` doesn't correctly drive the display.
+---
+Index: drivers/gpu/arm/midgard/Kbuild
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/Kbuild b/drivers/gpu/arm/midgard/Kbuild
+--- a/drivers/gpu/arm/midgard/Kbuild	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/Kbuild	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -39,11 +39,7 @@
+ 	MALI_KERNEL_TEST_API = 0
+ endif
+ 
+-ifneq ($(CONFIG_MALI_KUTF), n)
+-	MALI_UNIT_TEST = 1
+-else
+-	MALI_UNIT_TEST = 0
+-endif
++MALI_UNIT_TEST = 0
+ 
+ # Set up our defines, which will be passed to gcc
+ DEFINES = \
+@@ -122,9 +118,11 @@
+ 	SRC += mali_kbase_gwt.c
+ endif
+ 
+-ifeq ($(MALI_UNIT_TEST),1)
+-	SRC += mali_kbase_tlstream_test.c
+-endif
++# TODO: Maybe figure out what's going on with this?
++#       MALI_UNIT_TEST is set by CONFIG_MALI_KUTF, but no matter the value, we're attempting to build it?
++#ifeq ($(MALI_UNIT_TEST),1)
++#	SRC += mali_kbase_tlstream_test.c
++#endif
+ 
+ ifeq ($(MALI_CUSTOMER_RELEASE),0)
+ 	SRC += mali_kbase_regs_dump_debugfs.c
+Index: drivers/gpu/arm/midgard/backend/gpu/mali_kbase_time.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/backend/gpu/mali_kbase_time.c b/drivers/gpu/arm/midgard/backend/gpu/mali_kbase_time.c
+--- a/drivers/gpu/arm/midgard/backend/gpu/mali_kbase_time.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/backend/gpu/mali_kbase_time.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -24,8 +24,13 @@
+ #include <backend/gpu/mali_kbase_device_internal.h>
+ #include <backend/gpu/mali_kbase_pm_internal.h>
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ void kbase_backend_get_gpu_time(struct kbase_device *kbdev, u64 *cycle_counter,
+ 				u64 *system_time, struct timespec *ts)
++#else
++void kbase_backend_get_gpu_time(struct kbase_device *kbdev, u64 *cycle_counter,
++				u64 *system_time, struct timespec64 *ts)
++#endif
+ {
+ 	u32 hi1, hi2;
+ 
+@@ -52,7 +57,11 @@
+ 	} while (hi1 != hi2);
+ 
+ 	/* Record the CPU's idea of current time */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	getrawmonotonic(ts);
++#else
++	ktime_get_raw_ts64(ts);
++#endif
+ 
+ 	kbase_pm_release_gpu_cycle_counter(kbdev);
+ }
+Index: drivers/gpu/arm/midgard/ipa/mali_kbase_ipa.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa.c b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa.c
+--- a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -653,8 +653,10 @@
+ #else
+ struct devfreq_cooling_power kbase_ipa_power_model_ops = {
+ #endif
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
+ 	.get_static_power = &kbase_get_static_power,
+ 	.get_dynamic_power = &kbase_get_dynamic_power,
++#endif
+ #if defined(CONFIG_MALI_PWRSOFT_765) || \
+ 	LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)
+ 	.get_real_power = &kbase_get_real_power,
+Index: drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_debugfs.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_debugfs.c b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_debugfs.c
+--- a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_debugfs.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_debugfs.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -129,7 +129,11 @@
+ 	err = kbase_ipa_model_recalculate(model);
+ 	if (err < 0) {
+ 		ret = err;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 		strlcpy(param->addr.str, old_str, param->size);
++#else
++		strscpy(param->addr.str, old_str, param->size);
++#endif
+ 	}
+ 
+ end:
+Index: drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_simple.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_simple.c b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_simple.c
+--- a/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_simple.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/ipa/mali_kbase_ipa_simple.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -295,7 +295,11 @@
+ 	} else {
+ 		char tz_name[THERMAL_NAME_LENGTH];
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 		strlcpy(tz_name, model_data->tz_name, sizeof(tz_name));
++#else
++		strscpy(tz_name, model_data->tz_name, sizeof(tz_name));
++#endif
+ 
+ 		/* Release ipa.lock so that thermal_list_lock is not acquired
+ 		 * with ipa.lock held, thereby avoid lock ordering violation
+Index: drivers/gpu/arm/midgard/mali_kbase_core_linux.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_core_linux.c b/drivers/gpu/arm/midgard/mali_kbase_core_linux.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_core_linux.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_core_linux.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -200,34 +200,23 @@
+ 	if (!kbdev)
+ 		return -ENODEV;
+ 
+-	/* 3 IRQ resources */
+-	for (i = 0; i < 3; i++) {
+-		struct resource *irq_res;
+-		int irqtag;
+ 
+-		irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, i);
+-		if (!irq_res) {
+-			dev_err(kbdev->dev, "No IRQ resource at index %d\n", i);
+-			return -ENOENT;
++	/* Map IRQ resources */
++	const int irq_count = platform_irq_count(pdev);
++	for (i = 0; i < irq_count; i++) {
++		const int irq = platform_get_irq(pdev, i);
++
++		if (irq < 0) {
++			dev_err(&pdev->dev, "Failed to get IRQ index %d\n", i);
++			return irq;
+ 		}
+ 
+-#ifdef CONFIG_OF
+-		if (!strncmp(irq_res->name, "JOB", 4)) {
+-			irqtag = JOB_IRQ_TAG;
+-		} else if (!strncmp(irq_res->name, "MMU", 4)) {
+-			irqtag = MMU_IRQ_TAG;
+-		} else if (!strncmp(irq_res->name, "GPU", 4)) {
+-			irqtag = GPU_IRQ_TAG;
++		if (i < 3) {
++			kbdev->irqs[i].irq = irq;
++			kbdev->irqs[i].flags = IRQF_TRIGGER_NONE;
+ 		} else {
+-			dev_err(&pdev->dev, "Invalid irq res name: '%s'\n",
+-				irq_res->name);
+-			return -EINVAL;
++			dev_err(&pdev->dev, "Not mapping IRQ index %d (mali devices should only have 3 IRQs)\n", i);
+ 		}
+-#else
+-		irqtag = i;
+-#endif /* CONFIG_OF */
+-		kbdev->irqs[irqtag].irq = irq_res->start;
+-		kbdev->irqs[irqtag].flags = irq_res->flags & IRQF_TRIGGER_MASK;
+ 	}
+ 
+ 	return 0;
+@@ -3707,13 +3696,13 @@
+ 	NULL,
+ };
+ 
+-static int kbase_platform_device_remove(struct platform_device *pdev)
++static void kbase_platform_device_remove(struct platform_device *pdev)
+ {
+ 	struct kbase_device *kbdev = to_kbase_device(&pdev->dev);
+ 	const struct list_head *dev_list;
+ 
+ 	if (!kbdev)
+-		return -ENODEV;
++		return;
+ 
+ 	kfree(kbdev->gpu_props.prop_buffer);
+ 
+@@ -3853,8 +3842,6 @@
+ 		dev_err(kbdev->dev, "Missing sub system termination\n");
+ 
+ 	kbase_device_free(kbdev);
+-
+-	return 0;
+ }
+ 
+ void kbase_backend_devfreq_term(struct kbase_device *kbdev)
+@@ -4338,6 +4325,7 @@
+ static const struct of_device_id kbase_dt_ids[] = {
+ 	{ .compatible = "arm,malit6xx" },
+ 	{ .compatible = "arm,mali-midgard" },
++	{ .compatible = "arm,mali-t760" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, kbase_dt_ids);
+Index: drivers/gpu/arm/midgard/mali_kbase_debug_mem_view.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_debug_mem_view.c b/drivers/gpu/arm/midgard/mali_kbase_debug_mem_view.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_debug_mem_view.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_debug_mem_view.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -209,7 +209,11 @@
+ 	struct debug_mem_data *mem_data;
+ 	int ret;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	if (get_file_rcu(kctx_file) == 0)
++#else
++	if (get_file_rcu(&kctx_file) == 0)
++#endif
+ 		return -ENOENT;
+ 
+ 	ret = seq_open(file, &ops);
+Index: drivers/gpu/arm/midgard/mali_kbase_defs.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_defs.h b/drivers/gpu/arm/midgard/mali_kbase_defs.h
+--- a/drivers/gpu/arm/midgard/mali_kbase_defs.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_defs.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -1006,7 +1006,11 @@
+  *                      in the trace message, used during dumping of the message.
+  */
+ struct kbase_trace {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	struct timespec timestamp;
++#else
++	struct timespec64 timestamp;
++#endif
+ 	u32 thread_id;
+ 	u32 cpu;
+ 	void *ctx;
+@@ -1112,7 +1116,11 @@
+ 	size_t		    order;
+ 	spinlock_t          pool_lock;
+ 	struct list_head    page_list;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	struct shrinker     reclaim;
++#else
++	struct shrinker     *reclaim;
++#endif
+ 
+ 	struct kbase_mem_pool *next_pool;
+ 
+@@ -2074,7 +2082,11 @@
+ 	struct kbase_mem_pool mem_pool;
+ 	struct kbase_mem_pool lp_mem_pool;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	struct shrinker         reclaim;
++#else
++    struct shrinker         *reclaim;
++#endif
+ 	struct list_head        evict_list;
+ 
+ 	struct list_head waiting_soft_jobs;
+Index: drivers/gpu/arm/midgard/mali_kbase_device.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_device.c b/drivers/gpu/arm/midgard/mali_kbase_device.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_device.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_device.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -336,7 +336,11 @@
+ 	trace_msg->thread_id = task_pid_nr(current);
+ 	trace_msg->cpu = task_cpu(current);
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	getnstimeofday(&trace_msg->timestamp);
++#else
++    ktime_get_real_ts64(&trace_msg->timestamp);
++#endif
+ 
+ 	trace_msg->code = code;
+ 	trace_msg->ctx = ctx;
+Index: drivers/gpu/arm/midgard/mali_kbase_dma_fence.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_dma_fence.c b/drivers/gpu/arm/midgard/mali_kbase_dma_fence.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_dma_fence.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_dma_fence.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -29,7 +29,6 @@
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+ #include <linux/mutex.h>
+-#include <linux/reservation.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+@@ -58,7 +57,7 @@
+ kbase_dma_fence_lock_reservations(struct kbase_dma_fence_resv_info *info,
+ 				  struct ww_acquire_ctx *ctx)
+ {
+-	struct reservation_object *content_res = NULL;
++	struct dma_resv *content_res = NULL;
+ 	unsigned int content_res_idx = 0;
+ 	unsigned int r;
+ 	int err = 0;
+@@ -224,35 +223,27 @@
+ 
+ static int
+ kbase_dma_fence_add_reservation_callback(struct kbase_jd_atom *katom,
+-					 struct reservation_object *resv,
++					 struct dma_resv *resv,
+ 					 bool exclusive)
+ {
+-#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0))
+-	struct fence *excl_fence = NULL;
+-	struct fence **shared_fences = NULL;
+-#else
+ 	struct dma_fence *excl_fence = NULL;
+ 	struct dma_fence **shared_fences = NULL;
+-#endif
+ 	unsigned int shared_count = 0;
+ 	int err, i;
++	enum dma_resv_usage usage = exclusive ? DMA_RESV_USAGE_WRITE : DMA_RESV_USAGE_READ;
+ 
+-	err = reservation_object_get_fences_rcu(resv,
+-						&excl_fence,
+-						&shared_count,
+-						&shared_fences);
++	err = dma_resv_get_fences(resv, usage, &shared_count, &shared_fences);
+ 	if (err)
+ 		return err;
+ 
+-	if (excl_fence) {
+-		err = kbase_fence_add_callback(katom,
+-						excl_fence,
+-						kbase_dma_fence_cb);
++	/* Exclusive fences are expected in shared_fences[0] if `exclusive` is true */
++	if (exclusive && shared_count > 0) {
++		excl_fence = shared_fences[0];
++		err = kbase_fence_add_callback(katom, excl_fence, kbase_dma_fence_cb);
+ 
+-		/* Release our reference, taken by reservation_object_get_fences_rcu(),
+-		 * to the fence. We have set up our callback (if that was possible),
+-		 * and it's the fence's owner is responsible for singling the fence
+-		 * before allowing it to disappear.
++		/* Release our reference, taken by dma_resv_get_fences, to the fence.
++		 * We have set up our callback (if that was possible), and it's the fence's
++		 * owner’s responsibility to signal it before allowing it to disappear.
+ 		 */
+ 		dma_fence_put(excl_fence);
+ 
+@@ -260,38 +251,28 @@
+ 			goto out;
+ 	}
+ 
+-	if (exclusive) {
+-		for (i = 0; i < shared_count; i++) {
+-			err = kbase_fence_add_callback(katom,
+-							shared_fences[i],
+-							kbase_dma_fence_cb);
+-			if (err)
+-				goto out;
+-		}
++	/* Add callbacks to all shared fences */
++	for (i = exclusive ? 1 : 0; i < shared_count; i++) {
++		err = kbase_fence_add_callback(katom, shared_fences[i], kbase_dma_fence_cb);
++		if (err)
++			goto out;
+ 	}
+ 
+-	/* Release all our references to the shared fences, taken by
+-	 * reservation_object_get_fences_rcu(). We have set up our callback (if
+-	 * that was possible), and it's the fence's owner is responsible for
+-	 * signaling the fence before allowing it to disappear.
+-	 */
+ out:
++	/* Release all our references to the shared fences taken by dma_resv_get_fences */
+ 	for (i = 0; i < shared_count; i++)
+ 		dma_fence_put(shared_fences[i]);
+ 	kfree(shared_fences);
+ 
+ 	if (err) {
+-		/*
+-		 * On error, cancel and clean up all callbacks that was set up
+-		 * before the error.
+-		 */
++		/* On error, cancel and clean up all callbacks that were set up before the error. */
+ 		kbase_fence_free_callbacks(katom);
+ 	}
+ 
+ 	return err;
+ }
+ 
+-void kbase_dma_fence_add_reservation(struct reservation_object *resv,
++void kbase_dma_fence_add_reservation(struct dma_resv *resv,
+ 				     struct kbase_dma_fence_resv_info *info,
+ 				     bool exclusive)
+ {
+@@ -343,10 +324,10 @@
+ 	}
+ 
+ 	for (i = 0; i < info->dma_fence_resv_count; i++) {
+-		struct reservation_object *obj = info->resv_objs[i];
++		struct dma_resv *obj = info->resv_objs[i];
+ 
+ 		if (!test_bit(i, info->dma_fence_excl_bitmap)) {
+-			err = reservation_object_reserve_shared(obj);
++			err = dma_resv_reserve_fences(obj, 1);
+ 			if (err) {
+ 				dev_err(katom->kctx->kbdev->dev,
+ 					"Error %d reserving space for shared fence.\n", err);
+@@ -360,7 +341,7 @@
+ 				goto end;
+ 			}
+ 
+-			reservation_object_add_shared_fence(obj, fence);
++			dma_resv_add_fence(obj, fence, DMA_RESV_USAGE_READ);
+ 		} else {
+ 			err = kbase_dma_fence_add_reservation_callback(katom, obj, true);
+ 			if (err) {
+@@ -369,7 +350,7 @@
+ 				goto end;
+ 			}
+ 
+-			reservation_object_add_excl_fence(obj, fence);
++			dma_resv_add_fence(obj, fence, DMA_RESV_USAGE_WRITE);
+ 		}
+ 	}
+ 
+Index: drivers/gpu/arm/midgard/mali_kbase_dma_fence.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_dma_fence.h b/drivers/gpu/arm/midgard/mali_kbase_dma_fence.h
+--- a/drivers/gpu/arm/midgard/mali_kbase_dma_fence.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_dma_fence.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -24,8 +24,8 @@
+ 
+ #ifdef CONFIG_MALI_DMA_FENCE
+ 
++#include <linux/dma-resv.h>
+ #include <linux/list.h>
+-#include <linux/reservation.h>
+ #include <mali_kbase_fence.h>
+ 
+ 
+@@ -44,7 +44,7 @@
+  * reservation objects.
+  */
+ struct kbase_dma_fence_resv_info {
+-	struct reservation_object **resv_objs;
++	struct dma_resv **resv_objs;
+ 	unsigned int dma_fence_resv_count;
+ 	unsigned long *dma_fence_excl_bitmap;
+ };
+@@ -55,11 +55,11 @@
+  * @info:      Pointer to struct with current reservation info
+  * @exclusive: Boolean indicating if exclusive access is needed
+  *
+- * The function adds a new reservation_object to an existing array of
+- * reservation_objects. At the same time keeps track of which objects require
++ * The function adds a new dma_resv to an existing array of
++ * dma_resvs. At the same time keeps track of which objects require
+  * exclusive access in dma_fence_excl_bitmap.
+  */
+-void kbase_dma_fence_add_reservation(struct reservation_object *resv,
++void kbase_dma_fence_add_reservation(struct dma_resv *resv,
+ 				     struct kbase_dma_fence_resv_info *info,
+ 				     bool exclusive);
+ 
+Index: drivers/gpu/arm/midgard/mali_kbase_fence.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_fence.c b/drivers/gpu/arm/midgard/mali_kbase_fence.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_fence.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_fence.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -66,7 +66,11 @@
+ kbase_fence_fence_value_str(struct dma_fence *fence, char *str, int size)
+ #endif
+ {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0))
+ 	snprintf(str, size, "%u", fence->seqno);
++#else
++	snprintf(str, size, "%llu", fence->seqno);
++#endif
+ }
+ 
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0))
+Index: drivers/gpu/arm/midgard/mali_kbase_gpuprops.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_gpuprops.c b/drivers/gpu/arm/midgard/mali_kbase_gpuprops.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_gpuprops.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_gpuprops.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -194,7 +194,12 @@
+ 	/* Populate the base_gpu_props structure */
+ 	kbase_gpuprops_update_core_props_gpu_id(gpu_props);
+ 	gpu_props->core_props.log2_program_counter_size = KBASE_GPU_PC_SIZE_LOG2;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	gpu_props->core_props.gpu_available_memory_size = totalram_pages << PAGE_SHIFT;
++#else
++	// From Kernel 5.0.0 totalram_pages became a pointer and is no longer a long integer, is a function!
++	gpu_props->core_props.gpu_available_memory_size = totalram_pages() << PAGE_SHIFT;
++#endif
+ 	gpu_props->core_props.num_exec_engines =
+ 		KBASE_UBFX32(gpu_props->raw_props.core_features, 0, 4);
+ 
+Index: drivers/gpu/arm/midgard/mali_kbase_hwaccess_time.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_hwaccess_time.h b/drivers/gpu/arm/midgard/mali_kbase_hwaccess_time.h
+--- a/drivers/gpu/arm/midgard/mali_kbase_hwaccess_time.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_hwaccess_time.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -32,11 +32,15 @@
+  * @kbdev:		Device pointer
+  * @cycle_counter:	Pointer to u64 to store cycle counter in
+  * @system_time:	Pointer to u64 to store system time in
+- * @ts:			Pointer to struct timespec to store current monotonic
++ * @ts:			Pointer to struct timespec64 to store current monotonic
+  *			time in
+  */
+ void kbase_backend_get_gpu_time(struct kbase_device *kbdev, u64 *cycle_counter,
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 				u64 *system_time, struct timespec *ts);
++#else
++				u64 *system_time, struct timespec64 *ts);
++#endif
+ 
+ /**
+  * kbase_wait_write_flush() -  Wait for GPU write flush
+Index: drivers/gpu/arm/midgard/mali_kbase_hwcnt_backend_gpu.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_hwcnt_backend_gpu.c b/drivers/gpu/arm/midgard/mali_kbase_hwcnt_backend_gpu.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_hwcnt_backend_gpu.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_hwcnt_backend_gpu.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -75,10 +75,18 @@
+ static u64 kbasep_hwcnt_backend_gpu_timestamp_ns(
+ 	struct kbase_hwcnt_backend *backend)
+ {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	struct timespec ts;
++#else
++	struct timespec64 ts;
++#endif
+ 
+ 	(void)backend;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	getrawmonotonic(&ts);
++#else
++	ktime_get_raw_ts64(&ts);
++#endif
+ 	return (u64)ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec;
+ }
+ 
+Index: drivers/gpu/arm/midgard/mali_kbase_jd.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_jd.c b/drivers/gpu/arm/midgard/mali_kbase_jd.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_jd.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_jd.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -230,7 +230,7 @@
+ #ifdef CONFIG_MALI_DMA_FENCE
+ 	if (implicit_sync) {
+ 		info.resv_objs = kmalloc_array(katom->nr_extres,
+-					sizeof(struct reservation_object *),
++					sizeof(struct dma_resv *),
+ 					GFP_KERNEL);
+ 		if (!info.resv_objs) {
+ 			err = -ENOMEM;
+@@ -255,7 +255,11 @@
+ 	}
+ 
+ 	/* Take the processes mmap lock */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_read(&current->mm->mmap_sem);
++#else
++	down_read(&current->mm->mmap_lock);
++#endif
+ 
+ 	/* need to keep the GPU VM locked while we set up UMM buffers */
+ 	kbase_gpu_vm_lock(katom->kctx);
+@@ -283,7 +287,7 @@
+ #ifdef CONFIG_MALI_DMA_FENCE
+ 		if (implicit_sync &&
+ 		    reg->gpu_alloc->type == KBASE_MEM_TYPE_IMPORTED_UMM) {
+-			struct reservation_object *resv;
++			struct dma_resv *resv;
+ 			bool exclusive;
+ 
+ 			exclusive = (user_res->ext_resource & BASE_EXT_RES_ACCESS_EXCLUSIVE)
+@@ -303,7 +307,11 @@
+ 	kbase_gpu_vm_unlock(katom->kctx);
+ 
+ 	/* Release the processes mmap lock */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	up_read(&current->mm->mmap_sem);
++#else
++	up_read(&current->mm->mmap_lock);
++#endif
+ 
+ #ifdef CONFIG_MALI_DMA_FENCE
+ 	if (implicit_sync) {
+@@ -329,7 +337,11 @@
+ #ifdef CONFIG_MALI_DMA_FENCE
+ failed_dma_fence_setup:
+ 	/* Lock the processes mmap lock */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_read(&current->mm->mmap_sem);
++#else
++	down_read(&current->mm->mmap_lock);
++#endif
+ 
+ 	/* lock before we unmap */
+ 	kbase_gpu_vm_lock(katom->kctx);
+@@ -347,7 +359,11 @@
+ 	kbase_gpu_vm_unlock(katom->kctx);
+ 
+ 	/* Release the processes mmap lock */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	up_read(&current->mm->mmap_sem);
++#else
++	up_read(&current->mm->mmap_lock);
++#endif
+ 
+ failed_input_copy:
+ 	kfree(input_extres);
+Index: drivers/gpu/arm/midgard/mali_kbase_jd_debugfs.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_jd_debugfs.c b/drivers/gpu/arm/midgard/mali_kbase_jd_debugfs.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_jd_debugfs.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_jd_debugfs.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -48,15 +48,15 @@
+ 		if (0 == res) {
+ 			seq_printf(sfile, "Sa([%p]%d) ",
+ 				   info.fence, info.status);
+-			break;
+-		}
++		}
++		break;
+ 	case BASE_JD_REQ_SOFT_FENCE_WAIT:
+ 		res = kbase_sync_fence_in_info_get(atom, &info);
+ 		if (0 == res) {
+ 			seq_printf(sfile, "Wa([%p]%d) ",
+ 				   info.fence, info.status);
+-			break;
+-		}
++		}
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -76,8 +76,10 @@
+ 			seq_printf(sfile,
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 8, 0))
+ 					"Sd(%u#%u: %s) ",
+-#else
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0))
+ 					"Sd(%llu#%u: %s) ",
++#else
++				   "Sd(%llu#%llu: %s) ",
+ #endif
+ 					fence->context,
+ 					fence->seqno,
+@@ -96,8 +98,10 @@
+ 			seq_printf(sfile,
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 8, 0))
+ 					"Wd(%u#%u: %s) ",
+-#else
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0))
+ 					"Wd(%llu#%u: %s) ",
++#else
++					"Wd(%llu#%llu: %s) ",
+ #endif
+ 					fence->context,
+ 					fence->seqno,
+Index: drivers/gpu/arm/midgard/mali_kbase_mem.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_mem.c b/drivers/gpu/arm/midgard/mali_kbase_mem.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_mem.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_mem.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -1486,7 +1486,11 @@
+ 	unsigned long map_start;
+ 	size_t map_size;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	lockdep_assert_held(&current->mm->mmap_sem);
++#else
++    lockdep_assert_held(&current->mm->mmap_lock);
++#endif
+ 
+ 	if ((uintptr_t) uaddr + size < (uintptr_t) uaddr) /* overflow check */
+ 		return NULL;
+@@ -3625,11 +3629,17 @@
+ 			address,
+ 			alloc->imported.user_buf.nr_pages,
+ 			write ? FOLL_WRITE : 0, pages, NULL);
+-#else
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
+ 	pinned_pages = get_user_pages_remote(NULL, mm,
+ 			address,
+ 			alloc->imported.user_buf.nr_pages,
+-			write ? FOLL_WRITE : 0, pages, NULL, NULL);
++			reg->flags & KBASE_REG_GPU_WR ? FOLL_WRITE : 0, pages, NULL, NULL);
++#else
++	// From Kernel 5.9.0 and up we don't have first argument in get_user_pages_remote(struct task_struct *tsk anymore, ..
++	pinned_pages = get_user_pages_remote(mm,
++			address,
++			alloc->imported.user_buf.nr_pages,
++			reg->flags & KBASE_REG_GPU_WR ? FOLL_WRITE : 0, pages, NULL);
+ #endif
+ 
+ 	if (pinned_pages <= 0)
+Index: drivers/gpu/arm/midgard/mali_kbase_mem_linux.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c b/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_mem_linux.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -526,7 +526,11 @@
+ 	struct kbase_mem_phy_alloc *alloc;
+ 	unsigned long pages = 0;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	kctx = container_of(s, struct kbase_context, reclaim);
++#else
++    kctx = s->private_data;
++#endif
+ 
+ 	mutex_lock(&kctx->jit_evict_lock);
+ 
+@@ -565,7 +569,11 @@
+ 	struct kbase_mem_phy_alloc *tmp;
+ 	unsigned long freed = 0;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	kctx = container_of(s, struct kbase_context, reclaim);
++#else
++	kctx = s->private_data;
++#endif
+ 	mutex_lock(&kctx->jit_evict_lock);
+ 
+ 	list_for_each_entry_safe(alloc, tmp, &kctx->evict_list, evict_node) {
+@@ -630,6 +638,7 @@
+ 	mutex_init(&kctx->jit_evict_lock);
+ 
+ 	/* Register shrinker */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 0)
+ 	kctx->reclaim.shrink = kbase_mem_evictable_reclaim_shrink;
+ #else
+@@ -642,13 +651,32 @@
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 1, 0)
+ 	kctx->reclaim.batch = 0;
+ #endif
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 	register_shrinker(&kctx->reclaim);
++#else
++	register_shrinker(&kctx->reclaim, "mali_kbase");
++#endif
++#else
++    kctx->reclaim = shrinker_alloc(0, "mali_kmem_base");
++	if (!kctx->reclaim)
++		return 1;
++	kctx->reclaim->count_objects = kbase_mem_evictable_reclaim_count_objects;
++	kctx->reclaim->scan_objects = kbase_mem_evictable_reclaim_scan_objects;
++	kctx->reclaim->seeks = DEFAULT_SEEKS;
++	kctx->reclaim->batch = 0;
++	kctx->reclaim->private_data = kctx;
++	shrinker_register(kctx->reclaim);
++#endif
+ 	return 0;
+ }
+ 
+ void kbase_mem_evictable_deinit(struct kbase_context *kctx)
+ {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 7, 0))
+ 	unregister_shrinker(&kctx->reclaim);
++#else
++	shrinker_free(kctx->reclaim);
++#endif
+ }
+ 
+ /**
+@@ -801,7 +829,11 @@
+ 		real_flags |= KBASE_REG_SHARE_IN;
+ 
+ 	/* now we can lock down the context, and find the region */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_write(&current->mm->mmap_sem);
++#else
++	down_write(&current->mm->mmap_lock);
++#endif
+ 	kbase_gpu_vm_lock(kctx);
+ 
+ 	/* Validate the region */
+@@ -877,7 +909,11 @@
+ 
+ out_unlock:
+ 	kbase_gpu_vm_unlock(kctx);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	up_write(&current->mm->mmap_sem);
++#else
++	up_write(&current->mm->mmap_lock);
++#endif
+ out:
+ 	return ret;
+ }
+@@ -1115,7 +1151,11 @@
+ 		*flags |= KBASE_MEM_IMPORT_HAVE_PAGES;
+ 	}
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_read(&current->mm->mmap_sem);
++#else
++    down_read(&current->mm->mmap_lock);
++#endif
+ 
+ 	write = reg->flags & (KBASE_REG_CPU_WR | KBASE_REG_GPU_WR);
+ 
+@@ -1130,12 +1170,19 @@
+ #elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 0)
+ 	faulted_pages = get_user_pages(address, *va_pages,
+ 			write, 0, pages, NULL);
+-#else
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0)
+ 	faulted_pages = get_user_pages(address, *va_pages,
+ 			write ? FOLL_WRITE : 0, pages, NULL);
++#else
++	faulted_pages = get_user_pages(address, *va_pages,
++				       write ? FOLL_WRITE : 0, pages);
+ #endif
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	up_read(&current->mm->mmap_sem);
++#else
++    up_read(&current->mm->mmap_lock);
++#endif
+ 
+ 	if (faulted_pages != *va_pages)
+ 		goto fault_mismatch;
+@@ -1631,7 +1678,11 @@
+ 		return -EINVAL;
+ 	}
+ 
++    #if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_write(&current->mm->mmap_sem);
++    #else
++    down_write(&current->mm->mmap_lock);
++    #endif
+ 	kbase_gpu_vm_lock(kctx);
+ 
+ 	/* Validate the region */
+@@ -1684,7 +1735,11 @@
+ 		 * No update to the mm so downgrade the writer lock to a read
+ 		 * lock so other readers aren't blocked after this point.
+ 		 */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 		downgrade_write(&current->mm->mmap_sem);
++#else
++		downgrade_write(&current->mm->mmap_lock);
++#endif
+ 		read_locked = true;
+ 
+ 		/* Allocate some more pages */
+@@ -1740,9 +1795,15 @@
+ out_unlock:
+ 	kbase_gpu_vm_unlock(kctx);
+ 	if (read_locked)
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 		up_read(&current->mm->mmap_sem);
+ 	else
+ 		up_write(&current->mm->mmap_sem);
++#else
++		up_read(&current->mm->mmap_lock);
++	else
++		up_write(&current->mm->mmap_lock);
++#endif
+ 
+ 	return res;
+ }
+@@ -1798,8 +1859,12 @@
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 11, 0))
+ static int kbase_cpu_vm_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
+ {
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(4, 16, 0))
++static int kbase_cpu_vm_fault(struct vm_fault *vmf)
++{
++	struct vm_area_struct *vma = vmf->vma;
+ #else
+-static int kbase_cpu_vm_fault(struct vm_fault *vmf)
++static vm_fault_t kbase_cpu_vm_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ #endif
+@@ -1831,8 +1896,14 @@
+ 	addr = (pgoff_t)(vmf->address >> PAGE_SHIFT);
+ #endif
+ 	while (i < map->alloc->nents && (addr < vma->vm_end >> PAGE_SHIFT)) {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 20, 0))
+ 		int ret = vm_insert_pfn(vma, addr << PAGE_SHIFT,
+ 		    PFN_DOWN(as_phys_addr_t(map->alloc->pages[i])));
++#else
++		// vm_insert_pfn is renamed to vmf_inser_pfn starting with Kernel 4.20
++		int ret = vmf_insert_pfn(vma, addr << PAGE_SHIFT,
++					 PFN_DOWN(as_phys_addr_t(map->alloc->pages[i])));
++#endif
+ 		if (ret < 0 && ret != -EBUSY)
+ 			goto locked_bad_fault;
+ 
+@@ -1890,7 +1961,9 @@
+ 	 * See MIDBASE-1057
+ 	 */
+ 
+-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 7, 0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0))
++	vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP | VM_IO);
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 7, 0))
+ 	vma->vm_flags |= VM_DONTCOPY | VM_DONTDUMP | VM_DONTEXPAND | VM_IO;
+ #else
+ 	vma->vm_flags |= VM_DONTCOPY | VM_DONTEXPAND | VM_RESERVED | VM_IO;
+@@ -1946,12 +2019,20 @@
+ 	if (!kaddr) {
+ 		unsigned long addr = vma->vm_start + aligned_offset;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 		vma->vm_flags |= VM_PFNMAP;
++#else
++		vm_flags_set(vma, VM_PFNMAP);
++#endif
+ 		for (i = 0; i < nr_pages; i++) {
+ 			phys_addr_t phys;
+ 
+ 			phys = as_phys_addr_t(page_array[i + start_off]);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 20, 0))
+ 			err = vm_insert_pfn(vma, addr, PFN_DOWN(phys));
++#else
++			err = vmf_insert_pfn(vma, addr, PFN_DOWN(phys));
++#endif
+ 			if (WARN_ON(err))
+ 				break;
+ 
+@@ -1960,7 +2041,11 @@
+ 	} else {
+ 		WARN_ON(aligned_offset);
+ 		/* MIXEDMAP so we can vfree the kaddr early and not track it after map time */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 		vma->vm_flags |= VM_MIXEDMAP;
++#else
++		vm_flags_set(vma, VM_MIXEDMAP);
++#endif
+ 		/* vmalloc remaping is easy... */
+ 		err = remap_vmalloc_range(vma, kaddr, 0);
+ 		WARN_ON(err);
+@@ -2050,14 +2135,22 @@
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	(void)kctx;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	down_read(&mm->mmap_sem);
++#else
++	down_read(&mm->mmap_lock);
++#endif
+ }
+ 
+ void kbase_os_mem_map_unlock(struct kbase_context *kctx)
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	(void)kctx;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0))
+ 	up_read(&mm->mmap_sem);
++#else
++	up_read(&mm->mmap_lock);
++#endif
+ }
+ 
+ static int kbasep_reg_mmap(struct kbase_context *kctx,
+@@ -2142,9 +2235,17 @@
+ 	dev_dbg(dev, "kbase_mmap\n");
+ 
+ 	if (!(vma->vm_flags & VM_READ))
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 		vma->vm_flags &= ~VM_MAYREAD;
++#else
++		vm_flags_set(vma, VM_MAYREAD);
++#endif
+ 	if (!(vma->vm_flags & VM_WRITE))
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 		vma->vm_flags &= ~VM_MAYWRITE;
++#else
++        vm_flags_clear(vma, VM_MAYWRITE);
++#endif
+ 
+ 	if (0 == nr_pages) {
+ 		err = -EINVAL;
+@@ -2488,10 +2589,22 @@
+ 	if (mm) {
+ 		atomic_add(pages, &kctx->nonmapped_pages);
+ #ifdef SPLIT_RSS_COUNTING
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0))
+ 		add_mm_counter(mm, MM_FILEPAGES, pages);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
++        atomic_long_add(pages, &mm->rss_stat.count[MM_FILEPAGES]);
++#else
++		percpu_counter_add(&mm->rss_stat[MM_FILEPAGES], pages);
++#endif
+ #else
+ 		spin_lock(&mm->page_table_lock);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0))
+ 		add_mm_counter(mm, MM_FILEPAGES, pages);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
++		atomic_long_add(pages, &mm->rss_stat.count[MM_FILEPAGES]);
++#else
++		percpu_counter_add(&mm->rss_stat[MM_FILEPAGES], pages);
++#endif
+ 		spin_unlock(&mm->page_table_lock);
+ #endif
+ 	}
+@@ -2516,10 +2629,22 @@
+ 
+ 	pages = atomic_xchg(&kctx->nonmapped_pages, 0);
+ #ifdef SPLIT_RSS_COUNTING
+-	add_mm_counter(mm, MM_FILEPAGES, -pages);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0))
++	add_mm_counter(mm, MM_FILEPAGES, pages);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
++	atomic_long_add(pages, &mm->rss_stat.count[MM_FILEPAGES]);
++#else
++	percpu_counter_add(&mm->rss_stat[MM_FILEPAGES], pages);
++#endif
+ #else
+ 	spin_lock(&mm->page_table_lock);
+-	add_mm_counter(mm, MM_FILEPAGES, -pages);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0))
++	add_mm_counter(mm, MM_FILEPAGES, pages);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
++	atomic_long_add(pages, &mm->rss_stat.count[MM_FILEPAGES]);
++#else
++	percpu_counter_add(&mm->rss_stat[MM_FILEPAGES], pages);
++#endif
+ 	spin_unlock(&mm->page_table_lock);
+ #endif
+ }
+@@ -2550,11 +2675,16 @@
+ 	spin_unlock(&kctx->mm_update_lock);
+ 
+ 	/* no real access */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ 	vma->vm_flags &= ~(VM_READ | VM_MAYREAD | VM_WRITE | VM_MAYWRITE | VM_EXEC | VM_MAYEXEC);
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 7, 0))
+ 	vma->vm_flags |= VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP | VM_IO;
+ #else
+ 	vma->vm_flags |= VM_DONTCOPY | VM_DONTEXPAND | VM_RESERVED | VM_IO;
++#endif
++#else
++	vm_flags_clear(vma, VM_READ | VM_MAYREAD | VM_WRITE | VM_MAYWRITE | VM_EXEC | VM_MAYEXEC);
++	vm_flags_set(vma, VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP | VM_IO);
+ #endif
+ 	vma->vm_ops = &kbase_vm_special_ops;
+ 	vma->vm_private_data = kctx;
+Index: drivers/gpu/arm/midgard/mali_kbase_mem_linux.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_mem_linux.h b/drivers/gpu/arm/midgard/mali_kbase_mem_linux.h
+--- a/drivers/gpu/arm/midgard/mali_kbase_mem_linux.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_mem_linux.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -181,7 +181,7 @@
+  * Take the provided region and make all the physical pages within it
+  * reclaimable by the kernel, updating the per-process VM stats as well.
+  * Remove any CPU mappings (as these can't be removed in the shrinker callback
+- * as mmap_sem might already be taken) but leave the GPU mapping intact as
++ * as mmap_lock might already be taken) but leave the GPU mapping intact as
+  * and until the shrinker reclaims the allocation.
+  *
+  * Note: Must be called with the region lock of the containing context.
+Index: drivers/gpu/arm/midgard/mali_kbase_mem_pool.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_mem_pool.c b/drivers/gpu/arm/midgard/mali_kbase_mem_pool.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_mem_pool.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_mem_pool.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -318,7 +318,11 @@
+ 	struct kbase_mem_pool *pool;
+ 	size_t pool_size;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	pool = container_of(s, struct kbase_mem_pool, reclaim);
++#else
++	pool = s->private_data;
++#endif
+ 
+ 	kbase_mem_pool_lock(pool);
+ 	if (pool->dont_reclaim && !pool->dying) {
+@@ -337,7 +341,11 @@
+ 	struct kbase_mem_pool *pool;
+ 	unsigned long freed;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	pool = container_of(s, struct kbase_mem_pool, reclaim);
++#else
++    pool = s->private_data;
++#endif
+ 
+ 	kbase_mem_pool_lock(pool);
+ 	if (pool->dont_reclaim && !pool->dying) {
+@@ -384,6 +392,7 @@
+ 	INIT_LIST_HEAD(&pool->page_list);
+ 
+ 	/* Register shrinker */
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0))
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 0)
+ 	pool->reclaim.shrink = kbase_mem_pool_reclaim_shrink;
+ #else
+@@ -397,6 +406,17 @@
+ 	pool->reclaim.batch = 0;
+ #endif
+ 	register_shrinker(&pool->reclaim);
++#else
++	pool->reclaim = shrinker_alloc(0, "mali_kbase_pool");
++	if (!pool->reclaim)
++		return 1;
++	pool->reclaim->count_objects = kbase_mem_pool_reclaim_count_objects;
++	pool->reclaim->scan_objects = kbase_mem_pool_reclaim_scan_objects;
++	pool->reclaim->seeks = DEFAULT_SEEKS;
++	pool->reclaim->batch = 0;
++	pool->reclaim->private_data = pool;
++	shrinker_register(pool->reclaim);
++#endif
+ 
+ 	pool_dbg(pool, "initialized\n");
+ 
+@@ -421,7 +441,11 @@
+ 
+ 	pool_dbg(pool, "terminate()\n");
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 7, 0))
+ 	unregister_shrinker(&pool->reclaim);
++#else
++	shrinker_free(pool->reclaim);
++#endif
+ 
+ 	kbase_mem_pool_lock(pool);
+ 	pool->max_size = 0;
+Index: drivers/gpu/arm/midgard/mali_kbase_softjobs.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_softjobs.c b/drivers/gpu/arm/midgard/mali_kbase_softjobs.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_softjobs.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_softjobs.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -136,7 +136,11 @@
+ {
+ 	struct kbase_vmap_struct map;
+ 	void *user_result;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	struct timespec ts;
++#else
++	struct timespec64 ts;
++#endif
+ 	struct base_dump_cpu_gpu_counters data;
+ 	u64 system_time;
+ 	u64 cycle_counter;
+@@ -744,6 +748,36 @@
+ 	kunmap(pages[*target_page_nr]);
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0)
++static void *dma_buf_kmap_page(struct kbase_mem_phy_alloc *gpu_alloc,
++			       unsigned long page_num, struct page **page)
++{
++	struct sg_table *sgt = gpu_alloc->imported.umm.sgt;
++	struct sg_page_iter sg_iter;
++	unsigned long page_index = 0;
++
++	if (WARN_ON(gpu_alloc->type != KBASE_MEM_TYPE_IMPORTED_UMM))
++		return NULL;
++
++	if (!sgt)
++		return NULL;
++
++	if (WARN_ON(page_num >= gpu_alloc->nents))
++		return NULL;
++
++	for_each_sg_page(sgt->sgl, &sg_iter, sgt->nents, 0) {
++		if (page_index == page_num) {
++			*page = sg_page_iter_page(&sg_iter);
++
++			return kmap(*page);
++		}
++		page_index++;
++	}
++
++	return NULL;
++}
++#endif
++
+ int kbase_mem_copy_from_extres(struct kbase_context *kctx,
+ 		struct kbase_debug_copy_buffer *buf_data)
+ {
+@@ -807,8 +841,12 @@
+ 			goto out_unlock;
+ 
+ 		for (i = 0; i < dma_to_copy/PAGE_SIZE; i++) {
+-
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0)
++			struct page *pg;
++			void *extres_page = dma_buf_kmap_page(gpu_alloc, i, &pg);
++#else
+ 			void *extres_page = dma_buf_kmap(dma_buf, i);
++#endif
+ 
+ 			if (extres_page)
+ 				kbase_mem_copy_from_extres_page(kctx,
+@@ -817,7 +855,11 @@
+ 						&target_page_nr,
+ 						offset, &to_copy);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0)
++			kunmap(pg);
++#else
+ 			dma_buf_kunmap(dma_buf, i, extres_page);
++#endif
+ 			if (target_page_nr >= buf_data->nr_pages)
+ 				break;
+ 		}
+Index: drivers/gpu/arm/midgard/mali_kbase_sync.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_sync.h b/drivers/gpu/arm/midgard/mali_kbase_sync.h
+--- a/drivers/gpu/arm/midgard/mali_kbase_sync.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_sync.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -30,6 +30,7 @@
+ #ifndef MALI_KBASE_SYNC_H
+ #define MALI_KBASE_SYNC_H
+ 
++#include <linux/fdtable.h>
+ #include <linux/syscalls.h>
+ #ifdef CONFIG_SYNC
+ #include <sync.h>
+@@ -160,10 +161,12 @@
+  */
+ static inline void kbase_sync_fence_close_fd(int fd)
+ {
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 17, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 17, 0)
++	sys_close(fd);
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
+ 	ksys_close(fd);
+ #else
+-	sys_close(fd);
++	close_fd(fd);
+ #endif
+ }
+ 
+Index: drivers/gpu/arm/midgard/mali_kbase_sync_android.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_sync_android.c b/drivers/gpu/arm/midgard/mali_kbase_sync_android.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_sync_android.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_sync_android.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -507,7 +507,11 @@
+ 
+ 	info->fence = katom->fence;
+ 	info->status = kbase_fence_get_status(katom->fence);
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	strlcpy(info->name, katom->fence->name, sizeof(info->name));
++#else
++	strscpy(info->name, katom->fence->name, sizeof(info->name));
++#endif
+ 
+ 	return 0;
+ }
+@@ -520,7 +524,11 @@
+ 
+ 	info->fence = katom->fence;
+ 	info->status = kbase_fence_get_status(katom->fence);
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	strlcpy(info->name, katom->fence->name, sizeof(info->name));
++#else
++	strscpy(info->name, katom->fence->name, sizeof(info->name));
++#endif
+ 
+ 	return 0;
+ }
+Index: drivers/gpu/arm/midgard/mali_kbase_sync_file.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_sync_file.c b/drivers/gpu/arm/midgard/mali_kbase_sync_file.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_sync_file.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_sync_file.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -307,8 +307,11 @@
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 8, 0))
+ 	scnprintf(info->name, sizeof(info->name), "%u#%u",
+ 		  fence->context, fence->seqno);
+-#else
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0))
+ 	scnprintf(info->name, sizeof(info->name), "%llu#%u",
++		  fence->context, fence->seqno);
++#else
++	scnprintf(info->name, sizeof(info->name), "%llu#%llu",
+ 		  fence->context, fence->seqno);
+ #endif
+ }
+Index: drivers/gpu/arm/midgard/mali_kbase_tlstream.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_tlstream.c b/drivers/gpu/arm/midgard/mali_kbase_tlstream.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_tlstream.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_tlstream.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -607,10 +607,18 @@
+  */
+ static u64 kbasep_tlstream_get_timestamp(void)
+ {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	struct timespec ts;
++#else
++	struct timespec64 ts;
++#endif
+ 	u64             timestamp;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	getrawmonotonic(&ts);
++#else
++	ktime_get_raw_ts64(&ts);
++#endif
+ 	timestamp = (u64)ts.tv_sec * NSECS_IN_SEC + ts.tv_nsec;
+ 	return timestamp;
+ }
+@@ -662,7 +670,11 @@
+ 	KBASE_DEBUG_ASSERT(max_write_size >= sizeof(string_len) + sizeof(char));
+ 	max_write_size -= sizeof(string_len);
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0) // Sometime between 6.5 and 6.10 this needs to change
+ 	string_len = strlcpy(
++#else
++	string_len = strscpy(
++#endif
+ 			&buffer[pos + sizeof(string_len)],
+ 			string,
+ 			max_write_size);
+Index: drivers/gpu/arm/midgard/mali_kbase_vinstr.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_kbase_vinstr.c b/drivers/gpu/arm/midgard/mali_kbase_vinstr.c
+--- a/drivers/gpu/arm/midgard/mali_kbase_vinstr.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_kbase_vinstr.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -138,9 +138,15 @@
+  */
+ static u64 kbasep_vinstr_timestamp_ns(void)
+ {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 	struct timespec ts;
+ 
+ 	getrawmonotonic(&ts);
++#else
++	struct timespec64 ts;
++
++	ktime_get_raw_ts64(&ts);
++#endif
+ 	return (u64)ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec;
+ }
+ 
+Index: drivers/gpu/arm/midgard/mali_malisw.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/mali_malisw.h b/drivers/gpu/arm/midgard/mali_malisw.h
+--- a/drivers/gpu/arm/midgard/mali_malisw.h	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/mali_malisw.h	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -45,26 +45,6 @@
+ #define SIZE_MAX        (~(size_t)0)
+ #endif /* LINUX_VERSION_CODE */
+ 
+-/**
+- * MIN - Return the lesser of two values.
+- *
+- * As a macro it may evaluate its arguments more than once.
+- * Refer to MAX macro for more details
+- */
+-#define MIN(x, y)	((x) < (y) ? (x) : (y))
+-
+-/**
+- * MAX -  Return the greater of two values.
+- *
+- * As a macro it may evaluate its arguments more than once.
+- * If called on the same two arguments as MIN it is guaranteed to return
+- * the one that MIN didn't return. This is significant for types where not
+- * all values are comparable e.g. NaNs in floating-point types. But if you want
+- * to retrieve the min and max of two values, consider using a conditional swap
+- * instead.
+- */
+-#define MAX(x, y)	((x) < (y) ? (y) : (x))
+-
+ /**
+  * @hideinitializer
+  * Function-like macro for suppressing unused variable warnings. Where possible
+Index: drivers/gpu/arm/midgard/tests/mali_kutf_irq_test/mali_kutf_irq_test_main.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/tests/mali_kutf_irq_test/mali_kutf_irq_test_main.c b/drivers/gpu/arm/midgard/tests/mali_kutf_irq_test/mali_kutf_irq_test_main.c
+--- a/drivers/gpu/arm/midgard/tests/mali_kutf_irq_test/mali_kutf_irq_test_main.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/tests/mali_kutf_irq_test/mali_kutf_irq_test_main.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -93,9 +93,14 @@
+ 
+ 	val = kbase_reg_read(kbdev, GPU_CONTROL_REG(GPU_IRQ_STATUS));
+ 	if (val & TEST_IRQ) {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 		struct timespec tval;
+ 
+ 		getnstimeofday(&tval);
++#else
++		struct timespec64 tval;
++		ktime_get_real_ts64(&tval);
++#endif
+ 		irq_time = SEC_TO_NANO(tval.tv_sec) + (tval.tv_nsec);
+ 
+ 		kbase_reg_write(kbdev, GPU_CONTROL_REG(GPU_IRQ_CLEAR), val);
+@@ -184,12 +189,20 @@
+ 			GPU_IRQ_HANDLER);
+ 
+ 	for (i = 0; i < NR_TEST_IRQS; i++) {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 		struct timespec tval;
++#else
++		struct timespec64 tval;
++#endif
+ 		u64 start_time;
+ 		int ret;
+ 
+ 		triggered = false;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0))
+ 		getnstimeofday(&tval);
++#else
++		ktime_get_real_ts64(&tval);
++#endif
+ 		start_time = SEC_TO_NANO(tval.tv_sec) + (tval.tv_nsec);
+ 
+ 		/* Trigger fake IRQ */
+Index: drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c b/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c
+--- a/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c	(revision 82e1494bba848d7066624ee35082d60c109bed6c)
++++ b/drivers/gpu/arm/midgard/thirdparty/mali_kbase_mmap.c	(revision 15b8c75c6e6441801db1c1b00623babf6489c66e)
+@@ -9,6 +9,7 @@
+  * Boston, MA  02110-1301, USA.
+  */
+ 
++#include <linux/mm.h>
+ #include "linux/mman.h"
+ #include "../mali_kbase.h"
+ 
+@@ -133,97 +134,23 @@
+ 		*info, bool is_shader_code, bool is_same_4gb_page)
+ {
+ 	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	unsigned long length, low_limit, high_limit, gap_start, gap_end;
++	unsigned long length, gap_start, gap_end;
+ 
++	MA_STATE(mas, &mm->mm_mt, 0, 0);
+ 	/* Adjust search length to account for worst case alignment overhead */
+ 	length = info->length + info->align_mask;
+ 	if (length < info->length)
+ 		return -ENOMEM;
+ 
+-	/*
+-	 * Adjust search limits by the desired length.
+-	 * See implementation comment at top of unmapped_area().
+-	 */
+-	gap_end = info->high_limit;
+-	if (gap_end < length)
++	if (mas_empty_area_rev(&mas, info->low_limit, info->high_limit - 1,
++				length))
+ 		return -ENOMEM;
+-	high_limit = gap_end - length;
+-
+-	if (info->low_limit > high_limit)
+-		return -ENOMEM;
+-	low_limit = info->low_limit + length;
+-
+-	/* Check highest gap, which does not precede any rbtree node */
+-	gap_start = mm->highest_vm_end;
+-	if (gap_start <= high_limit) {
+-		if (align_and_check(&gap_end, gap_start, info,
+-				is_shader_code, is_same_4gb_page))
+-			return gap_end;
+-	}
+-
+-	/* Check if rbtree root looks promising */
+-	if (RB_EMPTY_ROOT(&mm->mm_rb))
+-		return -ENOMEM;
+-	vma = rb_entry(mm->mm_rb.rb_node, struct vm_area_struct, vm_rb);
+-	if (vma->rb_subtree_gap < length)
+-		return -ENOMEM;
+-
+-	while (true) {
+-		/* Visit right subtree if it looks promising */
+-		gap_start = vma->vm_prev ? vma->vm_prev->vm_end : 0;
+-		if (gap_start <= high_limit && vma->vm_rb.rb_right) {
+-			struct vm_area_struct *right =
+-				rb_entry(vma->vm_rb.rb_right,
+-					 struct vm_area_struct, vm_rb);
+-			if (right->rb_subtree_gap >= length) {
+-				vma = right;
+-				continue;
+-			}
+-		}
+-
+-check_current:
+-		/* Check if current node has a suitable gap */
+-		gap_end = vma->vm_start;
+-		if (gap_end < low_limit)
+-			return -ENOMEM;
+-		if (gap_start <= high_limit && gap_end - gap_start >= length) {
+-			/* We found a suitable gap. Clip it with the original
+-			 * high_limit. */
+-			if (gap_end > info->high_limit)
+-				gap_end = info->high_limit;
+ 
+-			if (align_and_check(&gap_end, gap_start, info,
+-					is_shader_code, is_same_4gb_page))
+-				return gap_end;
+-		}
+-
+-		/* Visit left subtree if it looks promising */
+-		if (vma->vm_rb.rb_left) {
+-			struct vm_area_struct *left =
+-				rb_entry(vma->vm_rb.rb_left,
+-					 struct vm_area_struct, vm_rb);
+-			if (left->rb_subtree_gap >= length) {
+-				vma = left;
+-				continue;
+-			}
+-		}
+-
+-		/* Go back up the rbtree to find next candidate node */
+-		while (true) {
+-			struct rb_node *prev = &vma->vm_rb;
+-
+-			if (!rb_parent(prev))
+-				return -ENOMEM;
+-			vma = rb_entry(rb_parent(prev),
+-				       struct vm_area_struct, vm_rb);
+-			if (prev == vma->vm_rb.rb_right) {
+-				gap_start = vma->vm_prev ?
+-					vma->vm_prev->vm_end : 0;
+-				goto check_current;
+-			}
+-		}
+-	}
++	gap_end = mas.last + 1;
++    gap_start = mas.index;
++	if (align_and_check(&gap_end, gap_start, info,
++            is_shader_code, is_same_4gb_page))
++		return gap_end;
+ 
+ 	return -ENOMEM;
+ }
+@@ -337,8 +264,12 @@
+ 			kbase_gpu_vm_unlock(kctx);
+ #ifndef CONFIG_64BIT
+ 	} else {
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 10, 0)
+ 		return current->mm->get_unmapped_area(filp, addr, len, pgoff,
+ 						      flags);
++#else
++
++#endif
+ #endif
+ 	}
+ 
