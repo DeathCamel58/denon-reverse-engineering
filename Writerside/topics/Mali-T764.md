@@ -16,6 +16,9 @@ Arm's site](https://developer.arm.com/downloads/-/mali-drivers/midgard-kernel), 
 | `r32p0-01eac0`       | `6.11`         | <resource src="Mali_Midgard_r32p0-01eac0_kernel_6.11.patch"/>     |
 | `r32p0-01eac0`       | `6.12-rc6`     | <resource src="Mali_Midgard_r32p0-01eac0_kernel_6.12-rc6.patch"/> |
 
+> Engine OS v4.1.0 uses Mali Midgard version `r18p0-01rel0`
+> {style="note"}
+
 > [Paranoid Android](https://amatriz.net/tags/mali/) seems to sporadically update patches for the Mali Midgard drivers
 > as well.
 > {style="note"}
