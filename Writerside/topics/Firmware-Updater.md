@@ -32,4 +32,6 @@ Path: `/usr/Engine/FirmwareUpdater`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:${LD_LIBRARY_PATH} /usr/Engine/FirmwareUpdater`
 
-<code-block src="applications/firmware-updater/runtime" />
+```
+```
+{ src="applications/firmware-updater/runtime" }

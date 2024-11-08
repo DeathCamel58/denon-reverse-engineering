@@ -28,7 +28,9 @@ Path: `/bin/test-app-launcher`
 
 `JP11TestApp`
 
-<code-block src="applications/test-app/new-runtime" />
+```
+```
+{ src="applications/test-app/new-runtime" }
 
 ## Old Test App
 
@@ -49,4 +51,6 @@ the current device.
 
 `JP11TestApp`
 
-<code-block src="applications/test-app/old-runtime" />
+```
+```
+{ src="applications/test-app/old-runtime" }

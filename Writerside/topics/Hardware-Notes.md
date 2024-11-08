@@ -13,9 +13,9 @@ To use the Mali Midgard GPU kernel driver, download the driver `tgz` from [
 Arm's site](https://developer.arm.com/downloads/-/mali-drivers/midgard-kernel), extract
 `driver/product/kernel/*` into your kernel sources, and apply this patch:
 
-| Mali Midgard Version | Kernel Version | Patch                                                  |
-|----------------------|----------------|--------------------------------------------------------|
-| `r32p0`              | `6.11`         | <resource src="Mali_Midgard_r32p0_kernel_6.11.patch"/> |
+| Mali Midgard Version | Kernel Version    | Patch                                                  |
+|----------------------|-------------------|--------------------------------------------------------|
+| `r32p0`              | `6.11`-`6.12-rc6` | <resource src="Mali_Midgard_r32p0_kernel_6.11.patch"/> |
 
 > [Paranoid Android](https://amatriz.net/tags/mali/) seems to sporadically update patches for the Mali Midgard drivers
 > as well.

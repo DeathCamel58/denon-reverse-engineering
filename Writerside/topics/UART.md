@@ -40,47 +40,67 @@ app to recover.
 
 Fastboot's OEM commands are specific to a device manufacturer. Here are the commands that I've found:
 
-<code-block src="devices/JP11/fastboot-oem-commands" />
+```
+```
+{ src="devices/JP11/fastboot-oem-commands" }
 
 These were found by dumping `/dev/mmcblk0p6`, then running `strings mmcblk0p6 | grep oem`.
 
 #### U-Boot Boot Log {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-boot-log" />
+```
+```
+{ src="devices/JP11/u-boot-boot-log" }
 
 #### Environment Variables {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-environment-variables" />
+```
+```
+{ src="devices/JP11/u-boot-environment-variables" }
 
 #### Clocks {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-clocks" />
+```
+```
+{ src="devices/JP11/u-boot-clocks" }
 
 #### Console Info {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-coninfo" />
+```
+```
+{ src="devices/JP11/u-boot-coninfo" }
 
 #### MMC Info {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-mmc-info" />
+```
+```
+{ src="devices/JP11/u-boot-mmc-info" }
 
 #### Hush Shell Variables {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-showvar" />
+```
+```
+{ src="devices/JP11/u-boot-showvar" }
 
 #### Version {collapsible="true"}
 
-<code-block src="devices/JP11/u-boot-version" />
+```
+```
+{ src="devices/JP11/u-boot-version" }
 
 ### Linux
 
 #### dmesg {collapsible="true"}
 
-<code-block src="devices/JP11/linux-dmesg" />
+```
+```
+{ src="devices/JP11/linux-dmesg" }
 
 #### journalctl {collapsible="true"}
 
-<code-block src="devices/JP11/linux-journalctl" />
+```
+```
+{ src="devices/JP11/linux-journalctl" }
 
 ## MPC Live
 
@@ -116,7 +136,9 @@ Niklas Nisbeth's work on [their site](https://niklasnisbeth.gitlab.io/mpc-intern
 
 #### Boot Log {collapsible="true"}
 
-<code-block src="devices/ACV8/linux-boot-log" />
+```
+```
+{ src="devices/ACV8/linux-boot-log" }
 
 ## Other Devices
 

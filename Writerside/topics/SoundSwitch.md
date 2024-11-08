@@ -34,4 +34,6 @@ Path: `/usr/SoundSwitch/SoundSwitch`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:/usr/SoundSwitch/libraries:${LD_LIBRARY_PATH} /usr/SoundSwitch/SoundSwitch`
 
-<code-block src="applications/soundswitch/runtime" />
+```
+```
+{ src="applications/soundswitch/runtime" }

@@ -31,4 +31,6 @@ Path: `/usr/Engine/Reporter`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:${LD_LIBRARY_PATH} /usr/Engine/Reporter`
 
-<code-block src="applications/reporter/runtime" />
+```
+```
+{ src="applications/reporter/runtime" }

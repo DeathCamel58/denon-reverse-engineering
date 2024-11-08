@@ -31,4 +31,6 @@ Path: `/usr/Engine/MidiDeviceScanner`
 
 `LD_LIBRARY_PATH=/usr/qt/lib:${LD_LIBRARY_PATH} /usr/Engine/MidiDeviceScanner`
 
-<code-block src="applications/midi-device-scanner/runtime" />
+```
+```
+{ src="applications/midi-device-scanner/runtime" }
