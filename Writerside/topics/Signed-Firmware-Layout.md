@@ -53,6 +53,14 @@ After removing the header from the file, `dumpimage -l <image>` on `SCLIVE2-4.1.
 
 { src="firmware-layout/signed-dumpimage-l" }
 
-As of now, I don't know how to find the rootfs and extract it.
-Per [simponvpe](https://github.com/TheKikGen/MPC-LiveXplore/issues/68#issuecomment-2434758248)'s instructions, I'm
-unable to extract the XZ image. This seems like it's currently being worked on though (last message on 10/24/2024).
+The rootfs can be extracted with `binwalk -eM <image>`. The rootfs will be in a subfolder in `extractions` somewhere.
+
+Example locations:
+
+- `SCLIVE2-4.1.0-Update` extracts rootfs to `extractions/SCLIVE2-4.1.0-Update.img.extracted/794628/decompressed.bin.extracted/0/rootfs/`
+- `PRIME4PLUS-4.1.0-Update` extracts rootfs to `extractions/PRIME4PLUS-4.1.0-Update.img.extracted/7945B0/decompressed.bin.extracted/0/rootfs/`
+- HeadRush Core 3.2 extracts rootfs to `extractions/core-3.2.img.extracted/668DD8/decompressed.bin.extracted/0/rootfs/`
+- HeadRush Prime extracts rootfs to `extractions/prime-3.2.img.extracted/6C2190/decompressed.bin.extracted/0/rootfs/boot/`
+
+> I'm not currently sure how to extract just the rootfs image. Once I find out, I'll update here.
+> {style="warning"}

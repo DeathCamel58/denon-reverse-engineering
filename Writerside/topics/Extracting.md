@@ -16,6 +16,14 @@
 
 Now the rootfs is in a folder for you to browse/modify.
 
+## Signed Firmware Images
+
+1. Make sure you have the latest version of binwalk (version `2.x` couldn't extract it, `3.1.1` could)
+2. Extract the image with `binwalk -eM <image>`. The rootfs will be in a subfolder in `extractions` somewhere.
+
+> I'm not currently sure how to extract just the rootfs image. Once I find out, I'll update here.
+> {style="warning"}
+
 ## Additional References
 
 * [`mpcimg`](https://github.com/TheKikGen/MPC-LiveXplore/blob/master/imgmaker/mpcimg) - Tool for extracting and
