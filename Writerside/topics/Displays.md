@@ -1,9 +1,9 @@
 # Displays
 
 In the firmwares I've analyzed, the display panel (found in the device tree as `panel@0`) is either a [
-`UMO-P076MD-T`](https://simplespec.microtipsusa.com/uploads/spec/datasheetFile/1906/MT_UMO-P076MD-T_V0_R2_20160526P.PDF)
-or a `UMO-P080MD-T` (can't find the datasheet). Both of these panels are made
-by [Microtips Technology](https://microtipsusa.com).
+`UMO-P076MD-T`](https://simplespec.microtipsusa.com/uploads/spec/datasheetFile/1906/MT_UMO-P076MD-T_V0_R2_20160526P.PDF),
+`UMO-P080MD-T` (can't find the datasheet), or `wj40atyaqmnn0` (can't find any data about this one, only used on the
+`hg04`). Both of the UMO panels are made by [Microtips Technology](https://microtipsusa.com).
 
 To get additional datasheets, emailing `mtusainfo@microtipsusa.com` is likely a good method. They seemed willing to
 provide them when I was on the phone with them.
@@ -110,4 +110,5 @@ issue in this.
 
 ```
 ```
+
 { src="hardware-notes/displays-dmesg-log" }
