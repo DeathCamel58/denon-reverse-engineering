@@ -1,0 +1,51 @@
+/dts-v1/;
+// magic:               0xd00dfeed
+// totalsize:           0x8d01113 (147853587)
+// off_dt_struct:       0x38
+// off_dt_strings:      0x8d00d2c
+// off_mem_rsvmap:      0x28
+// version:             17
+// last_comp_version:   16
+// boot_cpuid_phys:     0x0
+// size_dt_strings:     0x67
+// size_dt_struct:      0x8d00cf4
+
+/ {
+    timestamp = <0x66ece023>;
+    description = "JP11 upgrade image";
+    compatible = "inmusic,jp11";
+    inmusic,devices = <0x15e4d00c>;
+    inmusic,version = "4.1.0";
+    images {
+        splash {
+            description = "Splash screen";
+            data = <0xfd377a58 0x5a000004 0xe6d6b446 0x04c08929 ...>
+            partition = "splash";
+            compression = "xz";
+            hash {
+                value = <0x4faf3337 0xf95a722d 0xb1b3acf9 0xc3b9b835 0x08a8e9ad>;
+                algo = "sha1";
+            };
+        };
+        recoverysplash {
+            description = "Update mode splash screen";
+            data = <0xfd377a58 0x5a000004 0xe6d6b446 0x04c0be2a ...>;
+            partition = "recoverysplash";
+            compression = "xz";
+            hash {
+                value = <0xf48fe31c 0xa9d64549 0xc9bf418e 0xd2f8867b 0x2d179bce>;
+                algo = "sha1";
+            };
+        };
+        rootfs {
+            description = "Root filesystem";
+            data = <0xfd377a58 0x5a000004 0xe6d6b446 0x04c08ddc ...>;
+            partition = "rootfs";
+            compression = "xz";
+            hash {
+                value = <0xa4407de0 0xfd5ba759 0x5e1bf541 0x317844a5 0xe591ab1f>;
+                algo = "sha1";
+            };
+        };
+    };
+};

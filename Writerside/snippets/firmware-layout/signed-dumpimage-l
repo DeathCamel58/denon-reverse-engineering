@@ -1,0 +1,29 @@
+FIT description: bootupd
+Created:         Thu Sep 19 22:38:27 2024
+ Image 0 (idbloader)
+  Description:  idbloader
+  Created:      Thu Sep 19 22:38:27 2024
+  Type:         Rockchip SD Boot Image
+  Compression:  uncompressed
+  Data Size:    116736 Bytes = 114.00 KiB = 0.11 MiB
+  Hash algo:    sha256
+  Hash value:   583719bec0261b7d7e295aad48b6f90d9b105819a7573b449535d98ed572800e
+ Image 1 (u-boot)
+  Description:  u-boot
+  Created:      Thu Sep 19 22:38:27 2024
+  Type:         Kernel Image
+  Compression:  uncompressed
+  Data Size:    470992 Bytes = 459.95 KiB = 0.45 MiB
+  Architecture: ARM
+  OS:           U-Boot
+  Load Address: unavailable
+  Entry Point:  unavailable
+  Hash algo:    sha256
+  Hash value:   21d7a7ca4d7732eea812aa871451c627d3070251c79a89997aecbe14ba9599a9
+ Default Configuration: 'config'
+ Configuration 0 (config)
+  Description:  image
+  Kernel:       unavailable
+  Sign algo:    sha256,rsa2048:denon-1
+  Sign value:   95200a1436369735d87ddb3aa10c922a39921af1bede6232c8618248869d61f0fa85d8fd79582105f0ef42a508baf016aefd1445958d0ddc8591f5e00fa404c8b409c79edd3f42f8d38411a70a6a05a943a2da4a73a1789760d4a90ef46f67a54de571fe11a13aeb83b666a84f71ed4412f679942c6b247fb3aa1b140b79328050801850822cbe9753e77c53cedc425a624ef148e251e51cfe12043091c926bb460afbe9b4760f80eef2ef91db8b25672af5ba17fbf88b322fa5fcc1ef7fb0d33655964e7d3b1969bd79ea7b23debb326be6d12e2d0fcdaf04014f0f9b9114d547815c7a8fd636255e4ebd60f3876b9c6340fd2724a734c17429ec065a4b29d4
+  Timestamp:    Thu Sep 19 22:38:27 2024
