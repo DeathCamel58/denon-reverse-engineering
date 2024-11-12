@@ -139,6 +139,7 @@ products:
 Below is an example `manifest.yaml` that shows a typical structure with two test applications:
 
 ```yaml
+testApps:
 - version: 1.0.0
   osVersionID: 2023.02.11
   products:
