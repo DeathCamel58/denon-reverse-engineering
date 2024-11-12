@@ -7,7 +7,7 @@
     <build-profile instance="firmware">
         <variables>
             <noindex-content>false</noindex-content>
-            <analytics-head-script-file>./gtag.js</analytics-head-script-file>
+            <analytics-head-script-file>gtag.js</analytics-head-script-file>
         </variables>
     </build-profile>
 
