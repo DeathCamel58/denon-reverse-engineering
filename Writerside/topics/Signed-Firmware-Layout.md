@@ -57,10 +57,16 @@ The rootfs can be extracted with `binwalk -eM <image>`. The rootfs will be in a 
 
 Example locations:
 
-- `SCLIVE2-4.1.0-Update` extracts rootfs to `extractions/SCLIVE2-4.1.0-Update.img.extracted/794628/decompressed.bin.extracted/0/rootfs/`
-- `PRIME4PLUS-4.1.0-Update` extracts rootfs to `extractions/PRIME4PLUS-4.1.0-Update.img.extracted/7945B0/decompressed.bin.extracted/0/rootfs/`
-- HeadRush Core 3.2 extracts rootfs to `extractions/core-3.2.img.extracted/668DD8/decompressed.bin.extracted/0/rootfs/`
-- HeadRush Prime extracts rootfs to `extractions/prime-3.2.img.extracted/6C2190/decompressed.bin.extracted/0/rootfs/boot/`
+| Device           | Firmware Version | rootfs path                                                                                           |
+|------------------|------------------|-------------------------------------------------------------------------------------------------------|
+| SC Live 2        | `4.1.0`          | `extractions/SCLIVE2-4.1.0-Update.img.extracted/794628/decompressed.bin.extracted/0/rootfs/`          |
+| SC Live 4        | `4.1.0`          | `extractions/PRIME4PLUS-4.1.0-Update.img.extracted/7945B0/decompressed.bin.extracted/0/rootfs/`       |
+| HeadRush Core    | `3.2`            | `extractions/core-3.2.img.extracted/668DD8/decompressed.bin.extracted/0/rootfs/`                      |
+| HeadRush Prime   | `3.2`            | `extractions/prime-3.2.img.extracted/6C2190/decompressed.bin.extracted/0/rootfs/boot/`                |
+| Prime 4 Plus     | `4.1.0`          | `extractions/PRIME4PLUS-4.1.0-Update.img.extracted/7945B0/decompressed.bin.extracted/0/rootfs/`       |
+| Prime Go +       | `4.1.0`          | `extractions/PRIMEGOPLUS-4.1.0-Update.img.extracted/7945D0/decompressed.bin.extracted/0/rootfs/`      |
+| Mixstream Pro Go | `4.1.0`          | `extractions/MIXSTREAMPROGO-4.1.0-Update.img.extracted/672AC8/decompressed.bin.extracted/0/rootfs/`   |
+| Mixstream Pro +  | `4.1.0`          | `extractions/MIXSTREAMPROPLUS-4.1.0-Update.img.extracted/672A98/decompressed.bin.extracted/0/rootfs/` |
 
 > I'm not currently sure how to extract just the rootfs image. Once I find out, I'll update here.
 > {style="warning"}
