@@ -12,6 +12,3 @@
 | Pedalboard  | `Eleven`                | `MG01`      | [](rk3288-az01-mg01-dts.md)                                                                                                                        |
 | Core        | `HeadRush Core`         | `HV01`      | [](rk3288-az05-hv01-dts.md)                                                                                                                        |
 | Prime       | `HeadRush Prime`        | `HG06`      | [](rk3288-az05-hg06-dts.md)                                                                                                                        |
-
-> The devices with `UNKNOWN` as the hardware ID are because I haven't figured out how to extract the firmware
-> {style="note"}

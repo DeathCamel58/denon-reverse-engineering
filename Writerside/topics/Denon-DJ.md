@@ -21,9 +21,5 @@ Denon DJ/Numark's devices use the [](Engine-OS.md) operating system.
 | SC Live 2          | `DENON DJ SCX-2`            | `JP20`      | [](rk3288-az05-jp20-dts.md)                                                                                                                        |
 | SC Live 4          | `DENON DJ SCX-4`            | `JP21`      | [](rk3288-az05-jp21-dts.md)                                                                                                                        |
 
-> The devices with `UNKNOWN` as the hardware ID are because I haven't figured out how to extract the firmware
-> {style="note"}
-
-
 > The DTS [](rk3288-az01b-dts.md) exists, but I'm not sure what device uses it, or what it's for.
 > {style="note"}
