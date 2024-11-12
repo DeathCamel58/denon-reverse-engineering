@@ -56,7 +56,8 @@ I'm currently unsure of how V1 packaging works.
 
 1. Checks if `TestAppsCatalog.zip` exists on the root of the drive currently being scanned.
 2. Unzips the archive, and checks for [`manifest.yaml`](#v2-manifest-yaml)
-3. test
+3. Attempts to automatically launch the best script in `manifest.yaml`, allows the user to go to the UI listing of all
+   test apps, where the user can load any test app in the manifest.
 
 ##### `manifest.yaml` Documentation {id="v2-manifest-yaml"}
 
@@ -82,51 +83,56 @@ testApps:
 ###### Fields
 
 - `testApps`
-  - Description: A required top-level key. testApps must be named exactly as shown.
-  - Type: Array
-  - Contents: Each item in this array defines a single test application with specific properties as outlined below.
+    - Description: A required top-level key. testApps must be named exactly as shown.
+    - Type: Array
+    - Contents: Each item in this array defines a single test application with specific properties as outlined below.
 
 ###### Application Properties
 
 Each application entry in the `testApps` array contains the following fields:
 
 - `version`
-  - Description: Specifies the version of the test application.
-  - Type: String
-  - Example: 1.0.0
+    - Description: Specifies the version of the test application.
+    - Type: String
+    - Example: 1.0.0
 - `osVersionID`
-  - Description: The operating system version that the test application is compatible with.
-  - Type: String
-  - Example: 2023.02.11
+    - Description: The operating system version that the test application is compatible with.
+    - Type: String
+    - Example: 2023.02.11
 - `products`
-  - Description: An array of hardware IDs that the test app supports. This is used to specify the compatible devices for the application.
-  - Type: Array of Strings
-  - Example:
+    - Description: An array of hardware IDs that the test app supports. This is used to specify the compatible devices
+      for the application.
+    - Type: Array of Strings
+    - Example:
+
 ```yaml
 products:
-- JP11
-- JP12
+  - JP11
+  - JP12
 ```
+
 - `signedImage`
-  - Description: Likely indicates if the test application is digitally signed.
-  - Type: Boolean
-  - Example: true or false
+    - Description: Likely indicates if the test application is digitally signed.
+    - Type: Boolean
+    - Example: true or false
 - `basePath`
-  - Description: Specifies the folder within the archive (e.g., ZIP file) where the test application files are located.
-  - Type: String
-  - Example: jp11
+    - Description: Specifies the folder within the archive (e.g., ZIP file) where the test application files are
+      located.
+    - Type: String
+    - Example: jp11
 - `relativeExePath`
-  - Description: Specifies the executable file path relative to basePath that is used to launch the application.
-  - Type: String
-  - Example: JP11TestApp
+    - Description: Specifies the executable file path relative to basePath that is used to launch the application.
+    - Type: String
+    - Example: JP11TestApp
 - `launcher-XXXXXX`
-  - Description: Purpose is currently unknown. This field may be used as a reference to a launcher configuration or specific launcher type.
-  - Type: String
-  - Example: SomeLauncher
+    - Description: Purpose is currently unknown. This field may be used as a reference to a launcher configuration or
+      specific launcher type.
+    - Type: String
+    - Example: SomeLauncher
 - `name`
-  - Description: The display name of the test application.
-  - Type: String
-  - Example: JP11 Test App
+    - Description: The display name of the test application.
+    - Type: String
+    - Example: JP11 Test App
 
 ###### Example
 
@@ -136,7 +142,7 @@ Below is an example `manifest.yaml` that shows a typical structure with two test
 - version: 1.0.0
   osVersionID: 2023.02.11
   products:
-  - JP08
+    - JP08
   signedImage: False
   basePath: test-apps/jp08
   relativeExePath: JP08TestApp
@@ -145,7 +151,7 @@ Below is an example `manifest.yaml` that shows a typical structure with two test
 - version: 1.0.0
   osVersionID: 2023.02.11
   products:
-  - JP11
+    - JP11
   signedImage: False
   basePath: test-apps/jp11
   relativeExePath: JP11TestApp
