@@ -12,6 +12,16 @@ There are two different versions, depending on what firmware the device is runni
 > that works on other apps that render to `fb0`. I'd love to figure this out and include screenshots.
 > {style="note"}
 
+To launch this app, there is a button combination to hold that is different on different devices.
+
+| Device             | How to access                                     |
+|--------------------|---------------------------------------------------|
+| SC Live 4 (`JP21`) | <shortcut>Left Pad 1+Shift</shortcut> during boot |
+
+> If you find any additional key combinations to open this app, please file a PR or
+> issue [here](https://github.com/DeathCamel58/denon-reverse-engineering/issues)
+> {style="note"}
+
 ## New Test App
 
 This is a program that lists other test apps that are located on attached storage, and
@@ -140,24 +150,24 @@ Below is an example `manifest.yaml` that shows a typical structure with two test
 
 ```yaml
 testApps:
-- version: 1.0.0
-  osVersionID: 2023.02.11
-  products:
-    - JP08
-  signedImage: False
-  basePath: test-apps/jp08
-  relativeExePath: JP08TestApp
-  launcher-XXXXXX: SomeLauncher
-  name: JP08 Test App
-- version: 1.0.0
-  osVersionID: 2023.02.11
-  products:
-    - JP11
-  signedImage: False
-  basePath: test-apps/jp11
-  relativeExePath: JP11TestApp
-  launcher-XXXXXX: SomeLauncher
-  name: JP11 Test App
+  - version: 1.0.0
+    osVersionID: 2023.02.11
+    products:
+      - JP08
+    signedImage: False
+    basePath: test-apps/jp08
+    relativeExePath: JP08TestApp
+    launcher-XXXXXX: SomeLauncher
+    name: JP08 Test App
+  - version: 1.0.0
+    osVersionID: 2023.02.11
+    products:
+      - JP11
+    signedImage: False
+    basePath: test-apps/jp11
+    relativeExePath: JP11TestApp
+    launcher-XXXXXX: SomeLauncher
+    name: JP11 Test App
 ```
 
 ## Old Test App
