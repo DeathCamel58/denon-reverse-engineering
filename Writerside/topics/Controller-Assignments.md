@@ -31,7 +31,9 @@ PerformanceModes {
 This shows the mods that a button is mapped to with a standard press (`view`), the mode that it switches to when pressed
 again (`altView`), and the mode that it switches to when `SHIFT` is held while the button is pressed (`shiftView`).
 
-In this example, slicer mode (which isn't a feature of the `JP11`) can be added to the `LOOP` button by changing the `ListElement` for the button to:
+In this example, slicer mode (which isn't a feature of the `JP11`) can be added to the `LOOP` button by changing the
+`ListElement` for the button to:
+
 ```
 ListElement {
     note: 12
@@ -39,3 +41,6 @@ ListElement {
     shiftView: 'SLICER'
 }
 ```
+
+Slicer enabling [test apps](HARDWARE-ID-Test-App.md) for the `JP11`, `JP11S`, `JP20`, `NH08`, `NH09`, and `NH10` can be
+downloaded here: <resource src="TestAppsCatalog-Slicer.zip"/>
