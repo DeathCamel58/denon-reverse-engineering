@@ -1,7 +1,11 @@
 # Recompressing
 
 > I'm currently working on my own firmware modification utility that will allow easy plugin support for automated
-> modifications across many of the firmware images
+> modifications across many of the firmware images.
+>
+> This extraction utility can be found
+> on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework). Contact
+> me to get access.
 > {style="note"}
 
 ## Prerequisites
