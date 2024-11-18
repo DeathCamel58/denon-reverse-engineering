@@ -56,10 +56,10 @@ metadata layout in the firmware.
 
 For example, `PRIME4PLUS-3.1.0-Update.img` contains:
 
-| Offset | Description |
-|--------|-------------|
-| `0x18` | `0xa8`      |
-| `0x26` | `0x09`      |
+| Offset | Value  |
+|--------|--------|
+| `0x18` | `0xa8` |
+| `0x26` | `0x09` |
 
 This tells us that we need to go to `0xa8` to get the first partition's metadata. Partition's metadata is `0x40` in
 length, so we can read this into a buffer.
