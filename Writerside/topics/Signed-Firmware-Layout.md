@@ -83,12 +83,14 @@ Example partition metadata:
 The partition metadata that I have figured out the meaning of is as follows (offset is the offset from the beginning of
 the partition's metadata):
 
-| Offset          | Description                                                                   |
-|-----------------|-------------------------------------------------------------------------------|
-| `0x0`-`0x3`     | `BOOT` or `PART` (probably whether this is a boot partition, or a normal one) |
-| `0x8`-`0xF`     | The address for the beginning of the partition table (in little endian)       |
-| :grey_question: | :grey_question:                                                               |
-| `0x20`-`0x3f`   | :grey_question: Likely the SHA256 of the partition data                       |
+| Offset        | Description                                                                          |
+|---------------|--------------------------------------------------------------------------------------|
+| `0x0`-`0x3`   | `BOOT` or `PART` (probably whether this is a boot partition, or a normal one)        |
+| `0x8`-`0xf`   | The address for the beginning of the partition table (in little endian)              |
+| `0x10`-`0x17` | The size of the partition data                                                       |
+| `0x18`-`0x1b` | :grey_question: Completely unknown                                                   |
+| `0x1c`-`0x1f` | :grey_question: Looks like it could be the partition number (partition # per U-Boot) |
+| `0x20`-`0x3f` | :grey_question: Likely the SHA256 of the partition data                              |
 
 ## Data
 
