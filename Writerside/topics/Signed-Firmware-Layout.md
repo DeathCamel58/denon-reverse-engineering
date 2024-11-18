@@ -86,6 +86,7 @@ the partition's metadata):
 | `0x0`-`0x3`     | `BOOT` or `PART` (probably whether this is a boot partition, or a normal one) |
 | `0x8`-`0xF`     | The address for the beginning of the partition table (in little endian)       |
 | :grey_question: | :grey_question:                                                               |
+| `0x20`-`0x3f`   | :grey_question: Likely the SHA256 of the partition data                       |
 
 ## Data
 
