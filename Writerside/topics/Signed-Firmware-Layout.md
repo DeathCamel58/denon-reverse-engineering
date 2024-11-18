@@ -42,7 +42,50 @@ number of these strings can be found at offset `0x24`).
 > Read in data up to the byte value `0x00` four times. This yields: `JC11S`, `JP11S`, `JP20`, and `JP21` as the devices
 > that are supported
 
-The next data is a series of partitions in the image. I'm currently unsure how to determine any further in the images.
+### Partitions
+
+Before retrieving the partitions, we need to look at a couple values at different offsets to determine the partition
+metadata layout in the firmware.
+
+| Offset | Description                             |
+|--------|-----------------------------------------|
+| `0x18` | The beginning address of the partitions |
+| `0x26` | The number of partitions in the image   |
+
+For example, `PRIME4PLUS-3.1.0-Update.img` contains:
+
+| Offset | Description |
+|--------|-------------|
+| `0x18` | `0xa8`      |
+| `0x26` | `0x09`      |
+
+This tells us that we need to go to `0xa8` to get the first partition's metadata. Partition's metadata is `0x40` in
+length, so we can read this into a buffer.
+
+Since we know we have 9 partitions, we read this 9 times before we reach the end of all partitions' metadata.
+
+Example partition metadata:
+
+| Partition | Metadata                                                                                                                                                                                          |
+|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1         | `42 4F 4F 54 00 00 00 80 F0 03 00 00 00 00 00 00 1C DC 08 00 00 00 00 00 00 00 00 00 01 00 00 00 3B 09 D8 3C C2 E1 4D 0F 1E 88 32 B8 EE E1 B9 24 23 49 D1 25 C7 6A 75 32 DB 1C E3 8D B3 1A 11 28` |
+| 2         | `42 4F 4F 54 00 00 00 80 10 E0 08 00 00 00 00 00 34 C5 08 00 00 00 00 00 00 00 00 00 02 00 00 00 3F EE 62 5F F0 71 9F FA C0 3D 78 37 75 54 D9 5D 53 65 2D 34 C7 7C 90 92 2D F8 D6 37 5B 60 6C CC` |
+| 3         | `42 4F 4F 54 00 00 00 80 48 A5 11 00 00 00 00 00 34 C5 08 00 00 00 00 00 00 00 00 00 04 00 00 00 A9 7F A5 37 05 8B 57 BA 06 92 8B 89 ED F9 BD 24 3B 13 05 BA 89 D0 A1 DC 70 28 F1 BD 06 AE DF 5D` |
+| 4         | `50 41 52 54 01 00 00 80 80 6A 1A 00 00 00 00 00 B0 15 00 00 00 00 00 00 2E 00 00 00 01 00 00 00 51 7A F5 7F DF BE 27 76 8A B8 65 EE E2 A2 83 96 CB 0E 05 FA ED 11 CD 92 15 75 71 35 EF 7F 30 3A` |
+| 5         | `50 41 52 54 01 00 00 80 30 80 1A 00 00 00 00 00 30 16 00 00 00 00 00 00 2E 00 00 00 06 00 00 00 04 E3 92 9C 06 72 E4 2A 13 41 4A D0 5C 37 53 1F 4F 7C 59 75 6D DC CD 20 91 EB 1E 4E 87 FE E4 02` |
+| 6         | `50 41 52 54 01 00 00 80 60 96 1A 00 00 00 00 00 90 15 00 00 00 00 00 00 35 00 00 00 01 00 00 00 4D 33 7D 66 3E DC 2A BC E1 BB E2 8F 69 BB 44 0F 4E 5E DD 32 73 49 8D 5D 7B 0C 52 89 F7 99 70 36` |
+| 7         | `50 41 52 54 01 00 00 80 F0 AB 1A 00 00 00 00 00 80 15 00 00 00 00 00 00 35 00 00 00 06 00 00 00 5F 9B 86 EA A6 E8 79 4C 67 D5 AF 66 A6 63 09 56 3A 53 F7 B8 5D CB E2 3E CB EA CF BC AB E3 A9 76` |
+| 8         | `50 41 52 54 01 00 00 00 70 C1 1A 00 00 00 00 00 38 EA 50 00 00 00 00 00 42 00 00 00 00 00 00 00 E6 0F D4 4F E6 84 4F 35 68 0D 93 2E 2A CB 32 62 F1 71 2F F4 24 94 78 62 D0 72 74 14 6E 4D AB 80` |
+| 9         | `50 41 52 54 01 00 00 00 A8 AB 6B 00 00 00 00 00 F0 4C AA 0A 00 00 00 00 49 00 00 00 00 00 00 00 7D 28 81 86 29 42 A1 8D AD 50 21 39 C3 3C D8 4F 20 A0 D6 6B 1B 33 64 30 A0 33 9D 9F 37 CB 87 DA` |
+
+The partition metadata that I have figured out the meaning of is as follows (offset is the offset from the beginning of
+the partition's metadata):
+
+| Offset          | Description                                                                   |
+|-----------------|-------------------------------------------------------------------------------|
+| `0x0`-`0x3`     | `BOOT` or `PART` (probably whether this is a boot partition, or a normal one) |
+| `0x8`-`0xF`     | The address for the beginning of the partition table (in little endian)       |
+| :grey_question: | :grey_question:                                                               |
 
 ## Data
 
