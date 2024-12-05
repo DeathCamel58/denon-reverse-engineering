@@ -1,6 +1,9 @@
 # Signed Firmware Layout
 
-Many of the newer inmusic devices have switched from using unsigned firmware updates to using signed firmware updates.
+> I've made a firmware extraction utility that can be found on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework).
+> {style="note"}
+
+Many of the newer inMusic devices have switched from using unsigned firmware updates to using signed firmware updates.
 This prevents modifications to the firmware updates unfortunately (although you can likely still modify the OS on the
 device and boot into the modifications). Whether it will boot using a modified rootfs is untested.
 

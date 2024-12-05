@@ -5,6 +5,9 @@ From the [SoundSwitch website](https://www.soundswitch.com):
 > an immersive experience for your audience. SoundSwitch is compatible with both DMX, Philips Hue Smart Lights and
 > Nanoleaf allowing you to effortlessly illuminate your professional event, live stream, or house party.
 
+> Change diffs are available on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/soundswitch-app). Contact
+> me to get access.
+
 ## Application Data
 
 Path: `/usr/SoundSwitch/SoundSwitch`

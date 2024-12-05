@@ -1,5 +1,5 @@
 # Denon Reverse Engineering
-This is a repository that generates a documentation website about Denon and other inmusic owned brand's firmware.
+This is a repository that generates a documentation website about Denon and other inMusic owned brand's firmware.
 
 You can view the generated documentation on [Github Pages](https://DeathCamel58.github.io/denon-reverse-engineering/)
 

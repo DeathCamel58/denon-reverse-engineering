@@ -1,5 +1,8 @@
 # Unsigned Firmware Layout
 
+> I've made a firmware extraction utility that can be found on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework).
+> {style="note"}
+
 The unsigned firmwares updates are essentially device trees that contain the binary data.
 
 For example, `fdtdump <image>` on `PRIMEGO-4.1.0-Update.img` outputs:

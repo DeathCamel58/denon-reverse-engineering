@@ -3,6 +3,9 @@
 This is the main DJ application that the user interacts with. This does all the mixing, cloud file loading, and almost
 everything else the user sees.
 
+> Change diffs are available on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/engine-app). Contact
+> me to get access.
+
 ## Application Data
 
 Path: `/usr/Engine/Engine`

@@ -4,8 +4,7 @@
 > modifications across many of the firmware images.
 >
 > This extraction utility can be found
-> on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework). Contact
-> me to get access.
+> on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework).
 > {style="note"}
 
 ## Prerequisites
