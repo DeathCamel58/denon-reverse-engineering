@@ -439,7 +439,7 @@
 			interrupt-parent = <0x34>;
 			interrupts = <0x06 0x02>;
 			irq-gpios = <0x34 0x06 0x00>;
-			reset-gpios = <0x34 0x05 0x00>;
+			reset-gpios = <0x34 0x05 0x01>;
 		};
 
 		ili2117@26 {
@@ -452,7 +452,7 @@
 			interrupt-parent = <0x34>;
 			interrupts = <0x06 0x02>;
 			irq-gpios = <0x34 0x06 0x00>;
-			reset-gpios = <0x34 0x05 0x00>;
+			reset-gpios = <0x34 0x05 0x01>;
 		};
 
 		st1727@55 {
@@ -489,6 +489,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x4d 0x07 0x155>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x01 0x26 0x02>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x3b 0x3c 0x3d>;
 		status = "okay";
@@ -514,6 +516,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x4e 0x07 0x156>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x03 0x26 0x04>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x42 0x43 0x44>;
 		status = "okay";
@@ -546,6 +550,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x50 0x07 0x158>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x07 0x26 0x08>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x46>;
 		status = "okay";
@@ -559,6 +565,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x51 0x07 0x159>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x09 0x26 0x0a>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x47>;
 		status = "disabled";
@@ -835,6 +843,8 @@
 		clocks = <0x07 0x1c2>;
 		phys = <0x60>;
 		phy-names = "usb";
+		resets = <0x07 0x48>;
+		reset-names = "usbhost";
 		status = "okay";
 	};
 
@@ -845,8 +855,6 @@
 		clocks = <0x07 0x1c2>;
 		phys = <0x60>;
 		phy-names = "usb";
-		resets = <0x07 0x48>;
-		reset-names = "usbhost";
 		status = "disabled";
 	};
 
@@ -1363,7 +1371,6 @@
 		power-domains = <0x7e 0x09>;
 		resets = <0x07 0x69 0x07 0x6c 0x07 0x6d>;
 		reset-names = "core", "axi", "ahb";
-		status = "okay";
 	};
 
 	vop@ff930000 {
@@ -1562,6 +1569,10 @@
 					phandle = <0x86>;
 				};
 			};
+
+			port@1 {
+				reg = <0x01>;
+			};
 		};
 	};
 
@@ -1600,6 +1611,10 @@
 					phandle = <0x84>;
 				};
 			};
+
+			port@1 {
+				reg = <0x01>;
+			};
 		};
 	};
 
@@ -1607,18 +1622,21 @@
 		compatible = "rockchip,rk3288-dw-hdmi";
 		reg = <0x00 0xff980000 0x00 0x20000>;
 		reg-io-width = <0x04>;
-		#sound-dai-cells = <0x00>;
-		rockchip,grf = <0x58>;
 		interrupts = <0x00 0x67 0x04>;
 		clocks = <0x07 0x168 0x07 0x6d 0x07 0x6e>;
 		clock-names = "iahb", "isfr", "cec";
 		power-domains = <0x7e 0x09>;
+		rockchip,grf = <0x58>;
+		#sound-dai-cells = <0x00>;
 		status = "disabled";
 		ddc-i2c-bus = <0x94>;
 
 		ports {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
 
-			port {
+			port@0 {
+				reg = <0x00>;
 				#address-cells = <0x01>;
 				#size-cells = <0x00>;
 
@@ -1627,6 +1645,10 @@
 					remote-endpoint = <0x95>;
 					phandle = <0x80>;
 				};
+			};
+
+			port@1 {
+				reg = <0x01>;
 			};
 		};
 	};
@@ -3068,4 +3090,3 @@
 		phandle = <0xb8>;
 	};
 };
-

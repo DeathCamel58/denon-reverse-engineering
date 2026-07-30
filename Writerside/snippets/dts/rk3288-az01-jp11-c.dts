@@ -484,6 +484,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x4d 0x07 0x155>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x01 0x26 0x02>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x3b 0x3c 0x3d>;
 		status = "okay";
@@ -509,6 +511,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x4e 0x07 0x156>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x03 0x26 0x04>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x42 0x43 0x44>;
 		status = "disabled";
@@ -535,6 +539,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x50 0x07 0x158>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x07 0x26 0x08>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x46>;
 		status = "okay";
@@ -548,6 +554,8 @@
 		reg-io-width = <0x04>;
 		clocks = <0x07 0x51 0x07 0x159>;
 		clock-names = "baudclk", "apb_pclk";
+		dmas = <0x26 0x09 0x26 0x0a>;
+		dma-names = "tx", "rx";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x47>;
 		status = "disabled";
@@ -674,6 +682,8 @@
 		clocks = <0x07 0x1c2>;
 		phys = <0x53>;
 		phy-names = "usb";
+		resets = <0x07 0x48>;
+		reset-names = "usbhost";
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <0x54>;
@@ -686,8 +696,6 @@
 		clocks = <0x07 0x1c2>;
 		phys = <0x53>;
 		phy-names = "usb";
-		resets = <0x07 0x48>;
-		reset-names = "usbhost";
 		status = "okay";
 	};
 
@@ -1402,6 +1410,10 @@
 					phandle = <0x7a>;
 				};
 			};
+
+			port@1 {
+				reg = <0x01>;
+			};
 		};
 	};
 
@@ -1440,6 +1452,10 @@
 					phandle = <0x78>;
 				};
 			};
+
+			port@1 {
+				reg = <0x01>;
+			};
 		};
 	};
 
@@ -1447,18 +1463,21 @@
 		compatible = "rockchip,rk3288-dw-hdmi";
 		reg = <0x00 0xff980000 0x00 0x20000>;
 		reg-io-width = <0x04>;
-		#sound-dai-cells = <0x00>;
-		rockchip,grf = <0x4b>;
 		interrupts = <0x00 0x67 0x04>;
 		clocks = <0x07 0x168 0x07 0x6d 0x07 0x6e>;
 		clock-names = "iahb", "isfr", "cec";
 		power-domains = <0x72 0x09>;
+		rockchip,grf = <0x4b>;
+		#sound-dai-cells = <0x00>;
 		status = "disabled";
 		ddc-i2c-bus = <0x88>;
 
 		ports {
+			#address-cells = <0x01>;
+			#size-cells = <0x00>;
 
-			port {
+			port@0 {
+				reg = <0x00>;
 				#address-cells = <0x01>;
 				#size-cells = <0x00>;
 
@@ -1467,6 +1486,10 @@
 					remote-endpoint = <0x89>;
 					phandle = <0x74>;
 				};
+			};
+
+			port@1 {
+				reg = <0x01>;
 			};
 		};
 	};
@@ -2797,4 +2820,3 @@
 		phandle = <0xa6>;
 	};
 };
-
