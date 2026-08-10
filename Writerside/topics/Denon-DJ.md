@@ -1,14 +1,11 @@
 # Denon DJ
 
-Denon DJ/Numark's devices use the [](Engine-OS.md) operating system.
+Denon DJ's devices use the [](Engine-OS.md) operating system.
 
 ## Hardware IDs
 
 | Device Name        | Model ID (Per DTS)          | Hardware ID       | DTS Files                                                                                                                                          |
 |--------------------|-----------------------------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Mixstream Pro      | `Numark MIXSTREAM PRO`      | `NH08`            | [](rk3288-az05-nh08-dts.md)                                                                                                                        |
-| Mixstream Pro Go   | `Numark MIXSTREAM PRO GO`   | `NH10`            | [](rk3288-az05-nh10-dts.md)                                                                                                                        |
-| Mixstream Pro Plus | `Numark MIXSTREAM PRO Plus` | `NH08S`           | [](rk3288-az05-nh08s-dts.md)                                                                                                                       |
 | Prime 4            | `Denon DJ Prime 4`          | `JC11`            | [](rk3288-az01-jc11-dts.md) <br /> [](rk3288-az01-jc11-c-dts.md)                                                                                   |
 | Prime 4 Plus       | `Denon DJ PRIME 4 Plus`     | `JC11S`           | [](rk3288-az01-jc11s-dts.md)                                                                                                                       |
 | Prime 2            | `Denon DJ Prime 2`          | `JC16`            | [](rk3288-az01-jc16-dts.md) <br /> [](rk3288-az01-jc16-c-dts.md)                                                                                   |

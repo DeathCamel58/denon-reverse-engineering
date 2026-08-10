@@ -10,3 +10,5 @@ Pages about other brands:
 | Akai     | [](Akai.md)     |
 | Denon DJ | [](Denon-DJ.md) |
 | HeadRush | [](HeadRush.md) |
+| Numark   | [](Numark.md)   |
+| Rane     | [](Rane.md)     |

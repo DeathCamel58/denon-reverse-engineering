@@ -19,3 +19,5 @@ The tables of which device uses which DTS can be found on the corresponding [](B
 * [](Akai.md)
 * [](Denon-DJ.md)
 * [](HeadRush.md)
+* [](Numark.md)
+* [](Rane.md)
