@@ -13,9 +13,14 @@ every function already named. There's no `DWARF` debug info in any of them.
 
 ## Where to find them
 
-The `AZ01` rootfs is **identical on every RK3288 device**, so the same six modules ship on the Prime 2, Prime 4,
-Prime 4 Plus, Prime GO, Prime GO Plus, SC5000, SC5000M, SC Live 2 and SC Live 4. There's no need to pull them
-per device.
+Every `RK3288` device reports `ID=az01` in `/usr/lib/os-release` and runs the same kernel, so **the same six modules
+ship across the whole platform**. There's no need to pull them per device. Confirmed on the `5.0.4` firmware for the
+Prime 2, Prime 4, Prime 4 Plus, Prime GO, Prime GO Plus, SC5000, SC5000M, SC6000, SC6000M, SC Live 2 and SC Live 4.
+
+> The rootfs is **not** byte-identical across those devices. There are two different `Engine` builds on the same
+> platform: one for the Prime 2 / Prime 4 / Prime GO / SC5000 / SC5000M / SC6000 / SC6000M, and another for the
+> Prime 4 Plus / Prime GO Plus / SC Live 2 / SC Live 4. The kernel and this module set are common to both.
+> {style="note"}
 
 | Platform | Path                                                              |
 |----------|-------------------------------------------------------------------|
