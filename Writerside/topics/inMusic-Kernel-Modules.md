@@ -136,7 +136,7 @@ on any [](Brands.md) page:
 | `LDMD`      | Unknown prefix, not seen elsewhere                       |
 | `LDMF`      | Uses the `NH08` codec, so likely an SC Live style device |
 
-`JP12` and `NH09` are also in these tables and are mentioned elsewhere in this repository, but I have no DTS for
+`JP12`, `NH09`, and `HG08` are also in these tables and are mentioned elsewhere in this repository, but I have no DTS for
 either.
 
 > If you have a device matching any of these, I'd love a DTS or a `/proc/config.gz`. File an issue
