@@ -10,6 +10,10 @@ Config information on the [](LinuxConfigs.md) page.
 
 DTS information can be found on the [](Linux-DTSs.md) page.
 
+## Kernel Modules
+
+inMusic's own kernel modules are documented on the [](inMusic-Kernel-Modules.md) page.
+
 ## Hardware Notes
 
 Miscellaneous notes about the various hardware peripherals can be found on the [](Hardware-Notes.md) page.
