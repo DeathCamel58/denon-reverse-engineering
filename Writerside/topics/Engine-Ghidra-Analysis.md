@@ -199,6 +199,10 @@ About 40% of functions carry a meaningful name. The remaining `FUN_` entries are
 non-virtual internal helpers with no anchor of any kind. Expected, and not a problem for
 navigation, since the named 40% includes essentially every class boundary.
 
+This work surfaced subsystem namespaces that were previously undocumented, including
+`airNetworkDiscoverer`, `airNetworkExchange`, `airNfsFileAdapter`, `grpcutils`, `librarian`,
+`eaas`, `engineSync` and `PlanckScriptRoot`. See [](Engine-Networking.md).
+
 ## A note on `.gnu_debuglink`
 
 The ELF contains a `.gnu_debuglink` section, so a separate unstripped debug file exists somewhere in
@@ -208,4 +212,5 @@ then, `.ARM.exidx` plus RTTI is the best available substitute.
 ## Related Files
 
 - [](Engine.md) covers the binary itself.
+- [](Engine-Networking.md) covers the network services this analysis exposed.
 - [](Engine-Library.md) covers the database format.

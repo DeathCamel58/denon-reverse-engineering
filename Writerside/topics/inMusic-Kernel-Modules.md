@@ -73,7 +73,7 @@ their own firmware's kernel.
 | `AZ01`   | `6.6.119-az01-2025-12-17-rt67 SMP preempt_rt ARMv7 p2v8`      |
 | `AZ04`   | `6.18.9-imb-2026-02-06-rt3 SMP preempt_rt mod_unload aarch64` |
 
-Note `mod_unload` is only set on `AZ04` — on `AZ01` module unloading is compiled out.
+Note `mod_unload` is only set on `AZ04` - on `AZ01` module unloading is compiled out.
 
 ## Device Tree Aliases
 
