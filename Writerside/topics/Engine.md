@@ -98,7 +98,7 @@ remote devices' properties are addressed: `/RemoteState/%1/RemoteProperties/...`
 `Engine` runs gRPC servers as well as clients, exposing `enginelibrary.v1`, `enginesync.v1`,
 `networktrust.v1` and `remotehostscreen.v1`. Discovery is a custom UDP scheme
 (`airNetworkDiscoverer` / `airNetworkExchange`) rather than mDNS. See [](Engine-Networking.md) for
-the full method inventory, and [](Security.md) for findings.
+the full method inventory.
 
 ### Reverse engineering notes
 
@@ -121,4 +121,3 @@ them from RTTI vtables and assertion strings.
 - [](Controller-Assignments.md) covers how the hardware controls different functions of this application.
 - [](Engine-Ghidra-Analysis.md) covers getting this binary into a navigable state in Ghidra.
 - [](Engine-Networking.md) covers the gRPC services, discovery, and cloud endpoints.
-- [](Security.md) covers security findings and disclosure status.
