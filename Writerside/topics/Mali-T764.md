@@ -13,6 +13,7 @@ Arm's site](https://developer.arm.com/downloads/-/mali-drivers/midgard-kernel), 
 
 | Mali Midgard Version | Kernel Version | Patch                                                             |
 |----------------------|----------------|-------------------------------------------------------------------|
+| `r18p0-01rel0`       | `6.12-rc6`     | <resource src="Mali_Midgard_r18p0-01rel0_kernel_6.12-rc6.patch"/> |
 | `r32p0-01eac0`       | `6.11`         | <resource src="Mali_Midgard_r32p0-01eac0_kernel_6.11.patch"/>     |
 | `r32p0-01eac0`       | `6.12-rc6`     | <resource src="Mali_Midgard_r32p0-01eac0_kernel_6.12-rc6.patch"/> |
 
