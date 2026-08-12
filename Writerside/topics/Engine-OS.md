@@ -83,6 +83,52 @@ by overlays backed by the `/data` partition (`etc.mount`, `var.mount`, `overlayf
 On `4.x` there are no overlays, and a `mount -o remount,rw /` is needed before anything under
 `/etc` can be modified.
 
+## Emulation
+
+[QEngine](https://github.com/Peyton-C/QEngine) boots Engine OS under `QEMU` on an ordinary host,
+with no inMusic hardware involved. It covers `4.3.0`, `4.6.0` and `5.0.4` across the
+`armv7` / `RK3288` lineup and the `arm64` / `RK3588` [System One](Rane.md), and  reaches a running
+`Engine` UI with working audio playback and MIDI from real USB controllers passed through to the
+guest.
+
+It works by `LD_PRELOAD`ing shims that fake the hardware `Engine` refuses to start without:
+
+| Shim                                                | What it provides                                                                                                                                                         |
+|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `dtshim.c`, `dtshim_rmz2.c`                         | The `inmusic,*` devicetree properties (`inmusic,product-code`, `serial-number`, `inmusic,az01-pcb-rev`), a synthetic `/proc/interrupts`, and faked `smp_affinity` writes |
+| `drmatomic_rmz2.c`                                  | Rewrites `eglfs`'s `ARGB8888` framebuffers and legacy modeset ioctls into the `XRGB8888` / atomic-commit form `virtio-gpu` accepts                                       |
+| `alsashim_rmz2.c`                                   | Gets the emulated card past `Engine`'s card-name allowlist, and routes PCM opens through ALSA's `plug` layer                                                             |
+| `touchsim.c`, `vnctouchbridge.c`, `touchbridge_*.c` | Synthetic `uinput` multitouch - Engine OS has no mouse support at all                                                                                                    |
+
+### Findings Worth Carrying Over
+
+- **`inmusic,product-code` is the entire product identity.** Faking it changes which UI screens
+  appear, the screen-size assumptions, and whether the battery gate applies, so a Prime Go image
+  spoofed as `JC11` boots as a Prime 4. [](Software.md) covers where the property lives on real
+  hardware.
+- **`Engine` aborts outright without it**, logging
+  `air.planck.config: Unable to find product "" in config map!`, then crash-looping through
+  `engine.service`'s `Restart=on-failure`.
+- **The accepted audio devices are a compiled-in allowlist.** `ALSADeviceEnumerator::scanDevices()`
+  matches `snd_ctl_card_info_get_name()` against the `AudioDevices` key of the per-product config
+  map inside the binary, and closes any card that isn't listed *before* looking at its PCM devices
+  or formats at all. Nothing on the rootfs contains that list.
+- **Battery-powered units gate startup on a touch gesture.** The Prime Go shows its
+  "touch and hold the logo" prompt and quits after 30 seconds if nothing holds it. The Prime 4 has
+  no battery and skips it entirely.
+- **Telemetry is on by default** on every version tested, sending crash reports and anonymous
+  analytics to `o230257.ingest.sentry.io`. Its `docs/BLOCKING_TELEMETRY.md` blocks this with an
+  `/etc/hosts` entry, which is worth doing before experimenting on a unit so that inMusic isn't
+  sent noise from research. See [](Reporter.md).
+
+> Several of its conclusions were reached independently of this repository and agree: the `panthor`
+> plus Mesa graphics stack and `Qt 6.7.2` on the System One ([](Rane.md)), `Qt`'s image-format
+> plugins depending on the proprietary `libmali` ([](Mali-T764.md)), and the `/etc` + `/var` overlay
+> split that arrived in `5.x` (above). It goes further on the `RK3288` battery gate, an
+> `evdevtouch` defect in `2.4.0`-era builds where the plugin loads but is never instantiated, and
+> the ALSA card-name allowlist.
+> {style="note"}
+
 ## Custom Applications
 
 This is additional custom software that I've noticed in the firmware, along with documentation pages for them.

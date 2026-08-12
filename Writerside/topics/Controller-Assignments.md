@@ -67,3 +67,11 @@ ListElement {
 
 Slicer enabling [test apps](HARDWARE-ID-Test-App.md) for the `JP11`, `JP11S`, `JP20`, `NH08`, `NH09`, and `NH10` can be
 downloaded here: <resource src="TestAppsCatalog-Slicer.zip"/>
+
+## Additional References
+
+* [QEngine's `controllermap`](https://github.com/Peyton-C/QEngine/tree/main/shims/rk3588/controllermap) - a worked
+  example of writing these files from scratch rather than editing them. It drops a hand-authored
+  `RMZ2_Controller_Assignments.qml` and `RMZ2_Controller_Device.qml` into the `RMZ2` control-surface slot so that a
+  third-party USB controller (a Denon DJ MC6000MK2, mapped from inMusic's published MIDI command list) drives
+  `Engine` under emulation. See [](Engine-OS.md) for the project itself.

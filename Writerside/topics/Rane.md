@@ -126,3 +126,13 @@ every sibling device on that platform, which is where most of the DTS files in t
 > of the `ext4` image without mounting it using
 > `debugfs -R "dump /kernel.fit ./kernel.fit" <partition>.bin`.
 > {style="note"}
+
+## Additional References
+
+* [QEngine](https://github.com/Peyton-C/QEngine) - boots this device's firmware under `QEMU`, and is furthest along on
+  the System One of any target it supports. Its `docs/ENGINEOS.md` independently reaches the same conclusions as the
+  sections above on `panthor`, Mesa and `Qt 6.7.2`, and adds detail this page doesn't cover: the `/data` subdirectories
+  are encrypted per-directory with `ext4` `fscrypt` via `fscryptctl` at every `Engine` launch (not a whole-partition
+  `LUKS` scheme), each partition is auto-formatted by an `az0x-*-mkfs` oneshot if it isn't already labeled, `/var/lib`
+  is bind-mounted from `/data/system/var-lib`, and `Qt 6.7.2` has dropped the `vnc` platform plugin that the `AZ01`
+  devices' `Qt 5.15.2` still ships. See [](Engine-OS.md) for a summary of the project.

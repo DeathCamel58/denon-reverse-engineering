@@ -2,6 +2,19 @@
 
 Unsure what this does.
 
+> Possible lead, **unconfirmed**. [QEngine](https://github.com/Peyton-C/QEngine) found that `Engine`
+> launches a separate crash-reporting process on every start, backed by `crashpad` and a
+> `CrashReportDB/` directory under `/data/AppDataUser/AIR Music Technology/Engine/`, which submits
+> crashes and anonymous analytics to `o230257.ingest.sentry.io`. `Crashpad` is already known to be
+> linked into `Engine` itself ([](Engine.md)), and nothing in that work names `/usr/Engine/Reporter`,
+> so whether this binary *is* that process is still open - checking whether it opens
+> `CrashReportDB/` or resolves the Sentry host would settle it.
+>
+> Its `docs/BLOCKING_TELEMETRY.md` blocks the traffic by pointing the ingest host at `127.0.0.1` in
+> `/etc/hosts`. `Engine` already tolerates telemetry failures, so this is a cheap thing to do before
+> experimenting on a unit. See [](Engine-OS.md) for the rest of that project.
+> {style="note"}
+
 ## Application Data
 
 Path: `/usr/Engine/Reporter`
