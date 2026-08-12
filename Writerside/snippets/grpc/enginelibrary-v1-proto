@@ -1,0 +1,226 @@
+// Reconstructed from /usr/Engine/Engine (Engine OS 5.0.4, SC6000). NOT an official schema.
+// See the enginesync snippet header for how to read the type annotations.
+//
+// NOT observed listening on TCP 50010 - the device returns UNIMPLEMENTED for this service
+// on that port. Engine contains both the client Stub and the server Service base classes,
+// so it can act as either end.
+
+syntax = "proto3";
+
+package enginelibrary.v1;
+
+service EngineLibraryService {
+  rpc GetCredentials         (GetCredentialsRequest)         returns (GetCredentialsResponse);
+  rpc GetLibraries           (GetLibrariesRequest)           returns (GetLibrariesResponse);
+  rpc GetLibrary             (GetLibraryRequest)             returns (GetLibraryResponse);
+  rpc GetTrack               (GetTrackRequest)               returns (GetTrackResponse);
+  rpc GetSearchFilters       (GetSearchFiltersRequest)       returns (GetSearchFiltersResponse);
+  rpc GetHistorySessions     (GetHistorySessionsRequest)     returns (GetHistorySessionsResponse);
+  rpc GetHistoryPlayedTracks (GetHistoryPlayedTracksRequest) returns (GetHistoryPlayedTracksResponse);
+  rpc PutEvents              (PutEventsRequest)              returns (PutEventsResponse);
+
+  // server streaming
+  rpc GetTracks    (GetTracksRequest)    returns (stream GetTracksResponse);
+  rpc SearchTracks (SearchTracksRequest) returns (stream SearchTracksResponse);
+  rpc EventStream  (EventStreamRequest)  returns (stream EventStreamResponse);
+}
+
+// ---------------------------------------------------------------- requests / responses
+
+message GetCredentialsRequest  { string library_id = 1; uint32 field2_UNKNOWN = 2; }
+message GetCredentialsResponse { bytes credentials_UNCONFIRMED = 1; bytes field2_UNKNOWN = 2; }
+
+message Credentials { string access_token = 1; }
+
+message GetLibrariesRequest  { }                                  // no serialized fields
+message GetLibrariesResponse { repeated Library libraries_UNCONFIRMED = 1; }
+
+message GetLibraryRequest  { string library_id = 1; }
+message GetLibraryResponse { bytes library_UNCONFIRMED = 1; }
+
+message Library {
+  string id             = 1;
+  string title          = 2;
+  uint32 field3_UNKNOWN = 3;   // varint
+}
+
+message GetTracksRequest {
+  string library_id      = 1;
+  string playlist_id     = 2;
+  uint32 field3_UNKNOWN  = 3;  // varint (plausibly a page size / offset)
+  Sort   sort_UNCONFIRMED = 4; // message
+  uint32 field5_UNKNOWN  = 5;  // varint
+  bytes  field6_UNKNOWN  = 6;  // message
+}
+message GetTracksResponse { repeated ListTrack tracks_UNCONFIRMED = 1; }
+
+message GetTrackRequest  { string library_id = 1; string track_id = 2; }
+message GetTrackResponse {
+  bytes field1_UNKNOWN = 1;    // message (probably TrackMetadata)
+  bytes field2_UNKNOWN = 2;    // message (probably TrackPerformanceData)
+  bytes field3_UNKNOWN = 3;    // message (probably TrackLocation / TrackBlob)
+}
+
+message SearchTracksRequest {
+  string library_id       = 1;
+  string query            = 2;
+  bytes  field3_UNKNOWN   = 3;
+  bytes  field4_UNKNOWN   = 4;  // message (probably Sort or SearchFilter list)
+  uint32 field5_UNKNOWN   = 5;  // varint
+  bytes  field6_UNKNOWN   = 6;  // message
+}
+message SearchTracksResponse { repeated ListTrack tracks_UNCONFIRMED = 1; }
+
+message GetSearchFiltersRequest {
+  string library_id     = 1;
+  string query          = 2;
+  bytes  field3_UNKNOWN = 3;
+}
+message GetSearchFiltersResponse { bytes options_UNCONFIRMED = 1; }
+
+message SearchFilterOptions {
+  bytes field1_UNKNOWN = 1;    // message
+  bytes field2_UNKNOWN = 2;    // message
+  bytes field3_UNKNOWN = 3;    // message
+  bytes field4_UNKNOWN = 4;    // message
+  bytes field5_UNKNOWN = 5;    // message
+}
+message SearchFilter      { uint32 field1_UNKNOWN = 1; string value = 2; }
+message SearchFilterValue { string value = 1; }
+message Sort              { uint32 field1_UNKNOWN = 1; uint32 field2_UNKNOWN = 2; }
+
+message GetHistorySessionsRequest  { string library_id = 1; }
+message GetHistorySessionsResponse { repeated HistorySession sessions_UNCONFIRMED = 1; }
+
+message HistorySession {
+  string id             = 1;
+  string title          = 2;
+  bytes  field3_UNKNOWN = 3;   // message
+  string timezone       = 4;
+  uint64 field5_UNKNOWN = 5;   // varint
+  uint64 field6_UNKNOWN = 6;   // varint
+  uint64 field7_UNKNOWN = 7;   // varint
+  uint64 field8_UNKNOWN = 8;   // varint
+}
+
+message GetHistoryPlayedTracksRequest  { string library_id = 1; string session_id = 2; }
+message GetHistoryPlayedTracksResponse { repeated HistoryPlayedTrack tracks_UNCONFIRMED = 1; }
+
+message HistoryPlayedTrack {
+  uint64 field1_UNKNOWN = 1;   // varint
+  bytes  field2_UNKNOWN = 2;   // message
+  uint64 field3_UNKNOWN = 3;   // varint
+}
+message PlayedTrack {
+  string played_track_id = 1;
+  bytes  field2_UNKNOWN  = 2;  // message
+  bytes  field3_UNKNOWN  = 3;  // message
+}
+
+message PutEventsRequest  { string library_id = 1; repeated Event events_UNCONFIRMED = 2; }
+message PutEventsResponse { uint32 field1_UNKNOWN = 1; }
+
+message EventStreamRequest  { string library_id = 2; string device_id = 3; }
+message EventStreamResponse { bytes event_UNCONFIRMED = 1; }
+
+message Event {
+  string library_id     = 1;
+  string device_id      = 2;
+  bytes  field3_UNKNOWN = 3;   // message
+  bytes  field4_UNKNOWN = 4;   // message
+  bytes  field5_UNKNOWN = 5;   // message
+  bytes  field6_UNKNOWN = 6;   // message
+}
+message EventAck                        { uint32 field1_UNKNOWN = 1; string device_id = 2; }
+message EventPlaylistsContentChanged    { string playlist_id = 1; }
+message EventPlaylistHierarchyChanged   { }
+message EventTrackMetadataChanged        { bytes field1_UNKNOWN = 1; }
+message EventTrackPerformanceDataChanged { bytes field1_UNKNOWN = 1; }
+
+// ---------------------------------------------------------------- track model
+
+message Track {
+  bytes field1_UNKNOWN = 1;    // message
+  bytes field2_UNKNOWN = 2;    // message
+  bytes field3_UNKNOWN = 3;    // message
+}
+message ListTrack {
+  bytes  field1_UNKNOWN = 1;   // message
+  string field4_UNKNOWN = 4;
+}
+
+// The most completely recovered message in the package.
+message TrackMetadata {
+  string id             = 1;
+  // field 2 is never serialized - reserved or removed
+  string title          = 3;
+  string artist         = 4;
+  string album          = 5;
+  double field6_UNKNOWN = 6;   // fixed64 (plausibly length or bpm)
+  string key            = 7;
+  uint32 field8_UNKNOWN = 8;   // varint
+  uint32 field9_UNKNOWN = 9;   // varint
+  string genre          = 10;
+  string comment        = 11;
+  string label          = 12;
+  uint32 field13_UNKNOWN = 13; // varint (plausibly year or rating)
+  string composer       = 14;
+  string remixer        = 15;
+  bytes  field16_UNKNOWN = 16;  // message
+}
+
+// Fully resolved by reading the serializer directly.
+message TrackPerformanceData {
+  string id              = 1;
+  // field 2 is never serialized - reserved or removed
+  bytes  field3_UNKNOWN  = 3;   // bytes, not string: written with no UTF-8 verification
+
+  // Two protobuf map fields, matching the generated TrackPerformanceData_LoopsEntry_DoNotUse
+  // and TrackPerformanceData_QuickCuesEntry_DoNotUse helper types. Both serialize as
+  // <key = varint field 1, value = message field 2>. Which of 4/5 is loops and which is
+  // quick_cues could not be determined - the serializer emits field 4's map first.
+  map<uint32, QuickCue> map_field_4_UNCONFIRMED = 4;
+  map<uint32, Loop>     map_field_5_UNCONFIRMED = 5;
+
+  MainCue main_cue_UNCONFIRMED = 6;   // message
+  bytes   field7_UNKNOWN       = 7;   // bytes (no UTF-8 verification)
+  int64   field8_UNKNOWN       = 8;   // varint, sign-extended -> signed
+  double  field9_UNKNOWN       = 9;   // fixed64
+  bytes   field10_UNKNOWN      = 10;  // bytes (no UTF-8 verification)
+}
+
+message Loop {
+  string name           = 1;
+  double field2_UNKNOWN = 2;   // fixed64 (start position)
+  double field3_UNKNOWN = 3;   // fixed64 (end position)
+  Color  color_UNCONFIRMED = 4;
+  uint32 field5_UNKNOWN = 5;   // varint
+}
+message QuickCue {
+  string name           = 1;
+  double field2_UNKNOWN = 2;   // fixed64 (position)
+  Color  color_UNCONFIRMED = 3;
+}
+message MainCue {
+  uint32 field2_UNKNOWN = 2;   // varint
+  double field3_UNKNOWN = 3;   // fixed64
+}
+message Color {
+  uint32 field1_UNKNOWN = 1;   // varint  (r?)
+  uint32 field2_UNKNOWN = 2;   // varint  (g?)
+  uint32 field3_UNKNOWN = 3;   // varint  (b?)
+  uint32 field4_UNKNOWN = 4;   // varint  (a?)
+}
+
+message TrackLocation { bytes field1_UNKNOWN = 1; string key = 2; }
+message TrackBlob     { bytes field1_UNKNOWN = 1; }
+message TrackBlobUrl  { string url = 1; uint32 field2_UNKNOWN = 2; }
+message BlobProvider  { uint32 field1_UNKNOWN = 1; string id = 2; }
+
+message PlaylistMetadata {
+  string id             = 1;
+  string title          = 2;
+  uint32 field3_UNKNOWN = 3;   // varint
+  bytes  field4_UNKNOWN = 4;   // message
+  uint32 field5_UNKNOWN = 5;   // varint
+}

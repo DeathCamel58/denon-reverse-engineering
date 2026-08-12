@@ -1,0 +1,69 @@
+// Reconstructed from /usr/Engine/Engine (Engine OS 5.0.4, SC6000).
+// NOT an official schema. Field numbers and wire types are recovered from the compiled
+// _InternalSerialize functions and are reliable; field NAMES exist only for `string`
+// fields (protobuf emits a UTF-8 verification literal for those and nothing else), and
+// scalar types are narrowed only as far as the wire type allows.
+//
+// Wire-type -> possible declared types:
+//   varint   : int32 int64 uint32 uint64 sint32 sint64 bool enum
+//   fixed64  : double fixed64 sfixed64
+//   fixed32  : float  fixed32 sfixed32
+//
+// Verified live against SC6000 units on 5.0.4: this service is served on TCP 50010
+// over cleartext HTTP/2.
+
+syntax = "proto3";
+
+package enginesync.v1;
+
+import "google/protobuf/empty.proto";
+
+service EngineSyncService {
+  // Unary. NOTE: on 5.0.4 this method does NOT require the `uuid` metadata header that
+  // the other two enforce. See the Security page.
+  rpc SetSyncState (SyncState) returns (google.protobuf.Empty);
+
+  // Bidirectional streaming. Requires metadata `uuid: <host uuid>`.
+  rpc ExchangeTimestamps (stream TimestampSync) returns (stream TimestampSync);
+
+  // Client streaming. Requires metadata `uuid: <host uuid>`.
+  rpc UpdateSyncLeadAudioInfo (stream SyncLeadAudioInfo) returns (google.protobuf.Empty);
+}
+
+message DeckID {
+  // field 1 is written before hostUuid via an outlined varint writer; the field number
+  // is not visible as an immediate, so 1 is inferred from ordering. Semantically this
+  // is almost certainly the deck number (compare DeckID.hostUuid + deck index usage in
+  // the QML channel-assignment strings).
+  uint32 deck_number_UNCONFIRMED = 1;   // varint, name unknown
+  string hostUuid                = 2;   // NOTE: camelCase, unlike the other packages
+}
+
+message DeckState {
+  DeckID deck_id_UNCONFIRMED = 1;       // message
+  uint32 field2_UNKNOWN      = 2;       // varint
+  uint32 field3_UNKNOWN      = 3;       // varint
+  uint32 field4_UNKNOWN      = 4;       // varint
+  // field 5 is a nested message; type not determined
+  bytes  field5_UNKNOWN      = 5;       // message
+}
+
+// Request type of SetSyncState. An empty SyncState is accepted by the device and
+// returns an empty response, which is why an empty-body call succeeds.
+message SyncState {
+  repeated DeckState deck_states_UNCONFIRMED = 1;   // repeated message
+}
+
+message SyncLeadAudioInfo {
+  bytes  field1_UNKNOWN = 1;            // message
+  uint32 field2_UNKNOWN = 2;            // varint
+  double field3_UNKNOWN = 3;            // fixed64
+  double field4_UNKNOWN = 4;            // fixed64
+}
+
+message TimestampSync {
+  uint64 field1_UNKNOWN = 1;            // varint
+  uint64 field2_UNKNOWN = 2;            // varint
+  uint64 field3_UNKNOWN = 3;            // varint
+  string hostUuid       = 4;
+}

@@ -1,0 +1,47 @@
+// Reconstructed from /usr/Engine/Engine (Engine OS 5.0.4, SC6000). NOT an official schema.
+// See the enginesync snippet header for how to read the type annotations.
+//
+// NOT observed listening on TCP 50010 - the device returns UNIMPLEMENTED for this service
+// on that port. Where (or whether) it is exposed on a network interface is unknown; the
+// client side lives in eaas::GRPCNetworkTrustClient.
+
+syntax = "proto3";
+
+package networktrust.v1;
+
+service NetworkTrustService {
+  rpc CreateTrust (CreateTrustRequest) returns (CreateTrustResponse);
+}
+
+message CreateTrustRequest {
+  // Declared as `string`, not `bytes` - protobuf only emits a UTF-8 verification literal
+  // for string fields, and one exists for this field. So the public key is carried as
+  // text (hex or base64), not as 32 raw bytes.
+  string ed25519_pk       = 1;
+  uint32 field2_UNKNOWN   = 2;   // varint. Possibly a port or a protocol/device-type enum
+  string device_name      = 3;   // shown to the user in the pairing prompt
+}
+
+// Serializes a single message field at number 3. The three outcome messages below are the
+// candidates for it; a `oneof` is the natural reading but the wrapper only ever wrote one
+// field number, so this is the least certain part of the reconstruction.
+message CreateTrustResponse {
+  // oneof result {
+  //   CreateTrustGranted granted = ?;
+  //   CreateTrustDenied  denied  = ?;
+  //   CreateTrustBusy    busy    = ?;
+  // }
+  bytes result_UNCONFIRMED = 3;   // message
+}
+
+message CreateTrustGranted {
+  // No serialized fields recovered: may be an empty marker message.
+}
+
+message CreateTrustDenied {
+  // No serialized fields recovered: may be an empty marker message.
+}
+
+message CreateTrustBusy {
+  uint32 field1_UNKNOWN = 1;      // varint. Plausibly a retry-after hint
+}

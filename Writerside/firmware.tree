@@ -39,6 +39,9 @@
             <toc-element topic="Engine.md">
                 <toc-element topic="Controller-Assignments.md"/>
                 <toc-element topic="Engine-Ghidra-Analysis.md"/>
+                <toc-element topic="Engine-Networking.md">
+                    <toc-element topic="Engine-gRPC.md"/>
+                </toc-element>
             </toc-element>
         </toc-element>
         <toc-element topic="Looper.md"/>

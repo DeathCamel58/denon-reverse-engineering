@@ -1,0 +1,141 @@
+// Reconstructed from /usr/Engine/Engine (Engine OS 5.0.4, SC6000). NOT an official schema.
+//
+// IMPORTANT: remotehostscreen.v1 is NOT a gRPC service. There is no service definition and
+// no /package.Service/Method path string anywhere in the binary. Instead every command is a
+// field of the single envelope message HybridModeMessage, which is exchanged as framed
+// protobuf over its own transport (see /usr/bin/planck-remote-screen and
+// /usr/Engine/Scripts/remote-screen.sh).
+//
+// Field numbers below are recovered from the compiled serializers. The envelope's member
+// types are NOT recoverable from the wire code (a message field only records its number and
+// length), so the mapping from envelope field number to command message is UNKNOWN except
+// where noted. The numbering is sparse, which suggests fields were added over time.
+
+syntax = "proto3";
+
+package remotehostscreen.v1;
+
+// The envelope. 77 message-typed fields at these numbers:
+//   1 2 3 4 10 12 14 15 16 17 18 19 20 21 22 31 32 34 35
+//   40..77 (contiguous), 90 91 92 94 95 96 98 99
+//   100 101 102 103 104 105 106 107
+message HybridModeMessage {
+  // Each field is a distinct command message. Numbers confirmed; payload types unknown.
+  // e.g. bytes field_1 = 1;  ... bytes field_107 = 107;
+}
+
+// ------------------------------------------------------------------ command messages
+// "deck" below is the leading varint present on nearly every deck-scoped command
+// (field 1). It is almost certainly a deck index.
+
+message KeepAlive    { string appName = 1; string appVersion = 2; }
+message Goodbye      { }
+message DebugString  { string message = 1; }
+
+message SetDeviceConfig {
+  uint32 f1 = 1; uint32 f2 = 2; uint32 f3 = 3; uint32 f4 = 4;   // all varint
+}
+
+// ---- deck state
+message SetDeckLoaded            { uint32 deck = 1; }
+message SetDeckCleared           { uint32 deck = 1; }
+message LoadTrackToDeck          { uint32 deck = 1; }
+message EjectTrackFromDeck       { uint32 deck = 1; }
+message InstantDoubleToDeck      { uint32 deck = 1; }
+message SetDeckKeyLock           { uint32 deck = 1; uint32 locked = 2; }
+message SetDeckTempo             { uint32 deck = 1; float  tempo  = 2; }   // fixed32
+message SetDeckSpeedState        { uint32 deck = 1; float  speed  = 2; }   // fixed32
+message SetDeckSpeedRange        { uint32 deck = 1; string value  = 2; }
+message SetDeckPlayheadPosition  { uint32 deck = 1; double p1 = 2; double p2 = 3; double p3 = 4; }
+message DeckNeedleDrop           { uint32 deck = 1; double position = 2; }
+message SetDeckTempCue           { uint32 deck = 1; double position = 2; }
+message ChangeDeckKey            { uint32 deck = 1; uint32 key = 2; }
+message SetDeckKey               { uint32 deck = 1; uint32 f2 = 2; uint32 f3 = 3; uint32 f4 = 4; }
+message DeckInputSourceChanged   { uint32 deck = 1; uint32 source = 2; }
+message SetMixerChannelMode      { uint32 deck = 1; uint32 mode = 2; }
+
+// ---- deck track info
+message SetDeckTrackTitle  { uint32 deck = 1; string title = 2; }
+message SetDeckTrackArtist { uint32 deck = 1; string artist = 2; }
+message SetDeckTrackData   { uint32 deck = 1; string title = 2; string artist = 3; double f4 = 4; }
+message SetDeckAlbumArt    { uint32 deck = 1; uint32 art_id = 2; }
+
+// ---- loops and cues
+message SetDeckAutoLoopEnabled { uint32 deck = 1; uint32 enabled = 2; }
+message SetDeckAutoLoopLabel   { uint32 deck = 1; string value = 2; }
+message SetDeckBeatJumpLabel   { uint32 deck = 1; string value = 2; }
+message SetDeckLoopRegion {
+  uint32 deck = 1;
+  // field 2 not serialized
+  double start = 3; double end = 4;   // fixed64
+  string name  = 5;
+  uint32 f6 = 6; uint32 f7 = 7;       // varint
+}
+message ClearDeckLoopRegion { uint32 deck = 1; }
+message SetDeckQuickCue {
+  uint32 deck = 1; uint32 index = 2;
+  double position = 3;                // fixed64
+  string name = 4;
+  uint32 f5 = 5;                      // varint
+}
+message ClearDeckQuickCue { uint32 deck = 1; uint32 index = 2; }
+
+// ---- waveforms and beatgrid
+message SetDeckBeatGrid            { uint32 deck = 1; bytes anchors = 2; double f3 = 3; }
+message SetDeckBeatGrid_BeatAnchor { }                       // no serialized fields recovered
+message SetShowBeatGrid            { uint32 show = 1; }
+message SetDeckOverviewWaveform    { uint32 deck = 1; bytes waveform = 2; }
+message UpdateWaveformChunk        { uint32 deck = 1; uint32 index = 2; bytes chunk = 3; }
+
+// ---- images
+message SetAlbumArtImage { uint32 id = 1; bytes image = 2; }
+message SetIconImage     { uint32 id = 1; bytes image = 2; uint32 f3 = 3; }
+
+// ---- playlist / browser panes
+message SetPlaylistsHeader             { string title = 1; }
+message SetPlaylistsHeaderIcon         { uint32 icon = 1; }
+message SetPlaylistsHeaderHasParent    { }                   // no serialized fields recovered
+message SetPlaylistsHeaderSelectable   { }                   // no serialized fields recovered
+message SetPlaylistsCurrentRow         { uint32 row = 1; }
+message SetPlaylistsCurrentLevel       { uint32 level = 1; }
+message SetPlaylistsRowCount           { uint32 count = 1; }
+message SetPlaylistsViewportPosition   { uint32 position = 1; }
+message SetPlaylistTitle               { uint32 index = 1; string title = 2; }
+message SetPlaylistIcon                { uint32 index = 1; uint32 icon = 2; }
+message SetPlaylistData                { uint32 index = 1; string title = 2; uint32 f3 = 3; uint32 f4 = 4; }
+message PlaylistBankAction             { uint32 f1 = 1; uint32 f2 = 2; }
+
+// ---- track list pane
+message SetTracklistRowCount         { uint32 count = 1; }
+message SetTracklistCurrentRow       { uint32 row = 1; }
+message SetTracklistViewportPosition { uint32 position = 1; }
+message SetTracklistShowPlayOrder    { }                     // no serialized fields recovered
+message SetTracklistSortMode         { uint32 f1 = 1; uint32 f2 = 2; }
+
+message SetTrackTitle      { uint32 index = 1; string title  = 2; }
+message SetTrackArtist     { uint32 index = 1; string artist = 2; }
+message SetTrackAlbum      { uint32 index = 1; string album  = 2; }
+message SetTrackData {
+  uint32 index = 1;
+  string title = 2; string artist = 3; string album = 4;
+  uint32 f5 = 5; uint32 f6 = 6; uint32 f7 = 7;
+  // field 8 not serialized
+  uint32 f9 = 9; uint32 f10 = 10;
+}
+message SetTrackKey        { uint32 index = 1; uint32 key = 2; }
+message SetTrackTempo      { uint32 index = 1; uint32 tempo = 2; }
+message SetTrackTimeLength { uint32 index = 1; uint32 length = 2; }
+message SetTrackPlayOrder  { uint32 index = 1; uint32 order = 2; }
+message SetTrackState      { uint32 index = 1; uint32 state = 2; }
+message SetTrackAlbumArt   { uint32 index = 1; uint32 art_id = 2; }
+
+// ---- FX and behaviour toggles
+message FXBeatsChanged        { uint32 beats = 1; }
+message FXDepthChanged        { }                            // no serialized fields recovered
+message FXInputSourceChanged  { uint32 source = 1; }
+message SetQuantizeEnabled    { }                            // no serialized fields recovered
+message SetFocusArea          { uint32 area = 1; }
+message SetCensorButtonBehavior { uint32 behavior = 1; }
+message SetKeyAdjustBehavior    { uint32 behavior = 1; }
+message SetStemFxBehavior       { uint32 behavior = 1; }
+message SetShowSilentCueIcon    { uint32 f1 = 1; uint32 f2 = 2; }
