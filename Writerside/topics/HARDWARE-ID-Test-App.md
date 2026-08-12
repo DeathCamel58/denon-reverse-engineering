@@ -200,18 +200,101 @@ you to run arbitrary software on the device.
 - [`V1` packaging](#v1-packaging)
 - [`V2` packaging](#v2-packaging)
 
+The two scanners differ only in where they look. `V1` appends a fixed directory name to the drive path and walks it;
+`V2` walks the drive root itself. Neither knows about the other's layout, so a drive can carry both at once.
+
+> Details below were read out of `/usr/bin/test-app-launcher` in the `5.0.4` firmware. It's the same binary on every
+> `RK3288` device, so this applies to all of them, and the `arm64` System One build behaves the same way.
+> {style="note"}
+
 #### V1 Packaging
 
-I'm currently unsure of how V1 packaging works.
+`V1` is a directory tree with **no manifest at all**. Every piece of metadata comes from the directory names, and the
+payload is a file with a **`.taimg`** extension.
 
-[//]: # (TODO: Reasearch this)
+```
+<drive>/TestAppsCatalog/<product>/<os-version>/<app-version>/<something>.taimg
+```
+
+The scanner appends `TestAppsCatalog` to the mount path and iterates it. At each of the three levels it only descends
+into **directories** (symlinks are resolved first). In the third-level directory it looks for the first **regular
+file** whose extension is exactly `.taimg`. Anything else in there is ignored.
+
+From those names it builds the entry:
+
+| Record field        | Where it comes from                                         |
+|---------------------|-------------------------------------------------------------|
+| `products`          | The first level, **upper-cased** (so `jp11` becomes `JP11`) |
+| `relativeExePath`   | The first level with `TestApp` appended, as-is              |
+| Image path          | The full path of the `.taimg` file                          |
+| Two metadata fields | The second and third level names                            |
+
+So a first level of `JP11` produces `products: [JP11]` and an executable name of `JP11TestApp`, which matches the
+`V2` manifest examples further down.
+
+> The second and third levels feed the OS version and app version fields, but I haven't confirmed **which way
+> round** they map. The launcher logs them as `OSVersionID` and `Version`; the ordering above is the natural
+> reading of the directory layout, not something I've verified.
+> {style="warning"}
 
 #### V2 Packaging
 
-1. Checks if `TestAppsCatalog.zip` exists on the root of the drive currently being scanned.
-2. Unzips the archive, and checks for [`manifest.yaml`](#v2-manifest-yaml)
-3. Attempts to automatically launch the best script in `manifest.yaml`, allows the user to go to the UI listing of all
-   test apps, where the user can load any test app in the manifest.
+`V2` is an archive with a manifest inside it.
+
+1. Iterate the **root of the drive** (no subdirectory).
+2. For each **regular file** whose extension is exactly **`.zip`**, open it with `libarchive`.
+3. Walk the archive entries looking for one whose path is exactly `manifest.yaml`, with a non-zero size.
+4. Read that entry in full and parse it as YAML into an `ArchiveManifestV1` object.
+5. Every entry in the manifest's `testApps` array becomes a launcher record, with each `products` string
+   upper-cased on the way in.
+
+> The repository previously said `V2` looks for a file called `TestAppsCatalog.zip`. It doesn't. **Any** `.zip` in
+> the drive root is opened and checked. `TestAppsCatalog` is the `V1` **directory** name, and carries no `.zip`
+> extension.
+> {style="note"}
+
+Two details that matter when building one:
+
+- The manifest is matched with a plain `strcmp` against `manifest.yaml`, so it has to sit at the **root of the
+  archive**. `TestAppsCatalog/manifest.yaml` or any other prefix will not be found.
+- Only the **file extension** is checked, not the container format. The archive is opened with
+  `archive_read_support_format_all` and `archive_read_support_filter_all`, so anything `libarchive` can read works
+  as long as the file is named `.zip`.
+
+##### Manifest Schema Version
+
+The YAML is parsed into a class named `ArchiveManifestV1`, which survives in the binary's RTTI:
+
+```
+N4YAML18TypedBadConversionI17ArchiveManifestV1EE
+N4YAML18TypedBadConversionIN17ArchiveManifestV112TestAppEntryEEE
+N4YAML18TypedBadConversionISt6vectorIN17ArchiveManifestV112TestAppEntryESaIS3_EEEE
+```
+
+This is **schema** version 1, which is a separate thing from `V1`/`V2` packaging. There is only one manifest schema,
+and it is used by `V2` packaging only.
+
+##### Launcher Record
+
+Both packaging methods produce the same in-memory record, which the launcher logs like this:
+
+```
+  #{:02}
+    ProductCodes: {}
+    OSVersionID:  {}
+    Version:      {}
+    IsSigned:     {}
+    IsArchived:   {}
+    PackagePath:  {}
+    RelExePath:   {}
+    ArchivePath:    {}
+    RelPackagePath: {}
+    RelExePath:     {}
+    ImagePath:    {}
+```
+
+`IsArchived` distinguishes a `V2` archive entry from a loose `V1` one, which is why the path fields come in several
+flavours. `V1` entries always carry an `ImagePath` pointing at the `.taimg`.
 
 ##### `manifest.yaml` Documentation {id="v2-manifest-yaml"}
 
@@ -250,9 +333,12 @@ Each application entry in the `testApps` array contains the following fields:
     - Type: String
     - Example: 1.0.0
 - `osVersionID`
-    - Description: The operating system version that the test application is compatible with.
+    - Description: The operating system version that the test application is compatible with. This has to match
+      what the launcher reads from `/etc/os-release`, which depends on the firmware line: `VERSION_ID` on `4.x`
+      and earlier (Buildroot), `VERSION_CODENAME` on `5.x` (Yocto). See [](Engine-OS.md) for the value each
+      firmware version needs.
     - Type: String
-    - Example: 2023.02.11
+    - Example: `2023.02.11` on `4.1.0`-`4.3.4`, `scarthgap` on `5.0.0`-`5.0.4`
 - `products`
     - Description: An array of hardware IDs that the test app supports. This is used to specify the compatible devices
       for the application.

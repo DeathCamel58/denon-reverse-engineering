@@ -3,6 +3,11 @@
 > Buildroot is a tool that simplifies and automates the process of building a complete Linux system for an embedded
 > system, using cross-compilation.
 
+> This page applies to firmware **up to and including `4.3.4`**. [](Engine-OS.md) switched to
+> Yocto/OpenEmbedded (`scarthgap`) in `5.0.0`. See [](Engine-OS.md) for the full version-by-version
+> breakdown of distribution and kernel.
+> {style="warning"}
+
 ## Denon Prime Go
 
 | Name | Details                                                          |
