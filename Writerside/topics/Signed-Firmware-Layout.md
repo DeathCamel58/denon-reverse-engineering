@@ -1,18 +1,37 @@
 # Signed Firmware Layout
 
-> I've made a firmware extraction utility that can be found on [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework).
+> I've made a firmware extraction utility that can be found on
+> [my private GitLab instance](https://gitlab.randomcpu.com/engine-os/inmusic-firmware-modification-framework), mirrored
+> on [GitHub](https://github.com/DeathCamel58/denondj-firmware-modding). It now reads this format directly, so the
+> `binwalk` guesswork below is no longer necessary.
 > {style="note"}
 
 Many of the newer inMusic devices have switched from using unsigned firmware updates to using signed firmware updates.
 This prevents modifications to the firmware updates unfortunately (although you can likely still modify the OS on the
 device and boot into the modifications). Whether it will boot using a modified rootfs is untested.
 
+Extracting these images is a solved problem — every partition, rootfs included, can be pulled out directly (see
+[](#extracting)). What remains blocked is *rebuilding* an installable update, because of the signature block described
+in [](#signature).
+
 ## Header
 
-The new firmware layouts have some header information before `0xD00DFEED` (the flattened device tree header magic
-value).
+`AZ0x` is a standalone container format, not a header bolted onto a flattened device tree. `0xD00DFEED` does appear
+inside these files, but as the *payload of the `BOOT` partitions* — each of which is its own FIT image. The rootfs is a
+separate, xz-compressed partition and is not reachable by parsing that device tree.
 
-### Header Values (prefix before `0xD00DFEED`) {collapsible="true"}
+> Do not confuse `AZ0x` with `AZ01`. Despite the near-identical magic, `AZ01` is a **different container**: it inlines
+> length-prefixed strings instead of using a string table, and uses 32-bit sizes and SHA-1 (confirmed on all 36 `AZ01`
+> images checked) where `AZ0x` uses 64-bit sizes and SHA-256. `AZ01` is also a board name, which is where much of the
+> confusion comes from.
+>
+> The split is generational, not per product line — the same family appears in both. `AZ01` covers MPC/Force
+> (`ACV*`, `ADA2`), Denon Engine (`JC11`/`JC16`/`NH08`, `JP07`/`JP08`/`JP11`, `JP13`/`JP14`) and Alesis
+> (`LDMD`/`LDMF`), while their later siblings — `JC11S`, `JP11S`, `JP20`/`JP21` and the newer `LDMD`/`LDMF` builds —
+> moved to `AZ0x`.
+> {style="warning"}
+
+### Header Values {collapsible="true"}
 
 | Device           | Version | Header (Hex)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -25,10 +44,31 @@ value).
 
 ### Header Value Descriptions
 
-All of these start with the constant `41 5A 30 78 01`, which decodes to `AZ0x` (the board model numbers that I've seen
-are `AZ01` and `AZ05`).
+All of these start with `41 5A 30 78`, which decodes to `AZ0x`. This is a fixed literal — it is identical across every
+`AZ0x` image I have checked, and the `x` is not a wildcard standing in for a board revision. The `01 00 00 00` that
+follows is a separate field: the container's format version, which so far is always `1`.
 
-Offset `0x39` up to the byte `0x00` contains the firmware version.
+The header is a fixed `0x38` bytes, immediately followed by a **string table**. Every string in the file — version,
+image name, device names, partition names — lives in that table and is referenced by an offset relative to its start.
+Offset `0` in the table is a NUL, meaning "no string".
+
+| Offset | Size | Description                                                   |
+|--------|------|---------------------------------------------------------------|
+| `0x00` | 4    | Magic, `AZ0x`                                                 |
+| `0x04` | 4    | Format version (always `1` so far)                            |
+| `0x10` | 4    | String table offset (`0x38`)                                  |
+| `0x14` | 4    | Device table offset                                           |
+| `0x18` | 4    | Partition table offset                                        |
+| `0x1c` | 4    | Partition table **end** offset                                |
+| `0x20` | 4    | String table size                                             |
+| `0x24` | 2    | Number of supported devices                                   |
+| `0x26` | 2    | Number of partitions                                          |
+| `0x34` | 4    | Offset (into the string table) of the update image name       |
+
+Reading via these pointers is more robust than scanning for NULs sequentially, though both work in practice.
+
+Offset `0x39` up to the byte `0x00` contains the firmware version. (This is the string table at `0x38`, plus 1 to skip
+its leading NUL.)
 
 - On Denon devices, I've seen `4.1.0`, these likely have the software version for all updates.
 - On HeadRush devices, I've seen `SNAPSHOT`. This is likely their SVN's branch the build is produced from (not the
@@ -46,6 +86,23 @@ number of these strings can be found at offset `0x24`).
 > For example, the SCLIVE2 4.1.0 update has `0x04` at offset `0x24`. This means that there are four supported devices.
 > Read in data up to the byte value `0x00` four times. This yields: `JC11S`, `JP11S`, `JP20`, and `JP21` as the devices
 > that are supported
+
+There is also a **device table** at the offset stored in `0x14`, holding one 8-byte entry per device: a `u32` numeric
+device ID followed by a `u32` offset of that device's name in the string table. This is where the numeric IDs come from:
+
+| Device  | ID           |
+|---------|--------------|
+| `JC11S` | `0x15e4d007` |
+| `JP11S` | `0x15e4c00c` |
+| `JP20`  | `0x15e4d011` |
+| `JP21`  | `0x15e4d012` |
+| `NH08S` | `0x15e4303f` |
+| `NH10`  | `0x15e42059` |
+| `HG06`  | `0x0763301b` |
+| `HV01`  | `0x07633019` |
+
+The **order of this table matters**: a device's index here is its bit position in the partition device mask described
+below.
 
 ### Partitions
 
@@ -86,16 +143,92 @@ Example partition metadata:
 The partition metadata that I have figured out the meaning of is as follows (offset is the offset from the beginning of
 the partition's metadata):
 
-| Offset        | Description                                                                          |
-|---------------|--------------------------------------------------------------------------------------|
-| `0x0`-`0x3`   | `BOOT` or `PART` (probably whether this is a boot partition, or a normal one)        |
-| `0x8`-`0xf`   | The address for the beginning of the partition table (in little endian)              |
-| `0x10`-`0x17` | The size of the partition data                                                       |
-| `0x18`-`0x1b` | :grey_question: Completely unknown                                                   |
-| `0x1c`-`0x1f` | :grey_question: Looks like it could be the partition number (partition # per U-Boot) |
-| `0x20`-`0x3f` | :grey_question: Likely the SHA256 of the partition data                              |
+| Offset        | Description                                                                               |
+|---------------|-------------------------------------------------------------------------------------------|
+| `0x0`-`0x3`   | `BOOT`, `PART` or `PARR` — the partition kind. `PARR` is a recovery partition (e.g. AC50) |
+| `0x8`-`0xf`   | Offset of **this partition's own data** in the file (little endian)                       |
+| `0x10`-`0x17` | The size of the partition data                                                            |
+| `0x18`-`0x1b` | Offset of the partition's name in the string table (`0` = unnamed, as on `BOOT`)          |
+| `0x1c`-`0x1f` | Device bitmask — bit *N* is set for device *N* of the device table                        |
+| `0x20`-`0x3f` | SHA-256 of the partition data — confirmed, verified byte-for-byte                         |
 
-## Data
+Bytes `0x4`-`0x7` are a **flags word**, not a type enum — the marker at `0x0` already says what kind of partition this
+is. Across 1,375 partition entries only two bits are ever set:
+
+| Bit          | Meaning                                                              |
+|--------------|----------------------------------------------------------------------|
+| `0x00000001` | Payload is xz-compressed. Clear means stored raw                     |
+| `0x80000000` | Entry is device-specific, i.e. the device mask at `0x1c` is non-zero  |
+
+Every other bit was zero in every image checked.
+
+### The device mask
+
+The value at `0x1c` is a **bitmask over the device table**, not a partition number. The SCLIVE2 `4.1.0` header above
+demonstrates this plainly. Its device table is `JC11S`, `JP11S`, `JP20`, `JP21`, and its entries carry:
+
+| Entry              | Mask                           | Meaning                   |
+|--------------------|--------------------------------|---------------------------|
+| `BOOT` ×4          | `0x01`, `0x02`, `0x04`, `0x08` | one bootloader per device |
+| `splash`           | `0x01`                         | `JC11S` only              |
+| `splash`           | `0x0E`                         | `JP11S` + `JP20` + `JP21` |
+| `kernel`, `rootfs` | `0x00`                         | shared by every device    |
+
+A mask of `0x0E` could not be a partition number — it is `0x02 | 0x04 | 0x08`. This also means **partition names are
+not unique**: a multi-device image legitimately contains two partitions both called `splash`, separated only by mask.
+Any extractor has to disambiguate them or it will silently overwrite one with the other.
+
+### Compression
+
+Compression is given by **bit `0` of the flags word** at `0x4`. Sniffing the payload magic works equally well and
+agreed with the flag on all 1,375 entries checked, so either can be used:
+
+| Marker | Flag bit `0` | Payload                                   | Count |
+|--------|--------------|-------------------------------------------|-------|
+| `BOOT` | clear        | Uncompressed FIT (`0xD00DFEED`)           | 424   |
+| `PART` | set          | xz (`FD 37 7A 58 5A 00`)                  | 904   |
+| `PART` | clear        | Raw — only ever `splash` / `updatesplash` | 30    |
+| `PARR` | set          | xz                                        | 17    |
+
+Note that a raw `splash` is not unusual enough to ignore: 30 of them appear across the collection, so an extractor that
+assumes every `PART` is xz will fail on those.
+
+## Signature {id="signature"}
+
+Between the end of the partition table (`0x1c`) and the first partition's data sits a signature block: a `u64` length,
+followed by that many bytes of high-entropy data.
+
+The length is **variable** — across 207 images it ranges from 59 to 104 bytes, most commonly 68, 86, 75 and 80. That
+variability is itself the clue: a fixed-size signature would be a constant length, whereas DER encoding of an ECDSA
+signature varies by a few bytes depending on how the two integers encode. Combined with being far too short for
+RSA-2048, this points to DER-encoded ECDSA rather than a raw fixed-width signature.
+
+This is what actually blocks rebuilding an update. The partition table itself is trivial to regenerate, but without the
+vendor's signing key the device rejects the result, so my extraction utility refuses to repack `AZ0x` images rather than
+emit a file that cannot install. Note this signature is separate from the RSA verification found in the updater ramfs on
+`5.0.4`, which is inactive because the shipped images carry no such signature and the ramfs ships no keys.
+
+## Extracting {id="extracting"}
+
+The rootfs — and every other partition — can now be extracted directly:
+
+```bash
+python main.py -f <firmware.img> --ssh
+```
+
+Partitions land in `firmwares/generated/` as `<partition>_<firmware>.img`, with per-device duplicates disambiguated
+(`splash-jc11s`, `splash-jp11s-jp20-jp21`). The extracted `rootfs` is a bare ext2/ext4 filesystem, so it mounts directly:
+
+```bash
+sudo mount -o loop ./firmwares/generated/rootfs_<firmware>.img ./firmwares/mnt
+```
+
+This has been validated across every `AZ0x` image I have (207 of them), plus the older FDT and `AZ01` containers.
+
+## Data (legacy notes) {collapsible="true"}
+
+> The `binwalk` approach below predates the extractor and is kept only for reference. Use [](#extracting) instead.
+> {style="note"}
 
 After removing the header from the file, `dumpimage -l <image>` on `SCLIVE2-4.1.0-Update.img` outputs:
 
@@ -119,5 +252,6 @@ Example locations:
 | Mixstream Pro Go | `4.1.0`          | `extractions/MIXSTREAMPROGO-4.1.0-Update.img.extracted/672AC8/decompressed.bin.extracted/0/rootfs/`   |
 | Mixstream Pro +  | `4.1.0`          | `extractions/MIXSTREAMPROPLUS-4.1.0-Update.img.extracted/672A98/decompressed.bin.extracted/0/rootfs/` |
 
-> I'm not currently sure how to extract just the rootfs image. Once I find out, I'll update here.
-> {style="warning"}
+> Solved — see [](#extracting). The rootfs is its own xz-compressed partition, so it can be pulled straight out of the
+> container using the partition table; there is no need to carve it out of a `binwalk` extraction tree.
+> {style="note"}
