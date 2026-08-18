@@ -46,7 +46,9 @@
             </toc-element>
         </toc-element>
         <toc-element topic="Looper.md"/>
-        <toc-element topic="MPC.md"/>
+        <toc-element topic="MPC.md">
+            <toc-element topic="MPC-Application.md"/>
+        </toc-element>
         <toc-element topic="Buildroot.md"/>
     </toc-element>
     <toc-element topic="Linux.md">
