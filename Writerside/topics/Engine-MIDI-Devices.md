@@ -6,8 +6,7 @@ payload paths, version metadata, detection rules and the flashing mechanism.
 
 Control *mappings* are a separate topic — see [](Controller-Assignments.md).
 
-[//]: # (TODO: This is a stub. Fill in per-device specifics, the FirmwareUpdater flow, and the SysEx command set.)
-
+<!-- TODO: This is a stub. Fill in per-device specifics, the FirmwareUpdater flow, and the SysEx command set. -->
 ## Where things live
 
 | What                                    | Where                                                               |
@@ -75,9 +74,14 @@ Three payload types exist and the descriptor shape differs between them.
 	"type" : "dfu",
 	"alt-names" : [ "@Internal Flash  /0x08000000/04*016Kg,01*064Kg,01*128Kg"],
 	"start-sysex" : ["F0 00 02 0B 01 0D 72 00 00 F7"],
-	"stop-command" : "dfu-util -a %alt% -S %serial% -s 0x08000000:1:leave -U %temp%"
+	"stop-command" : "dfu-util -a ALT -S SERIAL -s 0x08000000:1:leave -U TEMP"
 }
 ```
+
+> The three placeholders in `stop-command` are shown above in upper case. In the real file each one is
+> the lower-case name — `alt`, `serial`, `temp` — enclosed in a pair of percent signs. That form cannot
+> be printed verbatim on this page: Writerside reads it as a variable reference and fails the build.
+> {style="note"}
 
 `bin` — a raw blob, used for the mixer DSP and the motor boards on the motorised players:
 
@@ -90,41 +94,40 @@ Three payload types exist and the descriptor shape differs between them.
 }
 ```
 
-| Key                  | Type   | Meaning                                                                                       |
-|----------------------|--------|-----------------------------------------------------------------------------------------------|
-| `version`            | string | Firmware version. `rbin` uses dotted quads, `dfu` and `bin` use `MM.mm`                        |
-| `filename`           | string | Payload file, relative to the same directory                                                    |
-| `type`               | string | `dfu`, `bin`, or `rbin`                                                                         |
-| `deviceToFlash`      | string | Which attached device this targets — see below                                                   |
-| `realName`           | string | Matches the `realName` of the `KnownDevices` entry this payload belongs to                       |
-| `min-version`        | string | Lowest running firmware version that can be updated directly, for staged upgrades                |
-| `alt-names`          | list   | *(`dfu`)* DFU alt-setting strings, i.e. the target's flash layout. May list several variants     |
-| `start-sysex`        | list   | SysEx that puts the board into update mode before flashing                                      |
-| `stop-command`       | string | *(`dfu`)* `dfu-util` template. `%alt%`, `%serial%` and `%temp%` are substituted at runtime       |
-| `serial-sysex-start` | string | *(retired)* SysEx to begin a serial-port transfer                                                |
-| `write-serial`       | bool   | *(retired)* the only non-string, non-list value in the whole schema                              |
+| Key                  | Type   | Meaning                                                                                                                            |
+|----------------------|--------|------------------------------------------------------------------------------------------------------------------------------------|
+| `version`            | string | Firmware version. `rbin` uses dotted quads, `dfu` and `bin` use `MM.mm`                                                            |
+| `filename`           | string | Payload file, relative to the same directory                                                                                       |
+| `type`               | string | `dfu`, `bin`, or `rbin`                                                                                                            |
+| `deviceToFlash`      | string | Which attached device this targets — see below                                                                                     |
+| `realName`           | string | Matches the `realName` of the `KnownDevices` entry this payload belongs to                                                         |
+| `min-version`        | string | Lowest running firmware version that can be updated directly, for staged upgrades                                                  |
+| `alt-names`          | list   | *(`dfu`)* DFU alt-setting strings, i.e. the target's flash layout. May list several variants                                       |
+| `start-sysex`        | list   | SysEx that puts the board into update mode before flashing                                                                         |
+| `stop-command`       | string | *(`dfu`)* `dfu-util` template. The `alt`, `serial` and `temp` placeholders (percent-wrapped, see above) are substituted at runtime |
+| `serial-sysex-start` | string | *(retired)* SysEx to begin a serial-port transfer                                                                                  |
+| `write-serial`       | bool   | *(retired)* the only non-string, non-list value in the whole schema                                                                |
 
 `deviceToFlash` is a **string in every release** that has it — `1.5.3` is the sole release where the key is absent
 entirely. Some values are a plain role name like `"Controller"`, others are colon-delimited, e.g.
 `"Control Surface:Control Surface 16:0"` or `"PRIME 4 Left Wheel Display:PRIME 4 Left Wheel Display MIDI 24:0"`, where
 the last two fields look like a MIDI port name and an index. Some name the marketing product rather than the role.
 
-[//]: # (TODO: Work out the colon-delimited deviceToFlash grammar — the trailing "<port name> <n>:0" part especially.)
-
+<!-- TODO: Work out the colon-delimited deviceToFlash grammar — the trailing "PORT-NAME N:0" part especially. -->
 #### Schema drift {id="schema-drift"}
 
 Eight distinct key sets appear across the history, so a parser should treat everything except `version`, `filename` and
 `type` as optional:
 
-| Key                  | Present in                                                             |
-|----------------------|------------------------------------------------------------------------|
-| `version`, `filename`, `type` | every release, `1.3.1` – `5.0.4`                              |
-| `alt-names`, `start-sysex`, `stop-command` | every release                                     |
-| `deviceToFlash`      | every release except `1.5.3`                                            |
-| `min-version`        | every release except `1.3.3` and `1.5.1` – `1.5.3`                      |
-| `realName`           | `2.0.0` onwards — introduced with the switch to HWID-named directories   |
-| `serial-sysex-start` | `1.3.2` – `2.3.3` only, then retired                                     |
-| `write-serial`       | `1.3.1` – `2.3.3` only, then retired                                     |
+| Key                                        | Present in                                                             |
+|--------------------------------------------|------------------------------------------------------------------------|
+| `version`, `filename`, `type`              | every release, `1.3.1` – `5.0.4`                                       |
+| `alt-names`, `start-sysex`, `stop-command` | every release                                                          |
+| `deviceToFlash`                            | every release except `1.5.3`                                           |
+| `min-version`                              | every release except `1.3.3` and `1.5.1` – `1.5.3`                     |
+| `realName`                                 | `2.0.0` onwards — introduced with the switch to HWID-named directories |
+| `serial-sysex-start`                       | `1.3.2` – `2.3.3` only, then retired                                   |
+| `write-serial`                             | `1.3.1` – `2.3.3` only, then retired                                   |
 
 The `type` values arrived in stages too: `dfu` and `bin` from the beginning, **`rbin` only from `1.6.0`**.
 
@@ -148,8 +151,7 @@ The `u32` at `0x24` is little-endian and its **low byte is the device's MIDI Sys
 `0x12` for `JP21`, `0x3f` for `NH08`. The upper bytes are close to but not identical to the device ID in the update
 container's device table (see [](Signed-Firmware-Layout.md)), so don't assume they match.
 
-[//]: # (TODO: Decode the rest of the rbin header — the field at 0x2c looks like a version, and the body is Thumb code.)
-
+<!-- TODO: Decode the rest of the rbin header — the field at 0x2c looks like a version, and the body is Thumb code. -->
 ### `dfu` payload format
 
 Standard DFU files with the usual `UFD` suffix at the end, so `dfu-util` and `dfu-suffix` read them directly. The
@@ -194,8 +196,7 @@ and then declares the devices it expects to find:
 Note `realName` is the role (`Controller`, `Display`, `Mixer`, …), which is what ties an entry to both its assignment
 directory and its firmware directory.
 
-[//]: # (TODO: Document the vfsb container layout itself, and what `Product` gates.)
-
+<!-- TODO: Document the vfsb container layout itself, and what `Product` gates. -->
 ## Transports {id="transports"}
 
 Two ways a control surface attaches, and it differs by hardware generation:
@@ -214,8 +215,7 @@ Two ways a control surface attaches, and it differs by hardware generation:
 A device also has a **USB MIDI gadget** mode — `f_midi-0` — used to present itself as a controller to a host computer.
 Its mapping lives beside the normal one, as `f_midi-0_Assignments.qml` / `f_midi-0_Device.qml`.
 
-[//]: # (TODO: Establish which released devices use UART vs USB for the control surface, from the device trees.)
-
+<!-- TODO: Establish which released devices use UART vs USB for the control surface, from the device trees. -->
 ## Flashing
 
 `/usr/Engine/FirmwareUpdater` does the work. It is not run directly by the user — Engine exits with a quit reason and the
@@ -235,8 +235,7 @@ wrapper script dispatches, from `/usr/Engine/Scripts/engine`:
 `$PRODUCTCODE` is the device-tree product code with a trailing `S` stripped, so `S`-suffixed variants share their
 parent's firmware set. See [](Firmware-Updater.md).
 
-[//]: # (TODO: Trace how FirmwareUpdater picks payloads, reads the current version off the device, and reports progress.)
-
+<!-- TODO: Trace how FirmwareUpdater picks payloads, reads the current version off the device, and reports progress. -->
 ## SysEx
 
 inMusic's manufacturer prefix is `00 02 0B` for Denon DJ and `00 01 3F` for Numark. The byte after it is the device
@@ -251,8 +250,7 @@ Commands observed so far, from the `_Device.qml` mappings and the firmware descr
 | `72`         | Enter DFU mode (`start-sysex`)                  |
 | `7F`         | Keep-alive / shutdown                           |
 
-[//]: # (TODO: Build out the command table — 03/0A/0B/10/60/7c appear in the display mappings.)
-
+<!-- TODO: Build out the command table — 03/0A/0B/10/60/7c appear in the display mappings. -->
 ## See also
 
 * [](Controller-Assignments.md) — the QML control mappings themselves
