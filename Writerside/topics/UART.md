@@ -3,6 +3,11 @@
 [UART](https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter) is used to send data back and forth
 between some devices. We can use this for console access.
 
+> This page is about the **console** UART. On some devices a *second* UART carries the control surface as MIDI rather
+> than a serial console — it appears in the device tree as a `serial-midi` node labelled `Control Surface`, and ALSA
+> exposes it at `/dev/snd/by-path/platform-ff190000.serial`. See [](Engine-MIDI-Devices.md).
+> {style="note"}
+
 ## Prime Go
 
 On the Prime Go, the UART is located on an empty header that's already on the board.

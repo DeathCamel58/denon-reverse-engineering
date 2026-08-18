@@ -1,7 +1,19 @@
 # Firmware Updater
 
-Not really sure what this does. It seems likely that it loads the firmware in `/usr/Engine/Firmware/[FIRMWARE_PART]/`,
-and flashes the devices with the firmwares included in the subdirectory.
+This flashes the MCU boards attached to the unit — control surface, wheel displays, mixer and motor — from the payloads
+shipped in `/usr/Engine/Firmware/[FIRMWARE_PART]/`.
+
+It isn't launched directly. [](Engine.md) exits with a quit reason of `UpdateFirmware` and the wrapper script
+`/usr/Engine/Scripts/engine` dispatches, passing the product code as the only argument:
+
+```bash
+/usr/Engine/FirmwareUpdater $PRODUCTCODE
+```
+
+See [](Engine-MIDI-Devices.md) for the payload directory layout, the `firmware.json` descriptor that carries each
+board's version, and how devices are matched in the first place.
+
+[//]: # (TODO: Trace how it picks payloads, reads the running version off each board, and reports progress.)
 
 ## Application Data
 

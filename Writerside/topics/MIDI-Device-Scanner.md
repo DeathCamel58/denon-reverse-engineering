@@ -1,6 +1,8 @@
 # MIDI Device Scanner
 
-This just seems to query the built-in MIDI device.
+This just seems to query the built-in MIDI device. It shells out to `amidi`.
+
+See [](Engine-MIDI-Devices.md) for how [](Engine.md) identifies its MIDI devices, and what it does with them once found.
 
 ## Application Data
 

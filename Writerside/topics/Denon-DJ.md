@@ -19,6 +19,11 @@ Denon DJ's devices use the [](Engine-OS.md) operating system.
 | SC Live 4          | `DENON DJ SCX-4`            | `JP21`            | [](rk3288-az05-jp21-dts.md)                                                                                                                        |
 | LC6000 Prime       | —                           | `JC20`            | —                                                                                                                                                  |
 
+> `JC20` has no device tree because it does not run [](Engine-OS.md) — it is a USB-attached control surface for the
+> devices above rather than a host of its own. `Engine` knows it as `LC6000 Controller` and `LC6000 Display`, so it turns
+> up in [](Controller-Assignments.md) and [](Engine-MIDI-Devices.md) alongside the standalone units.
+> {style="note"}
+
 > The DTS [](rk3288-az01b-dts.md) exists, but I'm not sure what device uses it, or what it's for.
 > {style="note"}
 

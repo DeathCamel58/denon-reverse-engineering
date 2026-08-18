@@ -101,6 +101,10 @@ device ID followed by a `u32` offset of that device's name in the string table. 
 | `HG06`  | `0x0763301b` |
 | `HV01`  | `0x07633019` |
 
+> The **low byte** of the device ID is also the device's MIDI SysEx identity byte — `JP21` is `0x12` here and answers an
+> identity request with `F0 00 02 0B 7F 12 …`. See [](Engine-MIDI-Devices.md) and [](HARDWARE-ID-Test-App.md).
+> {style="note"}
+
 The **order of this table matters**: a device's index here is its bit position in the partition device mask described
 below.
 

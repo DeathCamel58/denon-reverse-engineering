@@ -109,6 +109,9 @@ Painter {
 **198×198**, one surface per deck, and identical on every device that has one: `JC11`, `JC11S`, `JC16`, `JC20`, `JP07`
 and `JP13`. `AZ01_CENTER_WHEEL_DISPLAY` is the only wheel-display format Engine defines.
 
+Because these are MIDI devices rather than DRM panels, they are detected and flashed like any other attached board —
+their own MCU firmware lives under `/usr/Engine/Firmware/[HARDWARE_ID] Display/`. See [](Engine-MIDI-Devices.md).
+
 > `JP08` and `JP14` — the motorised SC5000M and SC6000M — have **no** `*_Display_Assignments.qml` and no `Display`
 > entry in `KnownDevices.vfsb`, unlike their non-motorised siblings. That is unlikely to mean they have no platter
 > display; more probably it is addressed through the Controller MCU instead of as its own MIDI device. Unconfirmed.

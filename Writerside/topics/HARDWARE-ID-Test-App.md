@@ -119,7 +119,8 @@ These come from each product's `[HARDWARE_ID]_Controller_Device.qml` in
 ### Combinations In The MCU Firmware
 
 The MCU firmware ships in the rootfs under `/usr/Engine/Firmware/[HARDWARE_ID] Controller/`, so the checks can be
-read directly. See [](inMusic-Kernel-Modules.md) for how the rest of the firmware is laid out.
+read directly. See [](Engine-MIDI-Devices.md) for that directory's layout and the two payload formats, and
+[](inMusic-Kernel-Modules.md) for how the rest of the firmware is laid out.
 
 On the Prime GO (`JP11`), test mode is a three-button `AND`:
 

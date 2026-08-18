@@ -125,5 +125,7 @@ them from RTTI vtables and assertion strings.
 ## Related Files
 
 - [](Controller-Assignments.md) covers how the hardware controls different functions of this application.
+- [](Engine-MIDI-Devices.md) covers how this application finds its control surface, wheel displays and mixer over MIDI,
+  and where their MCU firmware and versions live.
 - [](Engine-Ghidra-Analysis.md) covers getting this binary into a navigable state in Ghidra.
 - [](Engine-Networking.md) covers the gRPC services, discovery, and cloud endpoints.

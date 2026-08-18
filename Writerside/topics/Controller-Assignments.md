@@ -3,6 +3,10 @@
 Engine uses `/usr/Engine/AssignmentFiles/PresetAssignmentFiles/[HARDWARE_ID]/[HARDWARE_ID]_*.qml` to describe all the
 buttons, LEDs, and such on the unit. These buttons are mapped to various features.
 
+Which of these directories gets loaded is decided by device detection, and the `_Device.qml` half of each pair holds the
+SysEx that talks to the board — see [](Engine-MIDI-Devices.md) for that side of it, along with where the control
+surface's own MCU firmware lives.
+
 ## Controller Performance Modes
 
 The `[HARDWARE_ID]_Controller_Assignments.qml` specifies the button mapping for each supported controller mode.
