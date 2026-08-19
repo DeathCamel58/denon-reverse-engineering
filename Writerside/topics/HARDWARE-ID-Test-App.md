@@ -7,10 +7,7 @@ There are two different versions, depending on what firmware the device is runni
 | >= `4.1.0`       | [New](#new-test-app) |
 | < `4.1.0`        | [Old](#old-test-app) |
 
-> I haven't figured out how to take screenshots of this. While the app is running, `cat /dev/fb0 > /frame` then running
-`convert -size 800x1280 -rotate 90 -depth 8 bgra:frame frame.png` **does not** include an image of this app, even though
-> that works on other apps that render to `fb0`. I'd love to figure this out and include screenshots.
-> {style="note"}
+![](Test App Launcher.png)
 
 There are two ways in. The [hidden Advanced tab](#advanced-tab) works from the UI on every device I've checked and
 needs no special hardware access, so start there. The [power-on button combinations](#power-on-entry) are a
