@@ -54,7 +54,6 @@ These were found by dumping `/dev/mmcblk0p6`, then running `strings mmcblk0p6 | 
 `oem inmusic-unlock-magic-7de5fbc22b8c524e` has since been confirmed to work: it lifts the
 bootloader's blanket refusal to accept writes, after which `fastboot flash` succeeds. See
 [](Updating.md#with-fastboot) for the full command reference and
-[](Security.md#previously-known) for the security framing.
 
 > `oem format`, `oem resetenv`, `oem update-bootloader` and `oem flash-bootloader` are destructive, and
 > the unlock above enables all of them.
