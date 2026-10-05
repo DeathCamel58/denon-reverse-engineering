@@ -878,18 +878,18 @@ Oct 05 07:49:58 sc6000 kernel: process '/usr/Engine/Engine' started with executa
 Oct 05 07:49:58 sc6000 dbus-daemon[288]: [system] Activating via systemd: service name='fi.w1.wpa_supplicant1' unit='wpa_supplicant.service' requested by ':1.4' (uid=0 pid=311 comm="/usr/sbin/connmand -n")
 Oct 05 07:49:58 sc6000 time[311]: eth0 {create} index 2 type 1 <ETHER>
 Oct 05 07:49:58 sc6000 time[311]: eth0 {update} flags 4099 <UP>
-Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 address 00:05:95:03:1B:1C mtu 1500
+Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 address 00:05:95:xx:xx:xx mtu 1500
 Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 operstate 2 <DOWN>
 Oct 05 07:49:58 sc6000 time[311]: Adding interface eth0 [ ethernet ]
 Oct 05 07:49:58 sc6000 time[311]: lo {newlink} index 1 address 00:00:00:00:00:00 mtu 65536
 Oct 05 07:49:58 sc6000 time[311]: lo {newlink} index 1 operstate 0 <UNKNOWN>
-Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 address 00:05:95:03:1B:1C mtu 1500
+Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 address 00:05:95:xx:xx:xx mtu 1500
 Oct 05 07:49:58 sc6000 time[311]: eth0 {newlink} index 2 operstate 2 <DOWN>
 Oct 05 07:49:58 sc6000 time[311]: sit0 {newlink} index 3 address 00:00:00:00:08:00 mtu 1480
 Oct 05 07:49:58 sc6000 time[311]: sit0 {newlink} index 3 operstate 2 <DOWN>
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {create} index 4 type 1 <ETHER>
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {update} flags 4098 <DOWN>
-Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:69:D2:F8 mtu 1500
+Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:xx:xx:xx mtu 1500
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 operstate 2 <DOWN>
 Oct 05 07:49:58 sc6000 time[311]: Adding interface wlan0 [ wifi ]
 Oct 05 07:49:58 sc6000 systemd[1]: Starting WPA supplicant...
@@ -907,15 +907,15 @@ Oct 05 07:49:58 sc6000 systemd[1]: Started AZ01 script runner service.
 Oct 05 07:49:58 sc6000 systemd-networkd[325]: wlan0: Link UP
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {update} flags 36867 <UP>
 Oct 05 07:49:58 sc6000 systemd[1]: Reached target Multi-User System.
-Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:69:D2:F8 mtu 1500
+Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:xx:xx:xx mtu 1500
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 operstate 2 <DOWN>
-Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:69:D2:F8 mtu 1500
+Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:xx:xx:xx mtu 1500
 Oct 05 07:49:58 sc6000 time[311]: wlan0 {newlink} index 4 operstate 2 <DOWN>
 Oct 05 07:49:58 sc6000 dbus-daemon[288]: [system] Successfully activated service 'org.freedesktop.hostname1'
 Oct 05 07:49:58 sc6000 systemd[1]: Started Hostname Service.
 Oct 05 07:49:58 sc6000 systemd[1]: Startup finished in 9.057s (kernel) + 6.736s (userspace) = 15.794s.
 Oct 05 07:49:58 sc6000 wpa_supplicant[385]: WPS: Converting push_button to virtual_push_button for WPS 2.0 compliance
-Oct 05 07:49:58 sc6000 wpa_supplicant[385]: wlan0: Trying to associate with SSID 'DeathCamel57'
+Oct 05 07:49:58 sc6000 wpa_supplicant[385]: wlan0: Trying to associate with SSID '<redacted>'
 Oct 05 07:49:58 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-ASSOC-REJECT bssid=00:00:00:00:00:00 status_code=16
 Oct 05 07:49:59 sc6000 runengine[384]: DropboxManager: Dropbox application has not been found.
 Oct 05 07:49:59 sc6000 avahi-daemon[364]: Server startup complete. Host name is sc6000.local. Local service cookie is 604055102.
@@ -1069,23 +1069,23 @@ Oct 05 07:50:01 sc6000 time[311]: Bluetooth device /org/bluez/hci0 not enabled
 Oct 05 07:50:01 sc6000 kernel: EMain[384]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
 Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=BEACON_HINT type=UNKNOWN
 Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-REGDOM-CHANGE init=BEACON_HINT type=UNKNOWN
-Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: Trying to associate with SSID 'DeathCamel57'
+Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: Trying to associate with SSID '<redacted>'
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {RX} 2 packets 198 bytes
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {TX} 0 packets 0 bytes
-Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: Associated with a2:ba:5f:5f:d0:cb
-Oct 05 07:50:02 sc6000 systemd-networkd[325]: wlan0: Connected WiFi access point: DeathCamel57 (a2:ba:5f:5f:d0:cb)
+Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: Associated with a2:ba:5f:xx:xx:xx
+Oct 05 07:50:02 sc6000 systemd-networkd[325]: wlan0: Connected WiFi access point: <redacted> (a2:ba:5f:xx:xx:xx)
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {update} flags 102403 <UP,LOWER_UP>
-Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:69:D2:F8 mtu 1500
+Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:xx:xx:xx mtu 1500
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 operstate 5 <DORMANT>
 Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: WPA: Key negotiation completed with a2:ba:5f:5f:d0:cb [PTK=CCMP GTK=CCMP]
-Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-CONNECTED - Connection to a2:ba:5f:5f:d0:cb completed [id=0 id_str=]
+Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: WPA: Key negotiation completed with a2:ba:5f:xx:xx:xx [PTK=CCMP GTK=CCMP]
+Oct 05 07:50:02 sc6000 wpa_supplicant[385]: wlan0: CTRL-EVENT-CONNECTED - Connection to a2:ba:5f:xx:xx:xx completed [id=0 id_str=]
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {add} route fe80:: gw :: scope 0 <UNIVERSE>
 Oct 05 07:50:02 sc6000 systemd-networkd[325]: wlan0: Gained carrier
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {RX} 3 packets 401 bytes
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {TX} 2 packets 254 bytes
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {update} flags 102467 <UP,RUNNING,LOWER_UP>
-Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:69:D2:F8 mtu 1500
+Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 address 10:2C:6B:xx:xx:xx mtu 1500
 Oct 05 07:50:02 sc6000 time[311]: wlan0 {newlink} index 4 operstate 6 <UP>
 Oct 05 07:50:02 sc6000 avahi-daemon[364]: Joining mDNS multicast group on interface wlan0.IPv4 with address 10.2.0.211.
 Oct 05 07:50:02 sc6000 systemd-timesyncd[274]: Network configuration changed, trying to establish connection.
