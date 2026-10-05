@@ -1,0 +1,17 @@
+root@sc6000:~# cat /proc/asound/cards
+ 0 [Display        ]: USB-Audio - SC6000 Prime Wheel Display
+                      Denon DJ SC6000 Prime Wheel Display at usb-ff540000.usb-1, high speed
+ 1 [Controller     ]: USB-Audio - SC6000 Prime Controller
+                      Denon DJ SC6000 Prime Controller at usb-ff500000.usb-1.5, full speed
+ 2 [JP07           ]: JP07 - JP07
+                      JP07
+
+root@sc6000:~# cat /proc/asound/pcm
+02-00: JP07 PCM inmusic,jp07-audio-codec-0 : JP07 PCM inmusic,jp07-audio-codec-0 : playback 1
+
+root@sc6000:~# ls -l /dev/snd/by-path/
+lrwxrwxrwx    1 root     root            12 Oct  5 07:49 platform-ff500000.usb-usb-0:1.5:1.0 -> ../controlC1
+lrwxrwxrwx    1 root     root            12 Oct  5 07:49 platform-ff500000.usb-usbv2-0:1.5:1.0 -> ../controlC1
+lrwxrwxrwx    1 root     root            12 Oct  5 07:49 platform-ff540000.usb-usb-0:1:1.0 -> ../controlC0
+lrwxrwxrwx    1 root     root            12 Oct  5 07:49 platform-ff540000.usb-usbv2-0:1:1.0 -> ../controlC0
+lrwxrwxrwx    1 root     root            12 Oct  5 07:49 platform-sound -> ../controlC2

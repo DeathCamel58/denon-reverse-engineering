@@ -1,0 +1,19 @@
+root@sc6000:~# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq qlen 1000
+    link/ether 00:05:95:xx:xx:xx brd ff:ff:ff:ff:ff:ff
+3: sit0@NONE: <NOARP> mtu 1480 qdisc noop qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+4: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP8000> mtu 1500 qdisc pfifo_fast qlen 1000
+    link/ether 10:2c:6b:xx:xx:xx brd ff:ff:ff:ff:ff:ff
+    inet 10.2.0.211/24 brd 10.2.0.255 scope global wlan0
+       valid_lft forever preferred_lft forever
+    inet6 fd71:7b58:adb2:5fa3:xxxx:xxff:fexx:xxxx/64 scope global dynamic flags 100 
+       valid_lft 1784sec preferred_lft 1784sec
+    inet6 fe80::xxxx:xxff:fexx:xxxx/64 scope link 
+       valid_lft forever preferred_lft forever

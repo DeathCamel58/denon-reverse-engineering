@@ -121,6 +121,10 @@ The host prints `Warning: skip copying <part> image avb footer (<part> partition
 every partition. That is `fastboot` reacting to `partition-size` being unimplemented, not a real
 zero-sized partition — it is safe to ignore.
 
+The real sizes have to come from the device itself. `lsblk` on a running `JP13` gives the full eMMC
+layout — see [](UART.md#partitions_SC6000) — and confirms `rootfs` is exactly 500 M, the same size as
+the payload update images carry for it.
+
 `max-download-size` is 1.75 GB, comfortably above the 500 MB rootfs, so no sparse splitting is needed.
 
 > This path skips the on-device updater entirely, so none of the container's hashes are checked and

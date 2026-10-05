@@ -111,6 +111,7 @@
         </toc-element>
         <toc-element topic="LinuxConfigs.md">
             <toc-element topic="Denon-DJ-Prime-GO-Config.md"/>
+            <toc-element topic="Denon-DJ-SC6000-Config.md"/>
         </toc-element>
         <toc-element topic="inMusic-Kernel-Modules.md"/>
         <toc-element topic="Hardware-Notes.md">

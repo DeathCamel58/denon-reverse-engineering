@@ -1,0 +1,85 @@
+root@sc6000:~# systemctl list-units --type=service --all --no-pager
+  UNIT                                     LOAD      ACTIVE   SUB     DESCRIPTION
+● auditd.service                           not-found inactive dead    auditd.service
+  avahi-daemon.service                     loaded    active   running Avahi mDNS/DNS-SD Stack
+  az01-machine-id.service                  loaded    active   exited  Fix transient machine-id after mounting /etc
+  az01-power-button.service                loaded    active   running AZ01 power button emergency shutdown service
+  az01-script-runner.service               loaded    active   running AZ01 script runner service
+  az01-usbsata-fixer.service               loaded    active   running AZ01 JMicron USB-SATA bridge configuration fixer
+  az0x-data-mkfs.service                   loaded    active   exited  Create /data filesystem if necessary
+  az0x-info.service                        loaded    active   exited  AZ0x system info logging
+  az0x-setup-hostname.service              loaded    active   exited  Hostname setup for AZ0x
+  bluetooth.service                        loaded    active   running Bluetooth service
+  connman.service                          loaded    active   running Connection service
+  dbus.service                             loaded    active   running D-Bus System Message Bus
+  edisksd.service                          loaded    active   running Disk mounting service
+  emergency.service                        loaded    inactive dead    Emergency Shell
+  engine.service                           loaded    active   running Engine
+  getty@tty1.service                       loaded    active   running Getty on tty1
+  initrd-cleanup.service                   loaded    inactive dead    Cleaning Up and Shutting Down Daemons
+  initrd-parse-etc.service                 loaded    inactive dead    Mountpoints Configured in the Real Root
+  initrd-switch-root.service               loaded    inactive dead    Switch Root
+  initrd-udevadm-cleanup-db.service        loaded    inactive dead    Cleanup udev Database
+  ip6tables.service                        loaded    active   exited  IPv6 Packet Filtering Framework
+  iptables.service                         loaded    active   exited  IPv4 Packet Filtering Framework
+  kmod-static-nodes.service                loaded    inactive dead    Create List of Static Device Nodes
+  ldconfig.service                         loaded    inactive dead    Rebuild Dynamic Linker Cache
+  modprobe@configfs.service                loaded    inactive dead    Load Kernel Module configfs
+  modprobe@fuse.service                    loaded    inactive dead    Load Kernel Module fuse
+  overlayfs-setup.service                  loaded    active   exited  Setup directories for overlayfs mounts
+● plymouth-quit-wait.service               not-found inactive dead    plymouth-quit-wait.service
+● plymouth-start.service                   not-found inactive dead    plymouth-start.service
+  rescue.service                           loaded    inactive dead    Rescue Shell
+● run-postinsts.service                    not-found inactive dead    run-postinsts.service
+  serial-getty@ttyS2.service               loaded    active   running Serial Getty on ttyS2
+  sshd.service                             loaded    active   running OpenSSH server daemon
+  sshdgenkeys.service                      loaded    active   exited  OpenSSH Key Generation
+● syslog.service                           not-found inactive dead    syslog.service
+  systemd-ask-password-console.service     loaded    inactive dead    Dispatch Password Requests to Console
+  systemd-ask-password-wall.service        loaded    inactive dead    Forward Password Requests to Wall
+  systemd-battery-check.service            loaded    inactive dead    Check battery level during early boot
+  systemd-fsck-root.service                loaded    inactive dead    File System Check on Root Device
+  systemd-hibernate-resume.service         loaded    inactive dead    Resume from hibernation
+  systemd-hwdb-update.service              loaded    inactive dead    Rebuild Hardware Database
+  systemd-journal-catalog-update.service   loaded    inactive dead    Rebuild Journal Catalog
+  systemd-journal-flush.service            loaded    active   exited  Flush Journal to Persistent Storage
+  systemd-journald.service                 loaded    active   running Journal Service
+  systemd-machine-id-commit.service        loaded    active   exited  Commit a transient machine-id on disk
+  systemd-modules-load.service             loaded    active   exited  Load Kernel Modules
+  systemd-network-generator.service        loaded    active   exited  Generate network units from Kernel command line
+  systemd-networkd.service                 loaded    active   running Network Configuration
+  systemd-random-seed.service              loaded    active   exited  Load/Save OS Random Seed
+  systemd-remount-fs.service               loaded    active   exited  Remount Root and Kernel File Systems
+  systemd-resolved.service                 loaded    active   running Network Name Resolution
+  systemd-rfkill.service                   loaded    inactive dead    Load/Save RF Kill Switch Status
+  systemd-soft-reboot.service              loaded    inactive dead    Reboot System Userspace
+  systemd-sysctl.service                   loaded    active   exited  Apply Kernel Variables
+  systemd-sysusers.service                 loaded    inactive dead    Create System Users
+  systemd-timesyncd.service                loaded    active   running Network Time Synchronization
+  systemd-tmpfiles-clean.service           loaded    inactive dead    Cleanup of Temporary Directories
+  systemd-tmpfiles-setup-dev-early.service loaded    active   exited  Create Static Device Nodes in /dev gracefully
+  systemd-tmpfiles-setup-dev.service       loaded    active   exited  Create Static Device Nodes in /dev
+  systemd-tmpfiles-setup.service           loaded    active   exited  Create System Files and Directories
+  systemd-udev-settle.service              loaded    inactive dead    Wait for udev To Complete Device Initialization
+  systemd-udev-trigger.service             loaded    active   exited  Coldplug All udev Devices
+  systemd-udevd.service                    loaded    active   running Rule-based Manager for Device Events and Files
+  systemd-update-done.service              loaded    inactive dead    Update is Completed
+● systemd-update-utmp-runlevel.service     not-found inactive dead    systemd-update-utmp-runlevel.service
+  systemd-update-utmp.service              loaded    active   exited  Record System Boot/Shutdown in UTMP
+● systemd-user-sessions.service            not-found inactive dead    systemd-user-sessions.service
+  systemd-userdbd.service                  loaded    active   running User Database Manager
+● systemd-vconsole-setup.service           not-found inactive dead    systemd-vconsole-setup.service
+  touch-fw-update.service                  loaded    inactive dead    Firmware update for Ilitek touchscreens
+  var-volatile-cache.service               loaded    inactive dead    Bind mount volatile /var/cache
+  var-volatile-lib.service                 loaded    inactive dead    Bind mount volatile /var/lib
+  var-volatile-spool.service               loaded    inactive dead    Bind mount volatile /var/spool
+  var-volatile-srv.service                 loaded    active   exited  Bind mount volatile /srv
+  wpa_supplicant.service                   loaded    active   running WPA supplicant
+● xmos-update.service                      not-found inactive dead    xmos-update.service
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+76 loaded units listed.
+To show all installed unit files use 'systemctl list-unit-files'.

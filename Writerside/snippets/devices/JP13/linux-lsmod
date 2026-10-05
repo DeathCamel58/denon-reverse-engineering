@@ -1,0 +1,13 @@
+root@sc6000:~# lsmod
+Module                  Size  Used by
+brcmfmac_wcc           12288  -2
+brcmfmac              208896  -2
+snd_soc_rockchip_inmusic_jp07    16384  -2
+cfg80211              327680  -2
+snd_soc_inmusic_jp07    16384  -2
+snd_soc_rockchip_i2s    20480  -2
+brcmutil               12288  -2
+hci_uart               32768  -2
+btbcm                  12288  -2
+ufsd                  299008  -2
+jnl                    40960  -2
