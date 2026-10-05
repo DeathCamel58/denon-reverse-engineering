@@ -1,0 +1,35 @@
+=> mmc part
+Partition Map for MMC device 0  --   Partition Type: EFI
+
+Part	Start LBA	End LBA		Name
+	Attributes
+	Type GUID
+	Partition GUID
+  1	0x00000040	0x000000bf	"uboot-spl"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	3c7a21f6-7d1c-6949-8f05-88c0b9c0f0e6
+  2	0x000000c0	0x000000ff	"env"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	8f868bbe-d889-f84f-a64d-d077e73b4f09
+  3	0x00000100	0x000003ff	"uboot"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	92e71b46-293b-0a4c-a6a2-3460c0119cbe
+  4	0x00000400	0x000023ff	"splash"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	cda9bf40-2c6d-224e-a662-f0a803794462
+  5	0x00002400	0x000043ff	"recoverysplash"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	e2b850e0-92ee-ca43-98ad-9aa4fbca8616
+  6	0x00004400	0x000fe3ff	"rootfs"
+	attrs:	0x0000000000000004
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	24d1deac-3434-1a4e-98d1-68ee2945a5f1
+  7	0x000fe400	0x00e8ffde	"data"
+	attrs:	0x0000000000000000
+	type:	ebd0a0a2-b9e5-4433-87c0-68b6b72699c7
+	guid:	931ad49d-ad59-0849-833a-9bf00af5b60e

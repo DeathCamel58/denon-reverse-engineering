@@ -1,0 +1,4 @@
+=> version
+U-Boot 2016.05-inmusic-20200917 (Oct 21 2020 - 14:45:34 +0000)
+arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2020.02.1-00010-ga47ecce36b) 8.4.0
+GNU ld (GNU Binutils) 2.32

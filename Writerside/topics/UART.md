@@ -163,6 +163,94 @@ Two things in the log worth knowing:
 ```
 { src="devices/JP13/u-boot-boot-log" }
 
+#### Environment Variables {collapsible="true" id="env_SC6000"}
+
+Three entries here answer questions the device would not answer over fastboot.
+
+**`fastboot.partition-type:rootfs=ext4` and `fastboot.partition-type:data=ext4`.** This is the whole
+of fastboot's `getvar partition-type` support — it reads an environment variable of that name. Only
+these two are defined, which is exactly why `getvar partition-type:splash` reports
+`Variable not implemented` on a partition that flashes perfectly well. There is no
+`fastboot.partition-size:*` at all, so that variable is unimplemented for every partition. See
+[](Updating.md#with-fastboot).
+
+**`bootargs` here has no `fsck.repair=yes`**, yet the running kernel command line does. That confirms
+the option is appended by `boot.scr` at boot rather than stored in the environment — the one line that
+changed in the boot script at `5.0.0`.
+
+**`board_name=az01b`.** `boot.scr` tests this and tries to load `rk3288-az01b.dtbo` when it matches,
+which is why the boot log carries `** File not found /boot/rk3288-az01b.dtbo **`: this device asks for
+the overlay, and the `5.x` rootfs does not ship it. The Prime GO reports `az01`, so it never asks.
+
+`partitions=` holds the GPT template the layout is built from, including `rootfs,bootable,size=500MiB`
+and `data,size=0` for the grow-to-fill partition. Its UUIDs look different from the ones `mmc part`
+prints because they are written in GUID mixed-endian order — `be8b868f-89d8-4ff8-…` there is the same
+value as `8f868bbe-d889-f84f-…` in the partition table.
+
+> `ethaddr` is truncated to its OUI and `serial#` removed. Everything else is verbatim.
+> {style="note"}
+
+```
+```
+{ src="devices/JP13/u-boot-environment-variables" }
+
+#### eMMC Partition Table {collapsible="true" id="mmc-part_SC6000"}
+
+```
+```
+{ src="devices/JP13/u-boot-mmc-part" }
+
+#### Available Commands {collapsible="true" id="help_SC6000"}
+
+`reset_bootloader` and `fastboot` are the only non-stock entries. Note the OEM commands in the
+Prime GO list above do **not** appear here — they are handled inside the fastboot protocol handler
+rather than registered as U-Boot console commands, so `help` will never enumerate them.
+
+```
+```
+{ src="devices/JP13/u-boot-help" }
+
+#### Version {collapsible="true" id="version_SC6000"}
+
+Built with Buildroot `2020.02.1` and GCC `8.4.0`, against the Prime GO's Buildroot `2023.02.3` and
+GCC `12.3.0` — the same `2016.05` U-Boot base, three years apart.
+
+```
+```
+{ src="devices/JP13/u-boot-version" }
+
+#### MMC Info {collapsible="true" id="mmc-info_SC6000"}
+
+A different eMMC part from the Prime GO's: manufacturer ID `11`, name `008GB`, against `15` / `8GTF4`.
+
+```
+```
+{ src="devices/JP13/u-boot-mmc-info" }
+
+#### Board Info {collapsible="true" id="bdinfo_SC6000"}
+
+```
+```
+{ src="devices/JP13/u-boot-bdinfo" }
+
+#### Clocks {collapsible="true" id="clocks_SC6000"}
+
+```
+```
+{ src="devices/JP13/u-boot-clocks" }
+
+#### Console Info {collapsible="true" id="coninfo_SC6000"}
+
+```
+```
+{ src="devices/JP13/u-boot-coninfo" }
+
+#### Hush Shell Variables {collapsible="true" id="showvar_SC6000"}
+
+```
+```
+{ src="devices/JP13/u-boot-showvar" }
+
 ### Linux {id="linux_SC6000"}
 
 Kernel command line pins `isolcpus=1,2,3`, reserving three of the four A12 cores away from the

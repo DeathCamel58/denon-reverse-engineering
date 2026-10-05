@@ -1,0 +1,69 @@
+=> help
+?       - alias for 'help'
+adc     - ADC sub-system
+base    - print or set address offset
+bdinfo  - print Board Info structure
+bmp     - manipulate BMP image data
+boot    - boot default, i.e., run 'bootcmd'
+bootd   - boot default, i.e., run 'bootcmd'
+bootm   - boot application image from memory
+bootz   - boot Linux zImage image from memory
+clock   - display information about clocks
+cmp     - memory compare
+coninfo - print console devices and information
+cp      - memory copy
+dm      - Driver model low level access
+echo    - echo args to console
+editenv - edit environment variable
+env     - environment handling commands
+erase   - erase FLASH memory
+exit    - exit script
+false   - do nothing, unsuccessfully
+fastboot- use USB Fastboot protocol
+fdt     - flattened device tree utility commands
+flinfo  - print FLASH memory information
+fstype  - Look up a filesystem type
+go      - start application at address 'addr'
+gpio    - query and control gpio pins
+gpt     - GUID Partition Table
+help    - print command description/usage
+i2c     - I2C sub-system
+iminfo  - print header information for application image
+itest   - return true/false on integer compare
+lcdputs - print string on video framebuffer
+load    - load binary file from a filesystem
+loadb   - load binary file over serial line (kermit mode)
+loads   - load S-Record file over serial line
+loadx   - load binary file over serial line (xmodem mode)
+loady   - load binary file over serial line (ymodem mode)
+loop    - infinite loop on address range
+ls      - list files in a directory (default /)
+md      - memory display
+mm      - memory modify (auto-incrementing address)
+mmc     - MMC sub system
+mmcinfo - display MMC info
+mw      - memory write (fill)
+nm      - memory modify (constant address)
+part    - disk partition related commands
+pmic    -  operations
+poweroff- Perform POWEROFF of the device
+printenv- print environment variables
+protect - enable or disable FLASH write protection
+regulator- uclass operations
+reset   - Perform RESET of the CPU
+reset_bootloader- reset to fastboot mode
+run     - run commands in an environment variable
+save    - save file to a filesystem
+saveenv - save environment variables to persistent storage
+setcurs - set cursor position within screen
+setenv  - set environment variables
+showvar - print local hushshell variables
+size    - determine a file's size
+sleep   - delay execution for some time
+source  - run script from memory
+sysboot - command to get and boot from syslinux files
+test    - minimal test like /bin/sh
+thermal - uclass operations
+time    - run commands and summarize execution time
+true    - do nothing, successfully
+version - print monitor, compiler and linker version

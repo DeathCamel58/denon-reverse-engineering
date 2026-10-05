@@ -1,0 +1,12 @@
+=> bdinfo
+arch_number = 0x00000000
+boot_params = 0x00000000
+DRAM bank   = 0x00000000
+-> start    = 0x00000000
+-> size     = 0x80000000
+baudrate    = 115200 bps
+TLB addr    = 0x7FFF0000
+relocaddr   = 0x7F3B6000
+reloc off   = 0x7F2B6000
+irq_sp      = 0x7B3AA1B0
+sp start    = 0x7B3AA1A0
