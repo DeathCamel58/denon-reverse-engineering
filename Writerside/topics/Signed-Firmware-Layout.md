@@ -99,6 +99,7 @@ device ID followed by a `u32` offset of that device's name in the string table. 
 | `NH08S` | `0x15e4303f` |
 | `NH10`  | `0x15e42059` |
 | `HG06`  | `0x0763301b` |
+| `HG12`  | `0x0763301f` |
 | `HV01`  | `0x07633019` |
 
 > The **low byte** of the device ID is also the device's MIDI SysEx identity byte — `JP21` is `0x12` here and answers an

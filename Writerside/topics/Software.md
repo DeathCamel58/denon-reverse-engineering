@@ -11,7 +11,7 @@ Different inMusic devices run different OS's. This is due to the devices being f
 
 > HeadRush seems to have two different builds of the OS.
 > 
-> `Evil` is my name for the OS on the Gigboard, Pedalboard, and MX5. This is because the main application seems to be `Evil`
+> `Evil` is my name for the OS on the Gigboard, Pedalboard, MX5, and Flex Prime. This is because the main application seems to be `Evil`
 > 
 > `Looper` is my name for the OS on the Looperboard. This is because the main application seems to be `Looper`
 > 

@@ -12,3 +12,4 @@
 | Pedalboard  | `Eleven`                | `MG01`      | [](rk3288-az01-mg01-dts.md)                                                                                                                        |
 | Core        | `HeadRush Core`         | `HV01`      | [](rk3288-az05-hv01-dts.md)                                                                                                                        |
 | Prime       | `HeadRush Prime`        | `HG06`      | [](rk3288-az05-hg06-dts.md)                                                                                                                        |
+| Flex Prime  | `HeadRush Flex Prime`   | `HG12`      | [](rk3288-az05-hg12-dts.md)                                                                                                                        |
